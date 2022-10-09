@@ -22,6 +22,7 @@ interface Post {
 	title: string;
 	description: string;
 	publishDate?: Date;
+	image: string;
 	tags?: string[];
 }
 

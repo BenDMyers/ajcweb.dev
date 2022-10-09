@@ -9,9 +9,10 @@ const meta = {
 	description: "Web developer, writer, speaker, and advocate.",
 }
 
-const allPosts = await Astro.glob<Post>("./posts/*.mdx")
+const allPosts = await Astro.glob<Post>("./*.mdx")
 const allPostsByDate = sortMDByDate(allPosts).slice(0, 5)
 ---
+
 <PageLayout meta={meta}>
 	<section>
 		<h1 class="mb-6 title">Anthony Campolo, Developer Advocate</h1>

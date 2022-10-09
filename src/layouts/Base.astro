@@ -17,6 +17,7 @@ const {
 <html lang={siteMeta.lang}>
 	<head>
 		<BaseHead title={title} description={description} image={image} />
+		
 		<script define:vars={{ siteMeta }}>
 			const root = document.documentElement
 			const colorThemeMetaTag = document.querySelector("meta[name='theme-color']")
@@ -25,8 +26,7 @@ const {
 					? localStorage.getItem("theme")
 					: null
 			if (
-				theme === "dark" ||
-				(!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
+				theme === "dark" || (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
 			) {
 				root.classList.add("dark")
 				colorThemeMetaTag.setAttribute("content", siteMeta.themeColorDark)

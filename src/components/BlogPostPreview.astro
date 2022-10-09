@@ -1,35 +1,32 @@
 ---
 import type { IElement, MDXInstance, Post } from "@/util"
 import { getLocaleTime } from "@/util"
+import { styles } from "../styles/styles"
+
 export interface Props extends IElement {
 	post: MDXInstance<Post>
-	withDesc?: boolean
 }
 
 const {
 	post,
-	as: Element = "div",
-	withDesc = false
+	as: Element = "div"
 } = Astro.props as Props
 
 const { publishDate } = post.frontmatter
 const date = new Date(publishDate)
-const datetime = date.toISOString()
-const postDate = getLocaleTime(date, { month: "short" })
+const postDate = getLocaleTime(date, { month: "long" })
 ---
 
-<time {datetime} class="min-w-[120px] text-gray-500">
-	{postDate}
-</time>
-
 <Element>
-	<a href={post.url} class="inline-block cactus-link line-clamp-1">
+	<a href={post.url} class={styles.postPreviewTitle}>
 		{post.frontmatter.title}
 	</a>
 </Element>
-<br><br>
-{
-	withDesc && (
-		<q class="block italic line-clamp-3">{post.frontmatter.description}</q>
-	)
-}
+
+<time class={styles.postPreviewDate}>
+	- {postDate}
+</time>
+
+<q class={styles.postPreviewDesc}>{post.frontmatter.description}</q>
+
+<img src={post.frontmatter.image}>
