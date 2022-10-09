@@ -1,8 +1,8 @@
-import { defineConfig } from "astro/config";
-import mdx from "@astrojs/mdx";
-import tailwind from "@astrojs/tailwind";
-import image from "@astrojs/image";
-import sitemap from "@astrojs/sitemap";
+import { defineConfig } from "astro/config"
+import mdx from "@astrojs/mdx"
+import tailwind from "@astrojs/tailwind"
+import image from "@astrojs/image"
+import sitemap from "@astrojs/sitemap"
 
 export default defineConfig({
 	markdown: {
@@ -11,13 +11,11 @@ export default defineConfig({
 			wrap: true,
 		},
 	},
-	site: "https://www.astro-theme-cactus.netlify.app",
+	site: "https://ajcwebdev.com",
 	integrations: [
 		mdx({}),
-		tailwind({
-			config: { applyBaseStyles: false },
-		}),
+		tailwind({ config: { applyBaseStyles: false } }),
 		image(),
 		sitemap(),
 	],
-});
+})

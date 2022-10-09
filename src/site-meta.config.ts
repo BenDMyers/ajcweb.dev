@@ -1,11 +1,11 @@
 const siteMeta = {
-  title: "Astro Theme Cactus",
-  description: "An opinionated starter theme for Astro",
+  title: "ajcwebdev",
+  description: "Web developer, writer, speaker, and advocate",
   lang: "en-GB",
   ogLocale: "en_GB",
-  githubUrl: "https://github.com/chrismwilliams/astro-theme-cactus",
+  githubUrl: "https://github.com/ajcwebdev/ajcwebdev.com",
   themeColorLight: "#fafafa",
   themeColorDark: "#1d1f21",
 }
 
-export default siteMeta;
+export default siteMeta
