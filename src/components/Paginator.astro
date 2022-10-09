@@ -1,12 +1,12 @@
 ---
-import type { PaginationLink } from "@/types";
+import type { PaginationLink } from "@/util"
 
 export interface Props {
-	prevUrl?: PaginationLink;
-	nextUrl?: PaginationLink;
+	prevUrl?: PaginationLink
+	nextUrl?: PaginationLink
 }
 
-const { prevUrl, nextUrl } = Astro.props as Props;
+const { prevUrl, nextUrl } = Astro.props as Props
 ---
 
 {(prevUrl || nextUrl) && (

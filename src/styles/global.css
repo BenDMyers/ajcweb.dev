@@ -1,4 +1,7 @@
 @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @layer base {
 	:root {
 		color-scheme: light;
@@ -30,5 +33,7 @@
 		@apply h-full max-w-3xl mx-auto px-8 pt-16 font-mono font-normal antialiased text-sm flex flex-col text-textColor bg-bgColor;
 	}
 }
-@tailwind components;
-@tailwind utilities;
+
+footer {
+	@apply mt-auto flex w-full flex-col items-center justify-center gap-y-2 pt-20 pb-4 text-center align-top text-gray-500 sm:flex-row sm:justify-between sm:text-xs;
+}

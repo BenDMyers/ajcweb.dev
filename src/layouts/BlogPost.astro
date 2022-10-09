@@ -1,20 +1,22 @@
 ---
-import BaseLayout from "./Base.astro";
-import { getLocaleTime, getPreviousAndNextPosts, sortMDByDate } from "src/util";
-import Paginator from "@/components/Paginator";
-import type { Post } from "@/types";
+import BaseLayout from "./Base.astro"
+import { getLocaleTime, getPreviousAndNextPosts, sortMDByDate } from "src/util"
+import Paginator from "@/components/Paginator"
+import type { Post } from "@/util"
 
 const {
 	content: { title, description, publishDate, tags },
 	headings,
-} = Astro.props;
-const date = new Date(publishDate);
-const datetime = date.toISOString();
-const postDate = getLocaleTime(date);
-const currentPage = new URL(Astro.request.url).pathname;
-const allPosts = await Astro.glob<Post>("../pages/posts/*.mdx");
-const allSortedPosts = sortMDByDate(allPosts);
-const { prev, next } = getPreviousAndNextPosts(currentPage, allSortedPosts);
+} = Astro.props
+
+const date = new Date(publishDate)
+const datetime = date.toISOString()
+const postDate = getLocaleTime(date)
+const currentPage = new URL(Astro.request.url).pathname
+const allPosts = await Astro.glob<Post>("../pages/posts/*.mdx")
+const allSortedPosts = sortMDByDate(allPosts)
+const { prev, next } = getPreviousAndNextPosts(currentPage, allSortedPosts)
+
 const paginationProps = {
 	...(prev && {
 		prevUrl: {
@@ -30,7 +32,7 @@ const paginationProps = {
 			srLabel: "Next Article:",
 		},
 	}),
-};
+}
 ---
 
 <BaseLayout meta={{ title, description }}>

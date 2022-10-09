@@ -1,36 +1,36 @@
 ---
-import PageLayout from "@/layouts/Base";
-import BlogPostPreview from "@/components/BlogPostPreview";
-import { getAllTags, sortMDByDate } from "@/util";
-import type { MDXInstance, Page, Post } from "@/types";
+import PageLayout from "@/layouts/Base"
+import BlogPostPreview from "@/components/BlogPostPreview"
+import { getAllTags, sortMDByDate } from "@/util"
+import type { MDXInstance, Page, Post } from "@/util"
 
 export async function getStaticPaths({ paginate }) {
-	const allPosts = await Astro.glob<Post>("../../posts/*.mdx");
-	const allPostsByDate = sortMDByDate(allPosts);
-	const allTags = getAllTags(allPostsByDate);
+	const allPosts = await Astro.glob<Post>("../../posts/*.mdx")
+	const allPostsByDate = sortMDByDate(allPosts)
+	const allTags = getAllTags(allPostsByDate)
 
 	return allTags.map((tag) => {
 		const filterPosts = allPostsByDate.filter((post) =>
 			post.frontmatter.tags?.includes(tag)
-		);
+		)
 		return paginate(filterPosts, {
 			params: { tag },
-			pageSize: 10,
-		});
-	});
+			pageSize: 5,
+		})
+	})
 }
 
 export interface Props {
-	page: Page<MDXInstance<Post>>;
+	page: Page<MDXInstance<Post>>
 }
 
-const { page } = Astro.props as Props;
-const { tag } = Astro.params;
+const { page } = Astro.props as Props
+const { tag } = Astro.params
 
 const meta = {
 	title: `Tag: ${tag}`,
 	description: `View all posts tagged with ${tag}`,
-};
+}
 ---
 
 <PageLayout meta={meta}>

@@ -1,7 +1,5 @@
 ---
 import PageLayout from "@/layouts/Base";
-import { Image } from "@astrojs/image/components";
-import aboutImg from "../assets/about-astro.png";
 
 const meta = {
 	title: "About",
@@ -12,34 +10,47 @@ const meta = {
 <PageLayout meta={meta}>
 	<div class="space-y-6">
 		<h1 class="title">About</h1>
+
 		<p>
-			Hi, I’m a starter Astro. I’m particularly great for getting you started
-			with your own blogging website.
+			Hello 👋, my name is Anthony Campolo. I'm a Developer Advocate at <a class="inline-block cactus-link" href="https://quicknode.com/" target="_blank">QuickNode</a>, a member of the <a class="inline-block cactus-link" href="https://redwoodjs.com/" target="_blank">RedwoodJS</a> core team, and co-host of the <a class="inline-block cactus-link" href="https://fsjam.org/" target="_blank">FSJam Podcast</a>.
 		</p>
-		<div class="flex justify-center">
-			<Image src={aboutImg} alt="A cartoon cactus looking at 'Astro.build' logo"
-			/>
-		</div>
-		<p>Here are my some of my awesome built in features:</p>
-		<ul class="list-disc list-inside">
-			<li>I'm ultra fast as I'm a static site</li>
-			<li>I'm fully responsive</li>
-			<li>I come with a light and dark mode</li>
-			<li>I'm easy to customise and add additional content</li>
-			<li>I have Tailwind CSS styling</li>
-			<li>Shiki code syntax highlighting</li>
+
+		<h2 class="mb-4 text-xl title">What do I do?</h2>
+
+		<ul class="space-y-4 sm:space-y-2">
+			<li>✍️ - Write blog articles</li>
+			<li>💬 - Give meetup talks</li>
+			<li>🎥 - Code on livestreams</li>
+			<li>🎙 - Speak on podcasts</li>
+			<li>🐦 - Host Twitter Spaces</li>
 		</ul>
+
 		<p>
-			Clone or fork my
-			<a
-				class="inline-block cactus-link"
-				href="https://github.com/chrismwilliams/astro-cactus"
-				target="_blank"
-				rel="noopener noreferrer"
-				aria-label="github repository"
-			>
-				repo
-			</a> if you like me!
+			My content mostly focuses on web development frameworks and deployment platforms, although recently I have also been exploring blockchain and web3 topics. If you want to get in touch, feel free to send me a message on <a class="inline-block cactus-link" href="https://twitter.com/ajcwebdev" target="_blank">Twitter</a>.
 		</p>
 	</div>
+
+	<section class="mt-6">
+		<h2 class="mb-4 text-xl title">Technologies</h2>
+
+		<p>
+			This site was built with the `astro-theme-cactus` starter.
+			<a class="inline-block cactus-link" href="https://github.com/chrismwilliams/astro-theme-cactus" target="_blank" aria-label="github repository">Clone or fork</a> the repo if you like it!
+		</p>
+
+		<ul class="mt-4 space-y-4 sm:space-y-2">
+			<li>
+				<a href="https://astro.build" target="_blank" class="inline-block cactus-link">Astro</a>: <p class="inline-block sm:mt-2">Build fast websites, faster.</p>
+			</li>
+			<li>
+				<a href="https://docs.astro.build/en/guides/integrations-guide/image/" target="_blank" class="inline-block cactus-link">@astro/image</a>: <p class="inline-block sm:mt-2">An Astro integration for optimising images in Astro projects.</p>
+			</li>
+			<li>
+				<a href="https://tailwindcss.com" target="_blank" class="inline-block cactus-link">Tailwind CSS</a>: <p class="inline-block sm:mt-2">Rapidly build modern websites without ever leaving your HTML.</p>
+			</li>
+			<li>
+				<a href="https://mdxjs.com/" target="_blank" class="inline-block cactus-link">MDX</a>: <p class="inline-block sm:mt-2">Markdown for the component era.</p>
+			</li>
+		</ul>
+	</section>
 </PageLayout>
