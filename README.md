@@ -1,33 +1,14 @@
-<p align="center">
-  <img alt="Astro Theme Cactus logo" src="./public/images/astro-theme-cactus.png" width="70" />
-</p>
-<h1 align="center">
-  Astro Theme Cactus 🚀🌵
-</h1>
+> Astro Theme Cactus is a simple, opinionated starter built with the Astro framework. Use it to create an easy-to-use blog or website. You can view a [live demo](https://astro-theme-cactus.netlify.app/) hosted on Netlify with the original starter project. Made with Astro, TypeScript, TailwindCSS, and MDX, the starter includes the following features:
 
-> Astro Theme Cactus is a simple opinionated starter built with the Astro framework. Use it to create an easy-to-use blog or website.
-
-### 💻 [Live Demo](https://astro-theme-cactus.netlify.app/) hosted on Netlify
-
-## Features
-
-Made with Astro, Typescript, and TailwindCSS
-
-- Astro Fast 🚀
-- Accessible, semantic HTML markup
-- Responsive & SEO-friendly
-- [Astro Image Integration](https://docs.astro.build/en/guides/integrations-guide/image/) for optimised images
-- MDX posts
-- Pagination
-- Theming colour modes with Tailwind and CSS variables
-- Shiki code syntax styling
-- Auto-generated sitemap
+- [Astro Image](https://docs.astro.build/en/guides/integrations-guide/image/) integration for optimized images
+- [MDX posts](https://docs.astro.build/en/guides/integrations-guide/mdx/) and pagination
+- Theming color modes with [Tailwind](https://docs.astro.build/en/guides/integrations-guide/tailwind/) and [CSS variables](https://docs.astro.build/en/guides/styling/#css-variables)
+- [Shiki](https://shiki.matsu.io/) code syntax styling
+- Auto-generated [sitemap](https://docs.astro.build/en/guides/integrations-guide/sitemap/)
 
 ## Quick start
 
 [Create a new repo](https://github.com/chrismwilliams/astro-theme-cactus/generate) from this template.
-
-[![Deploy with Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/chrismwilliams/astro-theme-cactus) [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fchrismwilliams%2Fastro-theme-cactus&project-name=astro-theme-cactus)
 
 ## Commands
 
@@ -60,13 +41,13 @@ Adding a post is a simple as adding your .mdx file(s) to the `src/pages/posts/` 
 
 ### Frontmatter
 
-| Property (\* required) | Description                                                                                                                                                                                   |
-| :--------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| layout                 | This is used to import [Markdown Layouts](https://docs.astro.build/en/core-concepts/layouts/#markdown-layouts), this theme uses `src/layouts/BlogPost.astro` as a wrapper for all blog posts. |
-| title \*               | Self explanatory. Used as the text link to the post, the h1 on the posts' page, and the pages' title property                                                                                 |
-| description \*         | Similar to above, used as the seo description property                                                                                                                                        |
-| publishDate \*         | Again pretty simple. To change the date format/locale, currently **en-GB**, update/pass the **locale** arg to function **getLocaleTime**, found in `src/util.ts`.                             |
-| tags                   | Tags are optional. Any new tag(s) will be shown in `yourdomain.com/posts` + `yourdomain.com/tags`, and generate the page(s) `yourdomain.com/tags/[yourTag]`                                   |
+| Property (\* required) | Description                                                                                                                                                                 |
+| :--------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| layout                 | Import [Markdown Layouts](https://docs.astro.build/en/core-concepts/layouts/#markdown-layouts). `src/layouts/BlogPost.astro` theme is used as a wrapper for all blog posts. |
+| title \*               | Used as the text link to the post, the h1 on the posts' page, and the pages' title property                                                                                 |
+| description \*         | Similar to above, used as the seo description property                                                                                                                      |
+| publishDate \*         | To change the date format/locale, currently **en-GB**, update/pass the **locale** arg to function **getLocaleTime**, found in `src/util.ts`.           |
+| tags                   | Tags are optional. Any new tag(s) will be shown in `domain.com/posts` + `domain.com/tags`, and generate the page(s) `domain.com/tags/[yourTag]`                 |
 
 ## Deploy
 
