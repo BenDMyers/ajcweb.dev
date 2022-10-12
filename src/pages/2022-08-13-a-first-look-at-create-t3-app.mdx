@@ -2,7 +2,6 @@
 title: a first look at create-t3-app
 description: A fullstack, typesafe React framework with Next.js, tRPC, Prisma, and Tailwind deployed on Vercel.
 publishDate: 2022 08 13
-
 image: https://cdn.hashnode.com/res/hashnode/image/upload/v1657389787231/c8Vkk1mfh.png
 layout: "@/layouts/BlogPost"
 ---
@@ -182,7 +181,7 @@ If we ignore the configuration files in the root of our project then our folder 
 
 Open `index.tsx` inside the `pages` directory and make some changes to customize the home page. First I will abstract out the Tailwind styles into variables I can reuse throughout the page.
 
-```
+```tsx
 // src/pages/index.tsx
 
 import type { NextPage } from "next"
@@ -218,7 +217,7 @@ Add style variables to `Home` component.
 - `gridStyle` styles the `div` wrapping the `TechnologyCard` components
 - `queryResponseStyle` styles the `div` wrapping the tRPC `hello` query
 
-```
+```tsx
 // src/pages/index.tsx
 
 const Home: NextPage = () => {
@@ -253,7 +252,7 @@ Add style variables to `TechnologyCard` component.
 - `cardDescriptionStyle` styles the description of each technology
 - `linkStyle` styles the link on each card
 
-```
+```tsx
 // src/pages/index.tsx
 
 const TechnologyCard = (
@@ -286,7 +285,7 @@ export default Home
 
 Now I will modify the four cards to include links to my blog and social media profiles. With that change in mind I will use `url` instead of `documentation` for a more appropriate prop name.
 
-```
+```tsx
 // src/pages/index.tsx
 
 type TechnologyCardProps = {
@@ -337,7 +336,7 @@ export default Home
 
 I'll also change the links to include the entire card within the anchor tags so clicking anywhere on the card will open the hyperlink.
 
-```
+```tsx
 // src/pages/index.tsx
 
 const TechnologyCard = (
@@ -371,7 +370,7 @@ Since this a fullstack framework, it already includes a tool called Prisma for w
 
 The initial generated project has the database `datasource` set to SQLite. Since we want to use a real database, open `schema.prisma` and update the `datasource` to the PostgreSQL provider.
 
-```
+```prisma
 // prisma/schema.prisma
 
 generator client {
@@ -386,7 +385,7 @@ datasource db {
 
 In addition to the current models in the schema, add a `Post` model with an `id`, `title`, `description`, `body`, and `createdAt` timestamp.
 
-```
+```prisma
 // prisma/schema.prisma
 
 model Post {
@@ -400,7 +399,7 @@ model Post {
 
 Also, uncomment all appearances of `@db.Text` on the `Account` model.
 
-```
+```prisma
 // prisma/schema.prisma
 
 model Account {
@@ -479,7 +478,7 @@ GUIs are more intuitive for anyone who don't know SQL but they also can be buggy
 
 The last option on the list (Query tab on Railway dashboard) gives us the best of both worlds. It does not require entering data into any GUI but it also does not require installing a Postgres client like `psql` to your local machine. We could create a blog post with the following command:
 
-```
+```sql
 INSERT INTO "Post" (id, title, description, body) VALUES (
   '1',
   'A Blog Post Title',
@@ -494,7 +493,7 @@ This SQL command can be entered directly into the text area under the Query tab.
 
 Click "Run query" and then add two more blog posts:
 
-```
+```sql
 INSERT INTO "Post" (id, title, description, body) VALUES (
   '2',
   'Second Blog Post',
@@ -525,7 +524,7 @@ Add a query endpoint to the router with the `.query()` method. It with accept tw
 - Use `params.resolve` for the endpoint implementation (a function with a single `req` argument).
 - Use `params.input` for input validation (more on this later).
 
-```
+```ts
 // src/server/router/post.ts
 
 import { prisma } from "../db/client"
@@ -552,7 +551,7 @@ In `src/server/router/index.ts`, there is a base `appRouter` for our server entr
 - `postRouter`
 - `protectedExampleRouter`
 
-```
+```ts
 // src/server/router/index.ts
 
 import superjson from "superjson"
@@ -576,7 +575,7 @@ Queries related to blog posts will be prefixed with `post` for example `post.all
 
 Open `src/pages/index.tsx` to query all posts and display them on the home page. Create a `Posts` component and initialize a variable called `postsQuery` above the return statement. Set the `postsQuery` variable to the output of `post.all` with the `useQuery()` hook.
 
-```
+```tsx
 // src/pages/index.tsx
 
 const Posts = () => {
@@ -590,7 +589,7 @@ const Posts = () => {
 
 As mentioned in the previous section, the `appRouter` object can be inferred on the client so different strings can be mapped to certain types. Stringify the JSON output from `postsQuery.data` and display the data below the title of the page.
 
-```
+```tsx
 // src/pages/index.tsx
 
 const Posts = () => {
@@ -609,7 +608,7 @@ const Posts = () => {
 
 Return `Posts` in the `Home` component.
 
-```
+```tsx
 // src/pages/index.tsx
 
 const Posts = () => {...}
@@ -659,7 +658,7 @@ echo > src/utils/DefaultQueryCell.tsx
 
 Ideally this will one day be internal to either tRPC or `create-t3-app` and you'll be able to just write cells without thinking about it. But for now, we need to create this ourselves.
 
-```
+```tsx
 // src/utils/DefaultQueryCell.tsx
 
 import { TRPCClientErrorLike } from "@trpc/client"
@@ -754,7 +753,7 @@ export const DefaultQueryCell = createQueryCell<TError>({
 
 We want to be able to query an individual blog post based on its `id`. Since we will be sending data to the database, we need to validate the `input`. [`zod`](https://github.com/colinhacks/zod) is a TypeScript schema validator with static type inference. We'll also import `TRPCError` for error handling.
 
-```
+```ts
 // src/server/router/post.ts
 
 import { prisma } from "../db/client"
@@ -770,7 +769,7 @@ const defaultPostSelect = Prisma.validator<Prisma.PostSelect>()({
 
 Add `byId` query to Post router in `post.ts` and destructure the `id` from the `input`.
 
-```
+```ts
 // src/server/router/post.ts
 
 export const postRouter = createRouter()
@@ -786,7 +785,7 @@ export const postRouter = createRouter()
 
 `findUnique` query lets you retrieve a single database record based on the `id` provided by passing it to Prisma's `where` option. `select` defines the object fields returned by Prisma Client with `defaultPostSelect`. In this case, we are selecting all of them.
 
-```
+```ts
 // src/server/router/post.ts
 
 export const postRouter = createRouter()
@@ -808,7 +807,7 @@ export const postRouter = createRouter()
 
 Last but not least, throw an error with `TRPCError` if a post is not returned.
 
-```
+```ts
 // src/server/router/post.ts
 
 export const postRouter = createRouter()
@@ -837,7 +836,7 @@ export const postRouter = createRouter()
 
 Import `DefaultQueryCell` in `src/pages/post/[id].tsx` and create a component called `PostPage`.
 
-```
+```tsx
 // src/pages/post/[id].tsx
 
 import type { NextPage } from "next"
@@ -855,7 +854,7 @@ export default PostPage
 
 Return `DefaultQueryCell` and pass `postQuery` to `query` and `data` to `success`.
 
-```
+```tsx
 // src/pages/post/[id].tsx
 
 const PostPage: NextPage = () => {
@@ -893,7 +892,7 @@ export default PostPage
 
 Lastly, add styles.
 
-```
+```tsx
 // src/pages/post/[id].tsx
 
 const blogContainerStyle = "container mx-auto min-h-screen p-4"
@@ -935,7 +934,7 @@ Open [localhost:3000/post/1](http://localhost:3000/post/1) to see your first blo
 
 Import `DefaultQueryCell` in `src/pages/index.tsx` along with `Link` so we can link to each blog post's page.
 
-```
+```tsx
 // src/pages/index.tsx
 
 import type { NextPage } from "next"
@@ -947,7 +946,7 @@ import { DefaultQueryCell } from "../utils/DefaultQueryCell"
 
 Create a type called `BlogPostProps` with an `id` and `title` of type `string`. Delete the `Posts` component and move the `useQuery` hook into the `Home` component.
 
-```
+```tsx
 // src/pages/index.tsx
 
 type BlogPostProps = {
@@ -964,7 +963,7 @@ const Home: NextPage = () => {
 
 Return `DefaultQueryCell` with the `query` set to `postsQuery`. `success` will map over the `data` object and display a link for each blog post.
 
-```
+```tsx
 // src/pages/index.tsx
 
 const Home: NextPage = () => {
