@@ -11,8 +11,9 @@ export const styles = {
   tocHeader: "font-semibold",
   tocUnorderedList: "mt-4 text-xs space-y-2",
   tocHeading: "line-clamp-2 hover:text-accent",
-  postPreviewTitle: "inline-block cactus-link line-clamp-1",
-  postPreviewDate: "min-w-[120px] text-gray-500",
-  postPreviewDesc: "block italic line-clamp-3 mt-4 mb-4",
-  coverImage: "mt-4"
+  postPreviewTitle: "inline-block cactus-link line-clamp-1 text-xl",
+  postPreviewDate: "min-w-[120px] text-gray-500 text-xl",
+  postPreviewDesc: "block italic line-clamp-3 mt-4 mb-4 text-lg",
+  coverImage: "mt-4",
+  // coverPreviewImage: "w-1/2 flex items-center"
 }

@@ -11,7 +11,7 @@ export async function getStaticPaths({ paginate }) {
 
 	return paginate(
 		allPostsByDate,
-		{ pageSize: 5 }
+		{ pageSize: 20 }
 	)
 }
 

@@ -1,0 +1,126 @@
+---
+title: "How to Choose the Best CSS Framework"
+description: "How to Choose the Best CSS Framework with Metrics and Context."
+publishDate: "2022 04 19"
+tags: [ "CSS", "Bootstrap", "Tailwind", "styled-components" ]
+image: "https://cdn.hashnode.com/res/hashnode/image/upload/v1651726990508/F38rRxwVb.png"
+layout: "@/layouts/BlogPost"
+---
+
+*This is a sponsored article for the [Prismic Blog](https://prismic.io/blog/how-to-choose-the-best-css-framework) that evaluates the pros and cons of different CSS frameworks. Special thanks to Travis Waith-Mair for providing feedback and technical consultation on this article. 👏*
+
+## Introduction
+
+What different kinds of CSS frameworks are available and what do developers expect from them? How should a developer evaluate and select the best CSS framework? How would a developer even know that they need a framework at all?
+
+In this article, we'll examine each of those questions by comparing prominent CSS frameworks. We'll start with key metrics and then look at the frameworks in roughly chronological order to see how each approach throughout history was an attempt to respond to the style before it.
+
+### Data and How Frameworks Were Selected
+
+Open source metrics can be hard to properly gauge but can also provide invaluable insight that goes beyond developer preferences. The number of open issues or frequency of pull requests can provide the illusion of more problems or more productivity than actually exists.
+
+GitHub stars and weekly NPM downloads can also be misleading but, in my experience, provide a useful metric for determining the relative magnitude of difference in the popularity of one CSS framework versus another. As in, a project with 11,100 stars is likely not meaningfully more popular than a project with 11,050 stars.
+
+But both projects are significantly more popular than a project with 50 stars or 200 stars. They are more popular to the extent that there is a magnitude of difference between the number of developers battle testing, QA'ing, and contributing to the project.
+
+Another useful metric is the length of time a project has existed and how recently it has had its last commit. With the rapid evolution of CSS and the web platform in general, it is unlikely that a project that hasn't received any commits in years will be able to compete or remain relevant.
+
+(Note: Dates of most recent commits and weekly NPM downloads in the image below were sampled on March 28th, 2022.)
+
+| Project           | Initial Release | Most Recent Commit | GitHub Stars | Unpacked Bundle Size | Weekly NPM Downloads |
+| ----------------- | --------------- | ------------------ | ------------ | -------------------- | -------------------- |
+| Bootstrap         | 2011-04-27      | 2022-03-28         | 155,000      |  8,650 kB            | 4,000,000            |
+| Foundation        | 2011-10-13      | 2021-12-05         |  29,200      | 25,300 kB            |   105,000            |
+| Pure.css          | 2013-04-22      | 2022-03-28         |  22,200      |    250 kB            |    23,000            |
+| Materialize       | 2014-09-12      | 2020-06-01         |  38,700      |  1,490 kB            |    32,000            |
+| Material UI       | 2014-08-18      | 2022-03-28         |  77,000      |  9,060 kB            | 1,000,000            |
+| Tailwind CSS      | 2017-07-20      | 2022-03-28         |  53,100      |  4,170 kB            | 2,500,000            |
+| Bulma             | 2016-01-23      | 2022-03-02         |  45,000      |  1,320 kB            |   215,000            |
+| UIkit             | 2015-11-13      | 2022-03-28         |  17,300      | 11,400 kB            |    22,000            |
+| Styled Components | 2016-08-16      | 2022-03-24         |  36,200      |  3,420 kB            | 4,000,000            |
+| Emotion           | 2017-05-26      | 2022-03-10         |  14,700      |      6 kB            |   700,000            |
+| Stitches          | 2020-04-14      | 2022-02-25         |   5,100      |    521 kB            |    75,000            |
+| Vanilla Extract   | 2021-02-25      | 2022-03-24         |   5,100      |    291 kB            |    30,000            |
+
+## Classic CSS Frameworks (2011 - 2014)
+
+Many of the features CSS developers rely on today, such as flexbox and grid, did not exist in the first half of the 2010s. Instead, responsive grid systems were implemented in the user space by CSS frameworks. These frameworks helped inform the evolution of CSS as a language.
+
+### Bootstrap
+
+[Bootstrap](https://github.com/twbs/bootstrap) provides CSS-based design templates for typography, forms, buttons, navigation, and other common UI components. It was created and open-sourced by Twitter in 2011 and emphasizes responsive, mobile-first design. It is massively popular with over a hundred thousand GitHub stars.
+
+Developers have built careers out of learning Bootstrap, while others have derided it for making large swaths of websites look nearly identical. It gives helpful defaults but makes it challenging to customize when you want to deviate from the provided components.
+
+### Foundation
+
+Despite its drawback, in many ways, Bootstrap is the litmus test against which all other CSS frameworks have been judged. This can be seen in the next framework, [Foundation](https://github.com/foundation/foundation-sites), which is almost a direct response to Bootstrap.
+
+It also includes common UI components like Bootstrap's but focuses more heavily on giving the developer the ability to customize the components. It was created and open-sourced by ZURB in 2011 as an alternative.
+
+### Materialize
+
+[Materialize](https://github.com/Dogfalo/materialize) is a CSS framework based on Google's [Material Design](https://material.io/) system. It uses more advanced lighting and shadow effects to evoke the look and feel of physical objects.
+
+This creates a more immediate and tactile feeling for the websites that employ it. It has proven to be a highly influential approach, but the library itself hasn't received updates in a few years and receives few weekly NPM downloads.
+
+### Material UI
+
+[Material UI](https://github.com/mui/material-ui) takes cues from Material Design but is designed to work specifically with React applications. Unlike Materialize which has mostly fallen by the wayside, Material UI has become of the most highly used CSS frameworks with over a million weekly NPM downloads.
+
+### Pure.css
+
+[Pure.css](https://github.com/pure-css/pure/) is a set of small, responsive CSS modules that aim to provide a starting point for most common websites. It has one of the smallest bundle sizes of any framework in this article and can also be further code split if the entire library is not being utilized.
+
+## Newer CSS Frameworks (2015 - 2017)
+
+As features from the first generation of CSS frameworks began to be brought into the official CSS language, newer CSS frameworks placed a greater emphasis on small bundle sizes, modularity, and customizability.
+
+### Tailwind CSS
+
+[Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) is a utility-first CSS framework that allows you to rapidly build custom user interfaces directly in markup files. It has proven to be divisive across the developer community.
+
+Proponents claim that it provides a useful level of abstraction for quickly creating styles without needing to dig into the guts of the over five hundred available CSS properties. Detractors claim it unnecessarily abstracts away a perfectly capable language only for the sake of developers who don't want to spend the time to properly learn it.
+
+As with most extreme and polarized technical debates, the answer lies somewhere in the middle. Another common saying from Tailwind proponents echoes a saying from the early React days: "just give it 5 minutes." You'll have to buy into the framework's specific conventions, but doing so can enable a strong developer experience.
+
+### Bulma
+
+[Bulma](https://github.com/jgthms/bulma) provides ready-to-use front-end components like those of Bootstrap and Foundation but uses newer CSS primitives like flexbox under the hood. Bulma emphasizes that it is "environment agnostic," meaning that it is just the style layer on top of the logic.
+
+Since it is only a collection of CSS classes, it does not include any JavaScript. Sass is used to generate a single CSS file. The developer can modify this CSS file, edit the Sass itself, or create a cheat sheet with most of the elements that are available, including navigation, typography, boxes, grid system, forms, tables, etc.
+
+## CSS-in-JS (2017-2022)
+
+In the second half of the 2010s, web development became heavily influenced by JavaScript component frameworks like React and Vue. This led to CSS libraries that allowed developers to manipulate styles programmatically by including CSS in their JavaScript components.
+
+### styled-components
+
+[styled-components](https://github.com/styled-components/styled-components) is one of the pioneering projects that inspired future CSS-in-JS libraries. It is still the most popular CSS-in-JS library by GitHub stars and weekly NPM downloads.
+
+While it was originally designed specifically for the React ecosystem, styled-components can also be used with other frameworks like Vue or vanilla JavaScript.
+
+### Emotion
+
+[Emotion](https://github.com/emotion-js/emotion) took cues from styled-components but improved performance and has a smaller bundle size. However, styled-components has improved performance in the meantime and the two project's APIs have mostly converged.
+
+### Stitches
+
+[Stitches](https://github.com/modulz/stitches) attempts to achieve similar functionality to previous CSS-in-JS projects but without shipping a large runtime. At around 500 KBs, it's comparable in size to Pure.css and about a sixth of the size of styled-components.
+
+It provides a range of features including theming, smart tokens, `css` props, `as` props, utilities, and a fully-typed API. Since it's newer than the previously discussed projects, it may continue to evolve as it gains greater adoption.
+
+### vanilla-extract
+
+[vanilla-extract](https://github.com/seek-oss/vanilla-extract) also gives a CSS-in-JS type syntax but could more accurately be called CSS-in-*TypeScript*. As with Stitches, it has a very small bundle size. Like TypeScript in general, having type‑safe classes and variables enables your developer tools to more easily catch bugs or provide autocomplete.
+
+The flip side is (like TypeScript in general) you will have to spend more time fighting TypeScript compiler errors and configuring a build process. Developers can sometimes be philosophically opposed to one or the other, but ultimately you must decide how important the benefits of static typing are for your particular use case and coding style.
+
+## TL;DR
+
+* If you want to go with the most tried and true, stable, and long-lasting CSS framework, then Bootstrap is still going to be an unbeatable choice.
+* However, if you want something more modern and with more of a utility-based approach then Tailwind CSS should be your first stop.
+* If you find that neither quite feels right or that you would prefer to have greater control over the componentization of your styles and integration with frameworks like React and Vue, then styled-components could be a better fit. Stitches and vanilla-extract are worthwhile experiments but are still too new to be truly battle-tested yet.
+* For each of those options, you can find slight variations and competitors like Foundation, Material UI, Pure CSS, and Bulma. These are worth exploring if you really want to dig into the pros and cons of each approach. You would also want to study them all if you are interested in building your own CSS framework.
+
+The average developer will likely find their use case handled well by either Bootstrap, Tailwind, or styled-components. If not, then you might want to just write your own CSS after all.

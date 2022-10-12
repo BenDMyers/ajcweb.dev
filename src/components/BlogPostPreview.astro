@@ -23,10 +23,13 @@ const postDate = getLocaleTime(date, { month: "long" })
 	</a>
 </Element>
 
-<time class={styles.postPreviewDate}>
-	- {postDate}
-</time>
+<div>
+	<br>
+	<time class={styles.postPreviewDate}>
+		{postDate}
+	</time>
+	<q class={styles.postPreviewDesc}>{post.frontmatter.description}</q>
+</div>
 
-<q class={styles.postPreviewDesc}>{post.frontmatter.description}</q>
-
+<!-- <img class={styles.coverPreviewImage} src={post.frontmatter.image}> -->
 <img src={post.frontmatter.image}>

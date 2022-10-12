@@ -1,0 +1,523 @@
+---
+title: a first look at svelteKit
+description: "SvelteKit is a serverless first Svelte metaframework for building web applications with filesystem-based routing."
+publishDate: 2020 11 06
+tags: [ "", "", "", "" ]
+image: https://cdn.hashnode.com/res/hashnode/image/upload/v1655028038477/3A7AHlUixP.png
+layout: "@/layouts/BlogPost"
+---
+
+## Introduction
+
+Back in July I was [considering building](https://twitter.com/ajcwebdev/status/1278830337930326016) a project with Sapper, which thankfully I never actually started. I say thankfully because, as Rich Harris announced at the recent [Svelte Summit](https://sveltesummit.com/), Sapper 1.0 will be released... [never](https://youtu.be/qSfdtmcZ4d0).
+
+Instead the Svelte core team is shifting its efforts to a project known as SvelteKit, as detailed in [What's the deal with SvelteKit?](https://svelte.dev/blog/whats-the-deal-with-sveltekit). It's important to emphasize here that the people building Svelte, Sapper, and SvelteKit are all basically the same people. So really nothing drastic is changing here, it's more of a rebrand and namespace migration. Or is it?
+
+There is also going to be a larger focus on serverless technology, with Svelte now being referred to as a ["serverless-first"](https://www.infoq.com/news/2020/10/svelte-next-serverless-first/) framework. But to me the most significant change by far is the removal of Rollup as a development dependency and its replacement with ~~[Snowpack](https://www.snowpack.dev/)~~ [Vite](https://vitejs.dev/).
+
+SvelteKit is very new, so new it currently exists mostly in the form of the ~~blog post linked at the beginning of this article~~ [a monorepo inside the SvelteJS GitHub organization](https://github.com/sveltejs/kit) and a [website](kit.svelte.dev). But you can download it and start using it, albeit with many, many caveats attached to it.
+
+## Initialize Demo App
+
+```bash
+npm init svelte ajcwebdev-sveltekit
+```
+
+After initializing the project you'll be given a disclaimer.
+
+> ***Welcome to SvelteKit!***
+> 
+> *This is beta software; expect bugs and missing features.*
+> 
+> * *Problems? Open an [issue](https://github.com/sveltejs/kit/issues) if none exists already.*
+> * *Stuck? Visit us at [svelte.dev/chat](https://svelte.dev/chat)*.
+
+You'll then be asked a series of questions to configure your application. Feel free to answer based on your own personal use case.
+
+```
+✔ Which Svelte app template? › SvelteKit demo app
+✔ Add type checking? › None
+✔ Add ESLint for code linting? … No / Yes
+✔ Add Prettier for code formatting? … No / Yes
+✔ Add Playwright for browser testing? … No / Yes
+```
+
+For the sake of simplicity in this blog post I answered no to all options.
+
+### Install Dependencies and Start Development Server
+
+```bash
+cd ajcwebdev-sveltekit
+yarn
+yarn dev
+```
+
+Open [`localhost:3000`](http://localhost:3000) to see the project.
+
+![01-hello-world-localhost-3000](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ufn76oho7hr6jd27ih3l.png)
+
+Something might happen if you click the `+` or `-` buttons around `0`, although what that could be no one can possibly know.
+
+## Project Structure
+
+I used to have a Snowpack joke here, unfortunately that joke is now deprecated. Now we'll look at the code.
+
+```
+├── src
+│   ├── app.css
+│   ├── app.html
+│   ├── hooks.js
+│   ├── lib
+│   │   ├── Counter.svelte
+│   │   ├── form.js
+│   │   └── header
+│   │       ├── Header.svelte
+│   │       └── svelte-logo.svg
+│   └── routes
+│       ├── __layout.svelte
+│       ├── about.svelte
+│       ├── index.svelte
+│       └── todos
+│           ├── _api.js
+│           ├── index.js
+│           └── index.svelte
+├── static
+│   ├── favicon.png
+│   ├── robots.txt
+│   ├── svelte-welcome.png
+│   └── svelte-welcome.webp
+├── README.md
+├── package.json
+├── svelte.config.js
+└── yarn.lock
+```
+
+### HTML Entry Point
+
+`src/app.html` contains our websites entry point and includes dynamic content for the `head` and `body`.
+
+```html
+<!-- src/app.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%sveltekit.assets%/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    %sveltekit.head%
+  </head>
+
+  <body>
+    <div>%sveltekit.body%</div>
+  </body>
+</html>
+```
+
+### App Entry Point
+
+`src/routes/index.svelte` contains our JavaScript entry point and includes a single file Svelte component. A `.svelte` file contains three parts:
+* `<script>` for JavaScript
+* `<style>` for CSS
+* Any markup you want to include with HTML
+
+```html
+<!-- src/routes/index.svelte -->
+
+<script context="module">
+  export const prerender = true
+</script>
+
+<script>
+  import Counter from '$lib/Counter.svelte'
+</script>
+```
+
+The `<svelte:head>` element allows you to insert elements inside the `<head>` of your document such as the title.
+
+```html
+<!-- src/routes/index.svelte -->
+
+<svelte:head>
+  <title>Home</title>
+  <meta name="description" content="Svelte demo app" />
+</svelte:head>
+
+<section>
+  <h1>
+    <span class="welcome">
+      <picture>
+        <source srcset="svelte-welcome.webp" type="image/webp" />
+        <img src="svelte-welcome.png" alt="Welcome" />
+      </picture>
+    </span>
+    to your new<br />SvelteKit app
+  </h1>
+
+  <h2>try editing <strong>src/routes/index.svelte</strong></h2>
+
+  <Counter />
+</section>
+```
+
+```html
+<!-- src/routes/index.svelte -->
+
+<style>
+  section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+  }
+
+  h1 {
+    width: 100%;
+  }
+
+  .welcome {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding: 0 0 calc(100% * 495 / 2048) 0;
+  }
+
+  .welcome img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    display: block;
+  }
+</style>
+```
+
+### Pages
+
+Each page of your app is a Svelte component written in a `.svelte` file. Pages are created by adding files to the `src/routes` directory of your project. The route is determined by the filename. For example, `src/routes/index.svelte` is the root of the site.
+
+Pages are server-rendered to ensure a user's first visit is as fast as possible. A client-side app then takes over if needed. We don't need any JavaScript on this page but we'll load it in development for hot module replacement.
+
+### Counter Component
+
+Unlike React, Svelte does not have a virtual DOM. Instead, Svelte includes its own system of reactivity to keep the DOM in sync with your application state. This includes responding to events, such as a mouse click. First we initialize a variable `count` to a value of `0`.
+
+```html
+<!-- src/lib/Counter.svelte -->
+
+<script>
+  import { spring } from 'svelte/motion'
+
+  let count = 0
+
+  const displayed_count = spring()
+  $: displayed_count.set(count)
+  $: offset = modulo($displayed_count, 1)
+
+  function modulo(n, m) {
+    return ((n % m) + m) % m
+  }
+</script>
+```
+
+We can listen to any event on an element with the `on:` directive.
+
+```html
+<!-- src/lib/Counter.svelte -->
+
+<div class="counter">
+  <button on:click={() => (count -= 1)} aria-label="Decrease the counter by one">
+    <svg aria-hidden="true" viewBox="0 0 1 1">
+      <path d="M0,0.5 L1,0.5" />
+    </svg>
+  </button>
+  
+  <div class="counter-viewport">
+    <div class="counter-digits" style="transform: translate(0, {100 * offset}%)">
+      <strong class="hidden" aria-hidden="true">
+        {Math.floor($displayed_count + 1)}
+      </strong>
+      <strong>{Math.floor($displayed_count)}</strong>
+    </div>
+  </div>
+
+  <button on:click={() => (count += 1)} aria-label="Increase the counter by one">
+    <svg aria-hidden="true" viewBox="0 0 1 1">
+      <path d="M0,0.5 L1,0.5 M0.5,0 L0.5,1" />
+    </svg>
+  </button>
+</div>
+```
+
+To test that everything is working, make a change to `index.svelte`.
+
+```html
+<!-- src/routes/index.svelte -->
+
+<script context="module">
+  export const prerender = true
+</script>
+
+<script>
+  import Counter from '$lib/Counter.svelte'
+</script>
+
+<section>
+  <h1>ajcwebdev</h1>
+
+  <Counter/>
+  <p><a href="https://ajcwebdev.com">Blog</a></p>
+  <p><a href="https://github.com/ajcwebdev">GitHub</a></p>
+  <p><a href="https://twitter.com/ajcwebdev">Twitter</a></p>
+</section>
+
+<style>
+  section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+  }
+
+  h1 {
+    width: 100%;
+  }
+</style>
+```
+
+![02-home-page-ajcwebdev](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n7pfnihhcz8uz2kxdgq3.png)
+
+## Modules
+
+The [`$app/env`](https://kit.svelte.dev/docs/modules#$app-env) module provides variables for checking the app's current environment. `browser` is `true` when the app is running in the browser and `false` when running on the server, in development mode, or in production. `dev` is `true` in development mode and `false` in production.
+
+```html
+<!-- src/routes/about.svelte -->
+
+<script context="module">
+  import { browser, dev } from '$app/env'
+  export const hydrate = dev
+  export const router = browser
+  export const prerender = true
+</script>
+```
+
+If the client-side `router` is already loaded because we came here from elsewhere in the app then it is used automatically. Since there's no dynamic data on this page, we can `prerender` and serve it as a static asset in production.
+
+```html
+<!-- src/routes/about.svelte -->
+
+<svelte:head>
+  <title>About</title>
+</svelte:head>
+
+<div class="content">
+  <h1>About this app</h1>
+
+  <p>
+    This is a <a href="https://kit.svelte.dev">SvelteKit</a>
+    app. You can make your own by typing the following
+    into your command line and following the prompts:
+  </p>
+
+  <pre>npm init svelte@next</pre>
+
+  <p>
+    The page you're looking at is purely static HTML,
+    with no client-side interactivity needed.
+    Because of that, we don't need to load any
+    JavaScript. Try viewing the page's source,
+    or opening the devtools network panel and reloading.
+  </p>
+
+  <p>
+    The <a href="/todos">TODOs</a> page illustrates
+    SvelteKit's data loading and form handling.
+    Try using it with JavaScript disabled!
+  </p>
+</div>
+
+<style>
+  .content {
+    width: 100%;
+    max-width: var(--column-width);
+    margin: var(--column-margin-top) auto 0 auto;
+  }
+</style>
+```
+
+Enter [localhost:3000/about](http://localhost:3000/about) to see this page.
+
+![03-about-page](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ojsvge1m94r2gmmz7s9t.png)
+
+## Layouts
+
+Inside `src/routes` is a layout component that applies to every page. Links between pages are contained in the `<Header>` component.
+
+```html
+<!-- src/routes/__layout.svelte -->
+
+<script>
+  import Header from '$lib/header/Header.svelte'
+  import '../app.css'
+</script>
+
+<Header />
+
+<main>
+  <slot />
+</main>
+
+<footer>
+  <p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
+</footer>
+
+<style>
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    width: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+  }
+  footer a {
+    font-weight: bold;
+  }
+  @media (min-width: 480px) {
+    footer {
+      padding: 40px 0;
+    }
+  }
+</style>
+```
+
+A `<slot />` tag indicates where a component places its children, so our layout component is the parent of our pages.
+
+## Stores
+
+Inside `src/lib/Header` is a `Header.svelte` file which imports `page` from `$app/stores`. Stores are added to the [context](https://svelte.dev/tutorial/context-api) of your root component. They are unique to each request on the server rather than shared between multiple requests handled by the same server simultaneously.
+
+This makes it is safe to include user-specific data in `page`, but it also means the stores are not free-floating objects. They must be accessed during component initialization.
+
+```html
+<!-- src/lib/header/Header.svelte -->
+
+<script>
+  import { page } from '$app/stores';
+  import logo from './svelte-logo.svg';
+</script>
+```
+
+`page` is a readable store whose value reflects the object passed to `load` functions. It contains:
+* `host`
+* `path`
+* `params`
+* `query`
+
+The stores themselves attach to the correct context at the point of subscription so you can import and use them directly in components without boilerplate.
+
+## Prefetch
+
+For dynamic routes, such as `src/routes/blog/[slug].svelte`, code splitting is not enough to ensure fast startup times. To render the blog post we need to fetch the data for it.
+
+We can't do that until we know what the `slug` is. Lag caused by the browser waiting for the data can be mitigate by adding a `sveltekit:prefetch` attribute for prefetching the data.
+
+```html
+<!-- src/lib/header/Header.svelte -->
+
+<header>
+  <div class="corner">
+    <a href="https://kit.svelte.dev">
+      <img src={logo} alt="SvelteKit" />
+    </a>
+  </div>
+
+  <nav>
+    <svg viewBox="0 0 2 3" aria-hidden="true">
+      <path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
+    </svg>
+	
+    <ul>
+      <li class:active={$page.url.pathname === '/'}>
+	    <a sveltekit:prefetch href="/">Home</a>
+	  </li>
+      <li class:active={$page.url.pathname === '/about'}>
+        <a sveltekit:prefetch href="/about">About</a>
+      </li>
+      <li class:active={$page.url.pathname === '/todos'}>
+        <a sveltekit:prefetch href="/todos">Todos</a>
+      </li>
+    </ul>
+
+    <svg viewBox="0 0 2 3" aria-hidden="true">
+      <path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
+    </svg>
+  </nav>
+</header>
+```
+
+SvelteKit will run the page's `load` function as soon as the user hovers over the link (on desktop) or touches it (on mobile). This makes the app feel snappier since you aren't waiting for the `click` event to trigger navigation.
+
+## Config
+
+SvelteKit is a rare framework containing configuration that's actually interesting. You may have heard in the past that SvelteKit was using Snowpack. While SvelteKit was heavily developed in tandem with Snowpack, it migrated to Vite in February 2021 about a month before its beta launch.
+
+You can read Rich Harris's reasoning for the switch [here](https://github.com/sveltejs/kit/pull/409):
+
+>*While we had misgivings about Vite 1 (which gave Vue apps preferential treatment, and didn't really support SSR), Vite 2 does a really great job of solving some tricky problems that were previously in SvelteKit's domain, like CSS code-splitting or fixing stack traces during SSR. Since it's Rollup-based, it also means that SvelteKit apps can benefit from the very large ecosystem of Rollup plugins.*
+
+The project's configuration can be found in `svelte.config.js`.
+
+```js
+// svelte.config.js
+
+import adapter from '@sveltejs/adapter-auto'
+
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  kit: {
+    adapter: adapter(),
+    methodOverride: {
+      allowed: ['PATCH', 'DELETE']
+    }
+  }
+}
+
+export default config
+```
+
+### Official Adapters for Deployment
+
+Svelte apps are built with [adapters](https://kit.svelte.dev/docs#adapters) for optimizing your project to deploy with different environments.
+
+- [`adapter-cloudflare-workers`](https://github.com/sveltejs/kit/tree/master/packages/adapter-cloudflare-workers) — for [Cloudflare Workers](https://developers.cloudflare.com/workers/)
+- [`adapter-netlify`](https://github.com/sveltejs/kit/tree/master/packages/adapter-netlify) — for [Netlify](https://netlify.com)
+- [`adapter-vercel`](https://github.com/sveltejs/kit/tree/master/packages/adapter-vercel) — for [Vercel](https://vercel.com)
+
+There are also adapters for running your app on a Node server or deploying on a static hosting provider.
+
+- [`adapter-node`](https://github.com/sveltejs/kit/tree/master/packages/adapter-node) — for creating self-contained Node apps
+- [`adapter-static`](https://github.com/sveltejs/kit/tree/master/packages/adapter-static) — for prerendering your entire site as a collection of static files
+
+By default, `yarn build` will generate a Node app that you can run with `node build`. To use a different adapter, install it and update `svelte.config.js` accordingly. We do not need to install the Vercel adapter unless we want to use Vercel specific features. Otherwise `adapter-auto` will have everything needed for deployment
+
+```bash
+yarn add -D vercel
+yarn vercel
+```
+
+Go to [ajcwebdev-sveltekit.vercel.app](https://ajcwebdev-sveltekit.vercel.app/) to see the deployed app.
