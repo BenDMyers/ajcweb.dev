@@ -11,7 +11,7 @@ export default defineConfig({
 			wrap: true,
 		},
 	},
-	site: "https://ajcwebdev.com",
+	site: "https://ajcweb.dev",
 	integrations: [
 		mdx({}),
 		tailwind({ config: { applyBaseStyles: false } }),
