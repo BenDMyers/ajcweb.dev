@@ -1,3 +1,14 @@
+---
+title: 
+description: 
+publishDate: 2023 12 31
+tags: [ "", "", "", "" ]
+image: 
+layout: "@/layouts/BlogPost"
+---
+
+## Introduction
+
 > Astro Theme Cactus is a simple, opinionated starter built with the Astro framework. Use it to create an easy-to-use blog or website. You can view a [live demo](https://astro-theme-cactus.netlify.app/) hosted on Netlify with the original starter project. Made with Astro, TypeScript, TailwindCSS, and MDX, the starter includes the following features:
 
 - [Astro Image](https://docs.astro.build/en/guides/integrations-guide/image/) integration for optimized images
