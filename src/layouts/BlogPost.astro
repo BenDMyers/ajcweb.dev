@@ -1,8 +1,6 @@
 ---
 import BaseLayout from "./Base.astro"
-import { getLocaleTime, getPreviousAndNextPosts, sortMDByDate } from "src/util"
-import Paginator from "@/components/Paginator"
-import type { Post } from "@/util"
+import { getLocaleTime } from "src/util"
 import {
 	baseLayoutContainer, postTitle, dateAndTags, postDate, tagsContainer, postTagsList, tagLink, coverImage, blogPostContent, tocAside, tocHeader, tocUnorderedList, tocHeading
 } from "../styles/styles"
@@ -14,66 +12,30 @@ const {
 
 const date = new Date(publishDate)
 const formatDate = getLocaleTime(date)
-const currentPage = new URL(Astro.request.url).pathname
-const allPosts = await Astro.glob<Post>("../pages/*.mdx")
-const allSortedPosts = sortMDByDate(allPosts)
-const { prev, next } = getPreviousAndNextPosts(currentPage, allSortedPosts)
-
-const paginationProps = {
-	...(prev && {
-		prevUrl: {
-			url: prev.url,
-			text: `← ${prev.frontmatter.title}`,
-			srLabel: " Previous Article:",
-		},
-	}),
-	...(next && {
-		nextUrl: {
-			url: next.url,
-			text: `${next.frontmatter.title} →`,
-			srLabel: "Next Article:",
-		},
-	}),
-}
 ---
 
 <BaseLayout meta={{ title, description }}>
 	<div class={baseLayoutContainer}>
 		<article>
-			<h1 class={postTitle}>
-				{title}
-			</h1>
-
+			<h1 class={postTitle}>{title}</h1>
 			<span class={dateAndTags}>
-				<time class={postDate}>
-					{formatDate}
-			  </time>
-				{
-					tags?.length && (
+				<time class={postDate}>{formatDate}</time>
+				{tags?.length && (
 						<div class={tagsContainer}>
 							<ul class={postTagsList}>
 								{tags.map((tag) => (
 									<li>
-										<a
-											class={tagLink}
-											aria-label={`View more posts with the tag ${tag}`}
-											href={`/tags/${tag}`}
-										>
+										<a class={tagLink} aria-label={`View more ${tag}`} href={`/tags/${tag}`}>
 											{tag}
 										</a>
 									</li>
 								))}
 							</ul>
 						</div>
-					)
-				}
+				)}
 			</span>
-
 			<img class={coverImage} src={image}>
-
-			<div class={blogPostContent}>
-				<slot />
-			</div>
+			<div class={blogPostContent}><slot /></div>
 		</article>
 
 		<aside class={tocAside}>
@@ -81,24 +43,10 @@ const paginationProps = {
 			<ul class={tocUnorderedList}>
 				{headings.map(({ slug, text }) => (
 					<li class={tocHeading}>
-						<a
-						  href={`#${slug}`}
-							aria-label={`Scroll to section: ${text}`}
-						>
-							{text}
-						</a>
+						<a href={`#${slug}`} aria-label={`Scroll to section: ${text}`}>{text}</a>
 					</li>
 				))}
 			</ul>
 		</aside>
 	</div>
-
-	<Paginator {...paginationProps} />
 </BaseLayout>
-
-<style>
-	/* Hide the weird code block adding the language */
-	:global(article pre .language-id) {
-		@apply hidden;
-	}
-</style>

@@ -12,12 +12,6 @@ type SiteMeta = {
 	image?: string;
 };
 
-type PaginationLink = {
-	url: string;
-	text?: string;
-	srLabel?: string;
-};
-
 interface Post {
 	title: string;
 	description: string;
@@ -32,7 +26,6 @@ export type {
 	Theme,
 	IElement,
 	SiteMeta,
-	PaginationLink,
 	Post,
 };
 
@@ -74,10 +67,6 @@ export function getAllTagsWithCount(posts: MDXInstance<Post>[] = []): {
 		});
 		return currTags;
 	}, {});
-}
-
-export function toggleClass(element: HTMLElement, className: string) {
-	element.classList.toggle(className);
 }
 
 export function elementHasClass(element: HTMLElement, className: string) {

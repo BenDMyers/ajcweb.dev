@@ -1,5 +1,9 @@
 ---
-import type { PaginationLink } from "@/util"
+type PaginationLink = {
+	url: string;
+	text?: string;
+	srLabel?: string;
+};
 
 export interface Props {
 	prevUrl?: PaginationLink

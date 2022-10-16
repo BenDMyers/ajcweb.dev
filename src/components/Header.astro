@@ -5,7 +5,9 @@ const url = new URL(Astro.request.url)
 ---
 
 <script>
-	import { toggleClass } from "@/util";
+	function toggleClass(element: HTMLElement, className: string) {
+	  element.classList.toggle(className);
+  }
 
 	document.addEventListener("DOMContentLoaded", () => {
 		const { body } = document;
