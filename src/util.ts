@@ -97,3 +97,15 @@ export function getLocaleTime(
 	};
 	return new Intl.DateTimeFormat(locale, formatOptions).format(date);
 }
+
+const siteMeta = {
+  title: "ajcwebdev",
+  description: "Web developer, writer, speaker, and advocate",
+  lang: "en-US",
+  ogLocale: "en_US",
+  githubUrl: "https://github.com/ajcwebdev/ajcweb.dev",
+  themeColorLight: "#fafafa",
+  themeColorDark: "#1d1f21",
+}
+
+export default siteMeta

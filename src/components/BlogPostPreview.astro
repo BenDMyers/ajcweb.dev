@@ -1,7 +1,9 @@
 ---
 import type { IElement, MDXInstance, Post } from "@/util"
 import { getLocaleTime } from "@/util"
-import { styles } from "../styles/styles"
+import {
+  postPreviewTitle, postPreviewDate, postPreviewDesc
+} from "../styles/styles"
 
 export interface Props extends IElement {
 	post: MDXInstance<Post>
@@ -18,18 +20,18 @@ const postDate = getLocaleTime(date, { month: "long" })
 ---
 
 <Element>
-	<a href={post.url} class={styles.postPreviewTitle}>
+	<a href={post.url} class={postPreviewTitle}>
 		{post.frontmatter.title}
 	</a>
 </Element>
 
 <div>
 	<br>
-	<time class={styles.postPreviewDate}>
+	<time class={postPreviewDate}>
 		{postDate}
 	</time>
-	<q class={styles.postPreviewDesc}>{post.frontmatter.description}</q>
+	<q class={postPreviewDesc}>{post.frontmatter.description}</q>
 </div>
 
-<!-- <img class={styles.coverPreviewImage} src={post.frontmatter.image}> -->
+<!-- <img class={coverPreviewImage} src={post.frontmatter.image}> -->
 <img src={post.frontmatter.image}>

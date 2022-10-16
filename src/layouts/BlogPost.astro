@@ -3,18 +3,17 @@ import BaseLayout from "./Base.astro"
 import { getLocaleTime, getPreviousAndNextPosts, sortMDByDate } from "src/util"
 import Paginator from "@/components/Paginator"
 import type { Post } from "@/util"
-import { styles } from "../styles/styles"
+import {
+	baseLayoutContainer, postTitle, dateAndTags, postDate, tagsContainer, postTagsList, tagLink, coverImage, blogPostContent, tocAside, tocHeader, tocUnorderedList, tocHeading
+} from "../styles/styles"
 
 const {
-	content: {
-		title, description, publishDate, tags, image
-	},
+	content: { title, description, publishDate, tags, image },
 	headings,
 } = Astro.props
 
 const date = new Date(publishDate)
-const datetime = date.toISOString()
-const postDate = getLocaleTime(date)
+const formatDate = getLocaleTime(date)
 const currentPage = new URL(Astro.request.url).pathname
 const allPosts = await Astro.glob<Post>("../pages/*.mdx")
 const allSortedPosts = sortMDByDate(allPosts)
@@ -39,24 +38,24 @@ const paginationProps = {
 ---
 
 <BaseLayout meta={{ title, description }}>
-	<div class={styles.baseLayoutContainer}>
+	<div class={baseLayoutContainer}>
 		<article>
-			<h1 class={styles.title}>
+			<h1 class={postTitle}>
 				{title}
 			</h1>
 
-			<span class={styles.dateAndTags}>
-				<time class={styles.postDate}>
-					{postDate}
+			<span class={dateAndTags}>
+				<time class={postDate}>
+					{formatDate}
 			  </time>
 				{
 					tags?.length && (
-						<div class={styles.tagsContainer}>
-							<ul class={styles.postTagsList}>
+						<div class={tagsContainer}>
+							<ul class={postTagsList}>
 								{tags.map((tag) => (
 									<li>
 										<a
-											class={styles.tagLink}
+											class={tagLink}
 											aria-label={`View more posts with the tag ${tag}`}
 											href={`/tags/${tag}`}
 										>
@@ -69,18 +68,19 @@ const paginationProps = {
 					)
 				}
 			</span>
-			<!-- <p class="mt-8">{description}</p> -->
-			<img class={styles.coverImage} src={image}>
-			<div class={styles.blogPostContent}>
+
+			<img class={coverImage} src={image}>
+
+			<div class={blogPostContent}>
 				<slot />
 			</div>
 		</article>
 
-		<aside class={styles.tocAside}>
-			<h2 class={styles.tocHeader}>Table of Contents</h2>
-			<ul class={styles.tocUnorderedList}>
+		<aside class={tocAside}>
+			<h2 class={tocHeader}>Table of Contents</h2>
+			<ul class={tocUnorderedList}>
 				{headings.map(({ slug, text }) => (
-					<li class={styles.tocHeading}>
+					<li class={tocHeading}>
 						<a
 						  href={`#${slug}`}
 							aria-label={`Scroll to section: ${text}`}
