@@ -2,7 +2,7 @@
 title: "a first look at fly"
 description: "Fly is a platform for full stack applications and databases that need to run globally."
 publishDate: "2021 08 04"
-tags: [ "Fly", "Docker", "Containers", "DevOps" ]
+tags: [ "Fly", "Docker", "Containers", "Node" ]
 image: "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q1d1svee7bzuj1finzjp.png"
 layout: "@/layouts/BlogPost"
 ---
