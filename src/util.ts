@@ -10,6 +10,8 @@ type SiteMeta = {
 	title: string;
 	description?: string;
 	image?: string;
+	canonicalURL: string;
+	publishDate: Date;
 };
 
 interface Post {
@@ -18,6 +20,7 @@ interface Post {
 	publishDate?: Date;
 	image: string;
 	tags?: string[];
+	canonicalURL: string;
 }
 
 export type {
@@ -92,9 +95,12 @@ const siteMeta = {
   description: "Web developer, writer, speaker, and advocate",
   lang: "en-US",
   ogLocale: "en_US",
+	canonicalURL: "https://ajcweb.dev",
   githubUrl: "https://github.com/ajcwebdev/ajcweb.dev",
   themeColorLight: "#fafafa",
   themeColorDark: "#1d1f21",
+	publishDate: "2022-11-14",
+	image: "https://github.com/ajcwebdev/ajc-and-the-webdevs/blob/main/background-html.png?raw=true",
 }
 
 export default siteMeta

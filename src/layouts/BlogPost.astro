@@ -6,7 +6,7 @@ import {
 } from "../styles/styles"
 
 const {
-	content: { title, description, publishDate, tags, image },
+	content: { title, description, publishDate, tags, image, canonicalURL },
 	headings,
 } = Astro.props
 
@@ -14,7 +14,7 @@ const date = new Date(publishDate)
 const formatDate = getLocaleTime(date)
 ---
 
-<BaseLayout meta={{ title, description }}>
+<BaseLayout meta={{ title, description, canonicalURL, publishDate, image }}>
 	<div class={baseLayoutContainer}>
 		<article>
 			<h1 class={postTitle}>{title}</h1>
