@@ -1,0 +1,297 @@
+---
+canonicalURL: "https://ajcwebdev.com/2021/03/25/query-rick-and-morty-graphql-api"
+title: "how to query the rick and morty graphQL API"
+description: "How to query the Rick and Morty GraphQL API with curl, the Fetch API, graphql-request, and Apollo Client."
+publishDate: "2021-03-25"
+tags: [ "GraphQL", "JavaScript", "Fetch", "Apollo" ]
+image: "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ksq0lckoen89nql30g1x.jpeg"
+layout: "@/layouts/BlogPost"
+---
+
+## Introduction
+
+I've been going deep into GraphQL ever since I first started learning Redwood, and it's been an interesting experiment because I started with a fully complete GraphQL project with a server and client included and integrated.
+
+As I've gotten deeper into GraphQL I've realized this is an incredible exception to the rule, the norm is everyone creating their own bespoke combination of clients and/or servers to fit their own purposes.
+
+## Outline
+
+* [Query with GraphiQL](#query-with-graphiql)
+* [Query with CURL](#query-with-curl)
+* [Query with the Fetch API](#query-with-the-fetch-api)
+  * [Create Project](#create-project)
+  * [HTML Entrypoint](#html-entrypoint)
+  * [Fetch Request](#fetch-request)
+* [Query with GraphQL Request](#query-with-graphql-request)
+  * [Install Dependencies](#install-dependencies)
+  * [Add Scripts and Browsers List](#add-scripts-and-browsers-list)
+  * [Initialize GraphQL Request Client](#initialize-graphql-request-client)
+* [Query with Apollo Client](#query-with-apollo-client)
+  * [Install Apollo Dependencies](#install-apollo-dependencies)
+  * [Initialize Apollo Client](#initialize-apollo-client)
+
+## Query with GraphiQL
+
+If we wanted to take it to the total basics, you'd want to start with actually making a GraphQL query. For example, if you were to go to the following [link](https://rickandmortyapi.com/graphql) you'll see this:
+
+![01-rick-and-morty-graphiql](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/p71t3vphq4c9vt1r3suo.png)
+
+We want to make a query, so we'll enter the following `query` for `characters`, specifically their `name` (the `results` array is a quirk of this specific GraphQL schema).
+
+```graphql
+{
+  characters {
+    results {
+      name
+    }
+  }
+}
+```
+
+This returns an array of names.
+
+![02-character-names](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/sdvapzwb74l4bw38p73w.png)
+
+Watch out for Abradolf Lincler, he's a bad dude.
+
+![03-abradolf-lincler](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8x4jgd4v9bfpilv5dzut.png)
+
+## Query with CURL
+
+If you want to run this same query on the command line, you can use [curl](https://curl.se/). Include the GraphQL endpoint, a header specifying that the `Content-Type` is `application/json`, and a [`data-binary`](https://curl.se/docs/manpage.html#--data-binary) option with the query.
+
+```bash
+curl 'https://rickandmortyapi.com/graphql' \
+  -H 'Content-Type: application/json' \
+  -d '{"query":"{ characters { results { name } } }"}'
+```
+
+## Query with the Fetch API
+
+The next layer would be making a `fetch` request.
+
+### Create Project
+
+Create a new blank directory with `public` and `src` directories containing an `index.html` and `index.js` file respectively.
+
+```bash
+mkdir rick-and-morty-graphql
+cd rick-and-morty-graphql
+mkdir public src
+touch public/index.html src/index.js
+```
+
+### HTML Entrypoint
+
+Enter the following `html` boilerplate with a `script` tag for `index.js`.
+
+```html
+<!-- public/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>How to Query the Rick and Morty GraphQL API</title>
+    <script src="../src/index.js" defer></script>
+  </head>
+
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <h1>Fetch API</h1>
+    <div id="root"></div>
+  </body>
+</html>
+```
+
+### Fetch Request
+
+Make a `fetch` request to `https://rickandmortyapi.com/graphql` including:
+* A `POST` request with `Content-Type` of `application/json`
+* The `characters` query we wrote above asking for their `name` included in the `body` and [stringified](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)
+* The `results` displayed with `console.log()`
+
+```js
+// src/index.js
+
+fetch('https://rickandmortyapi.com/graphql', {
+  method: 'POST',
+
+  headers: {
+    "Content-Type": "application/json"
+  },
+
+  body: JSON.stringify({
+    query: `
+      query getCharacters {
+        characters {
+          results {
+            name
+          }
+        }
+      }
+    `
+  })
+})
+.then(res => res.json())
+.then(data => console.log(data.data))
+```
+
+Open `index.html` with a tool like [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
+
+![04-data-from-rick-and-morty-api](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/edrzke3c9nm883twucd4.png)
+
+To actually display the results of the query on the page, change the final `.then` function to the following:
+
+```js
+// src/index.js
+
+.then(data => {
+  document.querySelector('#root').innerHTML = `
+    <p>${JSON.stringify(data.data.characters.results)}</p>
+  `
+})
+```
+
+This doesn't require installing dependencies, or even creating a `package.json` file. However, there are many GraphQL client libraries which explore a wide range of trade offs. Use cases may include providing concise abstractions for common GraphQL functionality or adding additional features such as caching.
+
+## Query with GraphQL Request
+
+[graphql-request](https://github.com/prisma-labs/graphql-request) is a minimal GraphQL client that supports Node and browsers.
+
+### Install Dependencies
+
+```bash
+yarn init -y
+yarn add graphql graphql-request react react-dom react-scripts
+```
+
+### Add Scripts and Browsers List
+
+```json
+{
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
+```
+
+### Initialize GraphQL Request Client
+
+```jsx
+// src/index.js
+
+import React from "react"
+import { render } from "react-dom"
+import { GraphQLClient, gql } from 'graphql-request'
+
+async function main() {
+  const endpoint = 'https://rickandmortyapi.com/graphql'
+  const graphQLClient = new GraphQLClient(endpoint)
+
+  const GET_CHARACTERS_QUERY = gql`
+    query getCharacters {
+      characters {
+        results {
+          name
+        }
+      }
+    }
+  `
+
+  const data = await graphQLClient.request(GET_CHARACTERS_QUERY)
+  console.log(JSON.stringify(data, undefined, 2))
+}
+
+main()
+
+render(
+  <React.StrictMode>
+    <h1>graphql-request</h1>
+  </React.StrictMode>,
+  document.getElementById("root")
+)
+```
+
+## Query with Apollo Client
+
+[Apollo Client](https://github.com/apollographql/apollo-client) is a caching GraphQL client with integrations for React and other popular frontend libraries/frameworks.
+
+### Install Apollo Dependencies
+
+```bash
+yarn add @apollo/react-hooks apollo-boost
+```
+
+### Initialize Apollo Client
+
+```jsx
+// src/index.js
+
+import React from "react"
+import { render } from "react-dom"
+import { ApolloProvider } from "@apollo/react-hooks"
+import ApolloClient from "apollo-boost"
+import gql from "graphql-tag"
+import { useQuery } from "@apollo/react-hooks"
+
+export const client = new ApolloClient({
+  uri: 'https://rickandmortyapi.com/graphql'
+})
+
+export const GET_CHARACTERS_QUERY = gql`
+  query getCharacters {
+    characters {
+      results {
+        name
+      }
+    }
+  }
+`
+
+function Characters() {
+  const { data, loading, error } = useQuery(GET_CHARACTERS_QUERY)
+
+  const characters = data?.characters
+
+  if (loading) return <p>Almost there...</p>
+  if (error) return <p>{error.message}</p>
+
+  return (
+    <>
+      <pre>
+        {JSON.stringify(characters, null, "  ")}
+      </pre>
+    </>
+  )
+}
+
+render(
+  <React.StrictMode>
+    <ApolloProvider client={client}>
+      <h1>Apollo Client</h1>
+      <Characters />
+    </ApolloProvider>
+  </React.StrictMode>,
+  document.getElementById("root")
+)
+```

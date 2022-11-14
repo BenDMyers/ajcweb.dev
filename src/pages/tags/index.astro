@@ -3,7 +3,7 @@ import PageLayout from "@/layouts/Base"
 import { getAllTagsWithCount } from "@/util"
 import type { Post } from "@/util"
 
-const allPosts = await Astro.glob<Post>("../*.mdx")
+const allPosts = await Astro.glob<Post>("../*/*/*/*.mdx")
 const allTags = getAllTagsWithCount(allPosts)
 
 const meta = {

@@ -1,0 +1,90 @@
+---
+canonicalURL: "https://ajcwebdev.com/2021/11/10/how-to-display-a-custom-daily-greeting"
+title: "how to display a custom daily greeting"
+description: "Use JavaScript to create a message displaying a different greeting depending on the day of the week."
+publishDate: "2021-11-10"
+tags: [ "HTML", "JavaScript", "DOM", "Date" ]
+image: "https://cdn.hashnode.com/res/hashnode/image/upload/v1654736963103/D3mX5clis.jpeg"
+layout: "@/layouts/BlogPost"
+---
+
+## Introduction
+
+I discovered a cool little trick while source diving through [Scott Mathson](https://scottmathson.com/)'s web site. With just a couple lines of JavaScript you can create a message that displays a different greeting depending on the day of the week.
+
+### Create a Script with a Weekday Array
+
+Create a `<script>` tag with `type` of `text/javascript`. Define a variable called `weekday` with a different greeting set to each index.
+
+```html
+<script type="text/javascript">
+
+  var weekday = new Array(7)
+
+  weekday[0] = "spectacular Sunday"
+  weekday[1] = "marvelous Monday"
+  weekday[2] = "terrific Tuesday"
+  weekday[3] = "wonderful Wednesday"
+  weekday[4] = "totally cool Thursday"
+  weekday[5] = "fantastic Friday"
+  weekday[6] = "sweet Saturday"
+
+</script>
+```
+
+### Set Weekday Value to the Current Date
+
+Also inside the script tag, create a variable called `currentDate` set with the [`Date()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) object and then set the current day to `weekdayValue`.
+
+```javascript
+var currentDate = new Date()
+weekdayValue = currentDate.getDay()
+```
+
+### Write to the Document
+
+Use the [Document.write()](https://developer.mozilla.org/en-US/docs/Web/API/Document/write) method to write a string of text to the document with paragraph tags containing the weekday value..
+
+```javascript
+document.write(
+  '<p>Have a ' + weekday[weekdayValue] + '!</p>'
+)
+```
+
+### Noscript Fallback
+
+Lastly, you'll want to include a `<noscript>` tag in case the user has JavaScript turned off in their browser.
+
+```html
+<noscript>
+  <p>Have a great day!</p>
+</noscript>
+```
+
+## Full Script
+
+```html
+<script type="text/javascript">
+
+  var weekday = new Array(7)
+
+  weekday[0] = "spectacular Sunday"
+  weekday[1] = "marvelous Monday"
+  weekday[2] = "terrific Tuesday"
+  weekday[3] = "wonderful Wednesday"
+  weekday[4] = "totally cool Thursday"
+  weekday[5] = "fantastic Friday"
+  weekday[6] = "sweet Saturday"
+
+  var currentDate = new Date()
+  weekdayValue = currentDate.getDay()
+
+  document.write(
+    '<p>Have a ' + weekday[weekdayValue] + '!</p>'
+  )
+</script>
+
+<noscript>
+  <p>Have a great day!</p>
+</noscript>
+```

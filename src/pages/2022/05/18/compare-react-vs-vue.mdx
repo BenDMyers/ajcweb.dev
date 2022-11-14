@@ -1,0 +1,302 @@
+---
+canonicalURL: "https://prismic.io/blog/compare-react-vs-vue"
+title: "Trying Vue as a React Developer: A Quick Introduction"
+description: "Despite the differences between the frameworks, a React developer should not have too much trouble picking up a Vue project. It still uses components that include a mixture of JavaScript, CSS, and HTML. However, Vue includes a more concise syntax and a cleaner separation between content, styling, and logic."
+publishDate: "2022-05-18"
+tags: [ "Vue", "React", "Nuxt" ]
+image: "https://images.prismic.io/wroom/a5bb78c6-0b18-4b5b-a739-358e285b0464_blog-og-base-1.png?mark-y=260&mark-x=90&mark64=aHR0cHM6Ly9hc3NldHMuaW1naXgubmV0L350ZXh0P2g9MzAwJnR4dC1hbGlnbj1sZWZ0JTJDYm90dG9tJnR4dDY0PVZISjVhVzVuSUZaMVpTQmhjeUJoSUZKbFlXTjBJRVJsZG1Wc2IzQmxjam9nUVNCUmRXbGpheUJKYm5SeWIyUjFZM1JwYjI0PSZ0eHQtY29sb3I9ZmZmZmZmJnR4dC1mb250PUF2ZW5pciUyMEJsYWNrJnR4dC1zaXplPTYwJnc9OTAw&txt-width=900&txt-fit=max&txt-align=left%2Cbottom&txt-pad=100&txt-size=36&txt-font=Avenir%20Bold&txt-color=BEBDC7&txt64="
+layout: "@/layouts/BlogPost"
+---
+
+For the last decade, the preferred mode of front-end web development has been architecting applications with JavaScript. Today, among the numerous options, React is the dominant framework of choice for front-end web development. According to [the State of JS survey](https://2021.stateofjs.com/en-US/), it has been the number one most-used front-end framework every year since 2016.
+
+However, there has been a steady increase in the usage of Vue instead of React. It has developed its own ecosystem completely separate from React over the years including build tools, meta-frameworks, routers, state managers (like Pinia), component libraries, and more. But what is the reasoning behind this increase in Vue usage? There are many reasons that developers may choose one over the other.
+
+Some developers prefer supporting a community-run project over a project managed by a large corporation. Others find React too complex in comparison to Vue. Some developers also find the separation of content, styling, and logic in a Vue single file component to be more intuitive than the separation of concerns within a JSX file. In this article, we will compare a Vue project to equivalents in React so you can decide for yourself which you find more intuitive.
+
+## Jump to a section:
+
+1. [A history of Vue](https://prismic.io/blog/compare-react-vs-vue#history-of-vue)
+2. [Comparing Vue project structure and syntax](https://prismic.io/blog/compare-react-vs-vue#structure-syntax)
+3. ['Hello world' Vue project tour](https://prismic.io/blog/compare-react-vs-vue#hello-world-vue)
+4. [Vue meta-frameworks](https://prismic.io/blog/compare-react-vs-vue#vue-meta-frameworks)
+5. [Final thoughts](https://prismic.io/blog/compare-react-vs-vue#final-thoughts)
+
+## A history of Vue
+
+Evan You created Vue in 2014, taking inspiration from AngularJS and React, which were sponsored by Google and Facebook respectively. Unlike those frameworks, though, Evan was the primary driving force behind the creation and development of the framework. This allowed him to take on different influences from a framework like React, for example, where development has been highly intertwined with the needs of Facebook.
+
+## Comparing Vue project structure and syntax
+
+Let's start with the overall project structure. One way that React and Vue are similar, is their use of an HTML entry file called `index.html`, a JavaScript entry file called `main.js`, and an application entry file called `App.jsx` in React or `App.vue` in Vue.
+
+```
+├── index.html
+├── package.json
+├── src
+│   ├── App.vue
+│   └── main.js
+└── vite.config.js
+```
+
+The HTML entry point will load the application from `main.js` (in Vue or React). The JavaScript entry point imports the top-level application component `App.vue`, so any plugins or integrations can be imported into the JavaScript entry file without interfering with any of the application logic.
+
+However, when it comes to the syntax, we'll start to see key differences. [Vue's syntax and directives](https://vuejs.org/guide/essentials/template-syntax.html) are influenced by AngularJS and include common operations such as [for loops](https://vuejs.org/guide/essentials/list.html) (`v-for`), [conditionals](https://vuejs.org/guide/essentials/conditional.html) (`v-else-if`), and [event handling](https://vuejs.org/guide/essentials/event-handling.html) (`v-on`). The underlying implementation uses a virtual DOM like React for quickly reconciling DOM manipulations with a declarative syntax.
+
+React, on the other hand, uses JSX so the developer can write for loops, conditionals, and event handlers the usual way with JavaScript. This results in a file containing JavaScript functions at the top and a return function at the bottom. The return function outputs HTML containing any JavaScript variables defined above the function.
+
+```jsx
+import React, { useState } from 'react';
+
+function Example() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <h2>Click the button, you know you want to</h2>
+
+      <button onClick={() => setCount(count + 1)}>
+        count is: {count}
+      </button>
+    </div>
+  );
+}
+```
+
+This example does not include any CSS, although it is possible to include CSS in a React component with a library like Styled Components or Emotion.
+
+However, unlike React with JSX, Vue breaks up a single file component into three clearly delineated parts: `script`, `template`, and `style`.
+
+```html
+<script setup>
+  import { ref } from 'vue'
+  const count = ref(0)
+</script>
+
+<template>
+  <h2>Click the button, you know you want to</h2>
+
+  <button type="button" @click="count++">
+    count is: {{ count }}
+  </button>
+</template>
+
+<style>
+  #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    text-align: center;
+    margin-top: 3rem;
+  }
+</style>
+```
+
+This roughly corresponds to the three languages used to build all websites: JavaScript, HTML, and CSS. If we were to view this component in a web browser, it would look like the following:
+
+![A screenshot of the component, which contains text that says, "Click the button, you know you want to" and a button with a click count set to 0.](https://images.prismic.io/wroom/b413037c-5fb8-4ff6-b819-d90483878dd5_Screen+Shot+2022-05-03+at+1.28.49+AM.png?auto=compress,format)
+
+## 'Hello world' Vue project tour
+
+Now that we've talked a little bit about the similarities and differences between React and Vue, let's look at a small Vue project and how it would compare to a React project. To tour the Vue project with me, spin up a Stackblitz [by clicking here](https://vite.new/vue).
+
+Of course this Vue project requires slightly different dependencies from what you'd see in React, which you can see in the `package.json` file. You'll see `vue` as a project dependency and two development dependencies: `vite` and `@vitejs/plugin-vue`.
+
+```json
+{
+  "name": "vite-vue-starter",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.2.33"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.3.2",
+    "vite": "^2.9.8"
+  }
+}
+```
+
+If this were a React project, you would see `react` and `react-dom`.
+
+For the project files, you'll see an HTML entry point file, a main function, application entry point, `HelloWorld` component, and configuration files for Vite. Notice these files in the root of your project directory:
+
+* `vite.config.js` - Vite configuration file for the Vue or React plugin
+* `index.html` - HTML entry file for initializing our application
+
+There will also be two files in the `src` folder (along with two folders):
+
+* `main.js` - Root component that imports the Vue application
+* `App.vue` - Main application with imports for our components
+
+And finally a single file in the `components` folder:
+
+* `HelloWorld.vue` - `HelloWorld` component with stateful logic
+
+Overall, the boilerplate files needed for a Vue application and React application should look very similar, especially if you are leveraging Vite for your React applications.
+
+### Vite Configuration File
+
+Since Vite supports multiple front-end frameworks including React, the code below in the `vite.config.js` file in the root directory tells Vite that you are developing a Vue project specifically.
+
+```js
+// vite.config.js
+
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+
+export default defineConfig({
+  plugins: [vue()]
+})
+```
+
+### HTML Entry Point
+
+Like React, Vue also uses an entry HTML file with a `div` that loads your entire application at once, which you can see in the code below, found in `index.html`.
+
+```html
+<!-- index.html -->
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vite App</title>
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
+```
+
+If this was a React app, the only difference would be replacing `/src/main.js` with `/src/main.jsx` in the script tag.
+
+### Root Component
+
+As we saw previously, inside the `body` tags of our HTML entry file we load `main.js` as a script using the `type` [ attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-type) to load a [JavaScript `module`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules). Our `main.js` file is located in our `src` folder.
+
+```js
+// src/main.js
+
+import { createApp } from 'vue'
+import App from './App.vue'
+
+createApp(App).mount('#app')
+```
+
+This file is only used to import `createApp` from the `vue` library and our `App` from `App.vue`, also contained in the `src` directory. Here is the equivalent file in a React application for comparison:
+
+```jsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />)
+```
+
+`createRoot` from `ReactDOM` is used to set the application to root with `getElementById`. The `App` is then rendered as a self-closing tag.
+
+### Application Component
+
+As we saw earlier, a single file component in Vue contains a script for any JavaScript code, a template for HTML content, and styling for CSS.
+
+```html
+// src/App.vue
+
+<script setup>
+  import HelloWorld from './components/HelloWorld.vue'
+</script>
+
+<template>
+  <HelloWorld msg="Hello World" />
+</template>
+
+<style>
+  #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    text-align: center;
+    margin-top: 3rem;
+  }
+</style>
+```
+
+The equivalent React component would import `HelloWorld` and then declare an `App` function that returns the `HelloWorld` component.
+
+```jsx
+import HelloWorld from './components/HelloWorld.jsx'
+
+function App() {
+  return (
+    <div>
+      <HelloWorld />
+    </div>
+  )
+}
+
+export default App
+```
+
+Within these components, the organization of concerns shows one of the major contrasts between React and Vue.
+
+### Hello World Component
+
+Our `App.vue` file is importing the `HelloWorld` component from `HelloWorld.vue`. This file is located inside the `components` folder.
+
+```html
+// src/components/HelloWorld.vue
+
+<script setup>
+  import { ref } from 'vue'
+
+  defineProps({
+    msg: String,
+  })
+
+  const count = ref(0)
+</script>
+
+<template>
+  <h1>{{ msg }}</h1>
+
+  <button type="button" @click="count++">
+    count is: {{ count }}
+  </button>
+
+  <h2>Documentation</h2>
+
+  <p>
+    <a href="https://vitejs.dev/guide/features.html" target="_blank">Vite</a>
+    |
+    <a href="https://v3.vuejs.org/" target="_blank">Vue 3</a>
+  </p>
+</template>
+
+<style scoped>
+  a {
+    color: #42b983;
+  }
+</style>
+```
+
+And all of this comes together like this:
+
+![Screenshot of a Hello World Vue application. The text reads "Hello Vue 3 + Vite" with links below to documentation, as well as a button with a click counter set to 0.](https://images.prismic.io/wroom/12b187f2-1336-49c8-9a62-94bf340c26a8_Screen+Shot+2022-05-18+at+5.44.24+PM.png?auto=compress,format)
+
+## Vue meta-frameworks
+
+Many React developers are aware of “React meta-frameworks” such as Next.js, Gatsby, or RedwoodJS. Vue has similar meta-frameworks including Nuxt.js and Gridsome. Nuxt.js is heavily inspired by Next.js and includes the majority of the same features including SSR, API routes, serverless function integration, and third-party modules.
+
+These frameworks provide additional features such as static site generation, server-side rendering, and authentication. Some of the requirements that would lead a developer to use a meta-framework include SEO optimization, internationalization, localization, or user management and authentication.
+
+## Final thoughts
+
+Despite the differences between the frameworks, a React developer should not have too much trouble picking up a Vue project. It still uses components that include a mixture of JavaScript, CSS, and HTML. However, Vue includes a more concise syntax and a cleaner separation between content, styling, and logic. The build tooling for both development and the production pipeline is nearly identical, especially now as Vite becomes more popular for React projects.
+
+The Vue ecosystem offers higher-level frameworks for building faster and more reliably on real-world applications. Vue does not have as many third-party libraries as React, but there are still options for most of the tools that a React developer would expect including state management, UI libraries, and reusable components. Overall, with a little bit of research and practice, a React developer should feel confident performing just as efficiently with a Vue project as they do on a React project.

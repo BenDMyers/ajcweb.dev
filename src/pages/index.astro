@@ -9,7 +9,7 @@ const meta = {
 	description: "Web developer, writer, speaker, and advocate.",
 }
 
-const allPosts = await Astro.glob<Post>("./*.mdx")
+const allPosts = await Astro.glob<Post>("./*/*/*/*.mdx")
 const allPostsByDate = sortMDByDate(allPosts).slice(0, 5)
 ---
 

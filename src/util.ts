@@ -95,7 +95,7 @@ const siteMeta = {
   description: "Web developer, writer, speaker, and advocate",
   lang: "en-US",
   ogLocale: "en_US",
-	canonicalURL: "https://ajcweb.dev",
+	canonicalURL: "https://ajcwebdev.com",
   githubUrl: "https://github.com/ajcwebdev/ajcweb.dev",
   themeColorLight: "#fafafa",
   themeColorDark: "#1d1f21",

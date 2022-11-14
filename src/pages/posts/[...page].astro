@@ -6,7 +6,7 @@ import { sortMDByDate } from "src/util"
 import type { Post, Page, MDXInstance } from "@/util"
 
 export async function getStaticPaths({ paginate }) {
-	const allPosts = await Astro.glob<Post>("../*.mdx")
+	const allPosts = await Astro.glob<Post>("../*/*/*/*.mdx")
 	const allPostsByDate = sortMDByDate(allPosts)
 
 	return paginate(

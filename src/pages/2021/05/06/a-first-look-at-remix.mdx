@@ -1,0 +1,265 @@
+---
+canonicalURL: "https://ajcwebdev.com/2021/05/06/a-first-look-at-remix"
+title: "a first look at remix"
+description: "Remix is a React metaframework created by Ryan Florence and Michael Jackson that primarily uses standard web APIs."
+publishDate: "2021-05-06"
+tags: [ "Remix", "React", "GraphQL", "Vercel" ]
+image: "https://cdn.hashnode.com/res/hashnode/image/upload/v1654841323998/ygTH4bXW1.jpeg"
+layout: "@/layouts/BlogPost"
+---
+
+## Introduction
+
+Remix is a React metaframework from Ryan Florence and Michael Jackson that builds on standard web APIs. At the time of the framework's release, they were already well known as the maintainers of React Router and educators behind React Training. But in the beginning of 2020, widespread quarantine measures were enacted across the country.
+
+Quarantine effectively brought an end to all in-person technical training. Once the impeding demise of their livelihood became apparent, the two founders helped their remaining employees find new remote roles before they inevitable were forced to lay them off. About a month later in April 2020, they announced Remix.
+
+Originally requiring a paid license, it launched as a "supporter preview" in October 2020. A little over a year later, in November 2021, it was fully open-sourced. This was accompanied by the founders starting a company, raising a [$3 million seed round](https://remix.run/blog/seed-funding-for-remix), and hiring notable React developer and teacher, Kent C. Dodds.
+
+Kent had become infatuated with Remix and [rebuilt his entire platform around the framework](https://kentcdodds.com/blog/why-i-love-remix). During the rebuild he also attempted to individually tell every single person on the internet why using anything except Remix to build literally anything was a terrible choice. He was soon hired as a Developer Advocate and early co-founder of the newly formed company.
+
+In this example we will use the Vercel starter to make Fetch requests containing GraphQL queries. All the code for this example can be found [on my GitHub](https://github.com/ajcwebdev/ajcwebdev-remix).
+
+## Initialize Starter Project
+
+The `create-remix` command can be used to generate various Remix templates with varying deployment providers. We'll specify the `vercel` template and select JavaScript when prompted.
+
+```bash
+npx create-remix --template vercel ajcwebdev-remix
+```
+
+Make sure to select **No** for `npm install` or it will fail due to an unresolvable peer dependency.
+
+```
+? Do you want me to run `npm install`? No
+? TypeScript or JavaScript? JavaScript
+
+💿 That's it! `cd` into "ajcwebdev-remix" and check
+the README for development and deploy instructions!
+```
+
+### Start Development Server
+
+`cd` into your project, install the Vercel CLI, and start the development server.
+
+```bash
+cd ajcwebdev-remix
+yarn add -D vercel
+echo > app/routes/graphql.jsx
+yarn dev
+```
+
+```
+Watching Remix app in development mode...
+💿 Built in 161ms
+
+Remix App Server started at http://localhost:3000 (http://192.168.1.78:3000)
+```
+
+Open [localhost:3000](https://localhost:3000) to see the project.
+
+![01-home-page-on-localhost-3000](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/wzea0drtxlyrbd1ttpdq.png)
+
+### Index Routes
+
+[`index` routes](https://remix.run/guides/routing#index-routes) are routes that renders when the layout's path is matched exactly. If you have an `index.jsx` file in the `routes` directory it will be used as the home page. I've made a few edits to the boilerplate code.
+
+```jsx
+// app/routes/index.jsx
+
+import { useLoaderData } from "@remix-run/react"
+import { json } from "@remix-run/node"
+
+export let loader = () => {
+  let data = {
+    resources: [
+      { name: "My Blog", url: "https://ajcwebdev.com" },
+      { name: "A First Look at Remix", url: "https://ajcwebdev.com/a-first-look-at-remix" },
+      { name: "Example Repo", url: "https://github.com/ajcwebdev/ajcwebdev-remix" }
+    ]
+  }
+  return json(data)
+}
+
+export let meta = () => {
+  return {
+    title: "ajcwebdev-remix", description: "Welcome to Remix!"
+  }
+}
+
+export default function Index() {
+  let data = useLoaderData()
+
+  return (
+    <div className="remix__page">
+      <main>
+        <h1>ajcwebdev-remix</h1>
+        <p>Woot!</p>
+      </main>
+
+      <section>        
+        <h2>Resources</h2>
+        <ul>
+          {data.resources.map(resource => (
+            <li key={resource.url}>
+              <a href={resource.url}>{resource.name}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  )
+}
+```
+
+[`json`](https://remix.run/api/remix#json) provides a shortcut for creating `application/json` responses and [`meta`](https://remix.run/api/conventions#meta) sets meta tags for the HTML document.
+
+![02-home-page-on-localhost-3000-edit](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/lvnho8akn8yhps3li0u7.png)
+
+### CSS Styling
+
+Include [Water CSS](https://watercss.kognise.dev/) for some styling presets.
+
+```jsx
+// app/root.jsx
+
+import {
+  Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration
+} from "@remix-run/react"
+
+export const links = () => {
+  return [{
+    rel: "stylesheet",
+    href: "https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css"
+  }]
+}
+
+export const meta = () => ({
+  charset: "utf-8",
+  title: "A First Look at Remix with GraphQL",
+  viewport: "width=device-width,initial-scale=1",
+})
+
+export default function App() {
+  return (
+    <html lang="en">
+      <head>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <Outlet />
+        <ScrollRestoration />
+        <Scripts />
+        <LiveReload />
+      </body>
+    </html>
+  )
+}
+```
+
+![03-home-page-with-water-css](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/demc5fj0o0spog5xz8do.png)
+
+### Loader Functions
+
+[Loaders](https://remix.run/api/conventions#loader) provide data to components and are only ever called on the server. Since the function only runs on the server, it's an ideal candidate for requests that include API secrets that cannot be exposed on the client. At the beginning of the tutorial, we created a new route for a GraphQL query called `graphql.jsx`.
+
+```jsx
+// app/routes/graphql.jsx
+
+import { useLoaderData } from "@remix-run/react"
+
+export let loader = async () => {
+  // fetch request
+}
+
+export default function Index() {
+  let { data } = useLoaderData()
+  console.log(data)
+
+  return (
+    <></>
+  )
+}
+```
+
+Each route can define a "loader" function that will be called on the server before rendering to provide data to the route. You can connect to a database or run any server side code next to the component that renders it.
+
+```jsx
+// app/routes/graphql.jsx
+
+import { useLoaderData } from "@remix-run/react"
+
+const GET_CHARACTERS = `{
+  characters {
+    results {
+      name
+      id
+    }
+  }
+}`
+
+export let loader = async () => {
+  const res = await fetch(
+    'https://rickandmortyapi.com/graphql', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query: GET_CHARACTERS
+      })
+    }
+  )
+  const characters = await res.json()
+  return characters
+}
+
+export default function Index() {
+  let { data } = useLoaderData()
+
+  return (
+    <>
+      <ul>
+        {data.characters.results.map(({ name, id }) => (
+          <li key={id}>
+            {name}
+          </li>
+        ))}
+      </ul>
+    </>
+  )
+}
+```
+
+![04-graphql-route-with-characters-data](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/swijfauollj5d2tutrk2.png)
+
+## Deploy to Vercel
+
+The starter already includes Vercel specific configuration in `remix.config.js` and the `@remix-run/vercel` package in `server.js`. You can deploy your app by [importing a Git repository](https://vercel.com/new) into Vercel. If you'd like to avoid using a Git repository, you can directly deploy the project with the [Vercel CLI](https://vercel.com/cli):
+
+```bash
+yarn vercel
+```
+
+If this is your first time using the Vercel CLI, it will first ask you to login. You will then be asked a series of questions to configure your Vercel deployment.
+
+```
+? Set up and deploy “~/ajcwebdev-remix”? [Y/n] y
+? Which scope do you want to deploy to? Anthony Campolo
+? Link to existing project? [y/N] n
+? What's your project's name? ajcwebdev-remix
+? In which directory is your code located? ./
+
+Auto-detected Project Settings (Remix):
+- Build Command: remix build
+- Output Directory: public
+- Development Command: remix dev
+? Want to override the settings? [y/N] n
+
+🔗  Linked to ajcwebdev/ajcwebdev-remix (created .vercel)
+🔍  Inspect: https://vercel.com/ajcwebdev/ajcwebdev-remix/9pRFBDM3BgCnMEHdt2CctPMz6V7c [2s]
+✅  Production: https://ajcwebdev-remix.vercel.app [copied to clipboard] [1m]
+📝  Deployed to production. Run `vercel --prod` to overwrite later (https://vercel.link/2F).
+💡  To change the domain or build command, go to https://vercel.com/ajcwebdev/ajcwebdev-remix/settings
+```
+
+Open your [website URL](https://ajcwebdev-remix.vercel.app) to see the deployed project.

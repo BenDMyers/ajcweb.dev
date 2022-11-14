@@ -1,0 +1,269 @@
+---
+canonicalURL: "https://prismic.io/blog/nextjs-typescript-tips-faqs"
+title: "Next.js + TypeScript: Tips and FAQs for Every Stage of Your Journey"
+description: "Next.js has embraced TypeScript in recent years. We will explore setting up a new Next.js project with TypeScript, migrating an existing Next.js project to TypeScript, and common pitfalls."
+publishDate: "2022-09-19"
+tags: [ "Next.js", "TypeScript", "create-t3-app" ]
+image: "https://images.prismic.io/wroom/a5bb78c6-0b18-4b5b-a739-358e285b0464_blog-og-base-1.png?mark-y=260&mark-x=90&mark64=aHR0cHM6Ly9hc3NldHMuaW1naXgubmV0L350ZXh0P2g9MzAwJnR4dC1hbGlnbj1sZWZ0JTJDYm90dG9tJnR4dDY0PVRtVjRkQzVxY3lBcklGUjVjR1ZUWTNKcGNIUTZJRlJwY0hNZ1lXNWtJRVpCVVhNZ1ptOXlJRVYyWlhKNUlGTjBZV2RsSUc5bUlGbHZkWElnU205MWNtNWxlUT09JnR4dC1jb2xvcj1mZmZmZmYmdHh0LWZvbnQ9QXZlbmlyJTIwQmxhY2smdHh0LXNpemU9NjAmdz05MDA=&txt-width=900&txt-fit=max&txt-align=left%2Cbottom&txt-pad=100&txt-size=36&txt-font=Avenir%20Bold&txt-color=BEBDC7&txt64="
+layout: "@/layouts/BlogPost"
+---
+
+TypeScript has increasingly become a standard tool for web developers and one of the most common languages for writing web applications. For evidence of TypeScript's popularity, see the State of JavaScript 2021 survey under the section ["JavaScript Flavors"](https://2021.stateofjs.com/en-US/other-tools/#javascript_flavors) (or languages that compile to JavaScript). TypeScript overwhelmingly comes in first place with 69% of the votes while Elm comes in at second place with 2.4%.
+
+Likewise, Next.js is one of the most popular JavaScript back-end frameworks, coming in at [second place after Express with 45% usage](https://2021.stateofjs.com/en-US/libraries/back-end-frameworks). Built with JavaScript originally in mind, Next.js has slowly been embracing TypeScript over the past few years. For example, most of the official examples are now using TypeScript by default.
+
+In this article, we will explore how to set up a new Next.js project with TypeScript, how to migrate an existing Next.js project to TypeScript, and common pitfalls that developers should be aware of when using TypeScript and Next.js together.
+
+## Table of Contents
+
+1. [Benefits of converting a Next.js project to TypeScript](https://prismic.io/blog/nextjs-typescript-tips-faqs#benefits)
+2. [Use `create-next-app` with the TypeScript flag to start from scratch](https://prismic.io/blog/nextjs-typescript-tips-faqs#scratch)
+3. [Migrating a Next.js project from JavaScript to TypeScript](https://prismic.io/blog/nextjs-typescript-tips-faqs#migrate)
+4. [Next.js specific types and where to include them](https://prismic.io/blog/nextjs-typescript-tips-faqs#next-types)
+5. [Next.js starter projects written in TypeScript](https://prismic.io/blog/nextjs-typescript-tips-faqs#starters)
+6. [Additional considerations, including common pitfalls and how to avoid them](https://prismic.io/blog/nextjs-typescript-tips-faqs#considerations)
+7. [Final thoughts for the future](https://prismic.io/blog/nextjs-typescript-tips-faqs#future)
+
+## Benefits of converting a Next.js project to TypeScript
+
+But why are so many developers using TypeScript instead of "vanilla" JavaScript? To understand this, we must first understand the definition of a type (also called a static type or data type). A type is a programming language concept that defines a set of possible values and a set of allowed operations on it.
+
+A data type tells the compiler or interpreter how the programmer intends to use the data. For example, it says whether you want to use a string or an integer for a particular variable. The benefits from types typically involve increased visibility into the state of your code inside your code editor through VS code's [TypeScript language server](https://github.com/typescript-language-server/typescript-language-server).
+
+This visibility can lead to the following benefits:
+
+* Types enable better introspection, which catches bugs before they have a chance to run in the application.
+* Code editors are able to provide more intelligent autocompletion.
+* Error handling can be done even before compile time and surfaced while coding.
+* Functions, classes, and variables can be renamed automatically in every instance throughout the codebase.
+* As files are moved around the project, module imports can be appropriately renamed to the new locations.
+
+The benefits of adding types to Next.js itself are similar to the benefits of adding types to React. With React, you're using functional components that can be passed props to customize the data displayed in the components. These props themselves can be typed and the React documentation includes a page on "[Type Checking With PropTypes](https://reactjs.org/docs/typechecking-with-proptypes.html)".
+
+## Use `create-next-app` with the TypeScript flag to start from scratch
+
+Use any of the following commands to create a Next.js application with TypeScript enabled:
+
+```bash
+npx create-next-app@latest --ts
+yarn create next-app --ts
+pnpm create next-app --ts
+```
+
+Start the development server with the corresponding CLI tool:
+
+```bash
+npm run dev
+yarn dev
+pnpm dev
+```
+
+## Migrating a Next.js project from JavaScript to TypeScript
+
+If you already have a Next.js project created with JavaScript, you can migrate to TypeScript by following the sequence of instructions presented in this section. First, create a `tsconfig.json` file.
+
+Then, install the TypeScript and type dependencies with any of the following commands:
+
+```bash
+npm install --save-dev typescript @types/react @types/node
+yarn install -D typescript @types/react @types/node
+pnpm install -D typescript @types/react @types/node
+```
+
+Next, change any files ending in `js` and `jsx` to `ts` and `tsx` and your project should be all set up for TypeScript! You will also notice that a new file has been created called `next-env.d.ts`.
+
+```ts
+/// <reference types="next" />
+/// <reference types="next/image-types/global" />
+```
+
+What purpose does this file serve? TypeScript has two main kinds of files:
+
+* `.ts` files are implementation files containing types and executable code and are the files that produce `.js` outputs.
+* `.d.ts` files are declaration files that contain only type information.
+
+While `next.config.js` must be a JavaScript file since it does not get parsed by Babel or TypeScript, it is [possible to add some type checking](https://nextjs.org/docs/basic-features/typescript#type-checking-nextconfigjs) by using JSDoc like so:
+
+```js
+// @ts-check
+
+/**
+ * @type {import('next').NextConfig}
+ **/
+const nextConfig = {
+  /* config options here */
+}
+
+module.exports = nextConfig
+```
+
+Getting Next.js `getStaticProps` working with TypeScript can be a large pain point when trying to migrate a current Next.js JavaScript application. [Vitamindev.com](http://vitamindev.com/) provides a thorough accounting of [using `GetStaticProps` and `GetStaticPaths` with TypeScript](https://www.vitamindev.com/next-js/getstaticprops-getstaticpaths-typescript/). You can also find [additional discussion about this issue on StackOverflow](https://stackoverflow.com/questions/65078245/how-to-make-next-js-getstaticprops-work-with-typescript). The high-level conclusions include:
+
+* Using the following types provided by Next.js: `NextPage`, `GetStaticProps`, and `GetStaticPaths`.
+* Adding additional type safety for props and paths by providing generic types to `NextPage`, `GetStaticProps`, and `GetStaticPaths`.
+
+## Next.js specific types and where to include them
+
+### Data Fetching Types
+
+Next.js includes a handful of built-in data fetching functions including `getStaticProps`, `getStaticPaths`, and `getServerSideProps`. Each of these includes its own built-in types called `GetStaticProps`, `GetStaticPaths`, and `GetServerSideProps`.
+
+```tsx
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async (context) => {...}
+
+export const getStaticPaths: GetStaticPaths = async () => {...}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {...}
+```
+
+Here is a full-page example using some of these types:
+
+```tsx
+// src/pages/index.tsx
+
+import type { InferGetStaticPropsType, GetStaticPropsContext } from 'next'
+
+type PageProps = InferGetStaticPropsType<typeof getStaticProps>
+
+export default function Page({ fetchedData }: PageProps) {
+  ...
+}
+
+export async function getStaticProps({ previewData }: GetStaticPropsContext) {
+  const fetchedData = await someAPICall()
+
+  return {
+    props: {
+      fetchedData,
+    },
+  }
+}
+```
+
+`PageProps` is typed using the inferred return type from `getStaticProps()` and `fetchedData` is typed as the return value of `client.someAPI()`.
+
+### Request and Response Types
+
+`NextApiRequest` and `NextApiResponse` are the built-in types for API routes. These correspond to requests and responses to your serverless functions on each route:
+
+```ts
+// pages/api/hello.ts
+
+import type { NextApiRequest, NextApiResponse } from 'next'
+
+export default (req: NextApiRequest, res: NextApiResponse) => {
+  res.status(200).json({ name: 'John Doe' })
+}
+```
+
+### Custom App Type
+
+The built-in type `AppProps` can be used for a [custom `App`](https://nextjs.org/docs/advanced-features/custom-app) by changing the file name to `./pages/_app.tsx`:
+
+```tsx
+// pages/_app.tsx
+
+import type { AppProps } from 'next/app'
+
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />
+}
+```
+
+The custom `App` component can be useful for persisting the layout between page changes, keeping state when navigating pages, injecting additional data into pages, and adding global CSS.
+
+## Next.js starter projects written in TypeScript
+
+The Next.js team has an officially supported TypeScript example app at `next.js/examples/blog-starter`. This takes the blog starter that the official Next.js [tutorial builds out on the Next.js documentation site](https://nextjs.org/learn/basics/create-nextjs-app). This is the best place to start to see a modern project built with the standards that Next.js believes should be applied to projects today.
+
+However, it will not show you how to integrate many other libraries that may be required for a complete application. If this is important for you, you will want to look at community starters and frameworks that expand upon Next.js by themselves.
+
+### Community starters
+
+There have been numerous different starters created by community members, companies, and popular open-source libraries. Some prominent starters on this list include:
+
+* `ixartz/Next-JS-Landing-Page-Starter-Template` - Landing page with Tailwind CSS
+* `jpedroschmitz/typescript-nextjs-starter` - Minimal starter with ESLint and Prettier
+* `pankod/superplate` - Includes Jest, styled-component, Axios, and various plugins
+* `graphile/starter` - Includes GraphQL integration with Apollo and Graphile
+* `trpc/examples-next-prisma-starter` - Includes Prisma and tRPC for fullstack, end-to-end type safety
+
+These will provide different flavors and additional libraries for various use cases. These can provide useful inspiration and jumping-off points, but all will have opinions specific to their project's creators.
+
+### `create-t3-app`
+
+One fairly recent addition to the increasingly competitive framework landscape is `create-t3-app`. ct3a is an interactive CLI tool that generates a boilerplate Next.js project configured with TypeScript and various other option libraries.
+
+This gives a greater level of flexibility in designing your own project structure compared to community starters. The optional libraries include Tailwind, [NextAuth](https://next-auth.js.org/), [tRPC](https://trpc.io/), and [Prisma](https://www.prisma.io/). tRPC and Prisma in particular enable end-to-end type safety since Prisma Client is a type-safe database client, and tRPC uses typed remote procedure calls.
+
+The front end is able to seamlessly introspect the back end and become "aware" of the typed models residing within the database. ct3a is especially useful if you are interested in building a full-stack project complete with a database. It's even more useful if your project requires authentication.
+
+## Additional considerations, including common pitfalls and how to avoid them
+
+### How to integrate other libraries such as Tailwind
+
+For styling libraries like Tailwind, TypeScript is mostly unimportant. This is because CSS cannot be typed like JavaScript, at least not today. One consideration may be including `ts` and `tsx` file extensions in your `tailwind.config.js`. This is useful if you have a project that is being incrementally migrated to TypeScript and not all files have `ts` and `tsx` extensions yet:
+
+```js
+// tailwind.config.js
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+Examples of Next.js projects using TypeScript with different styling libraries such as [Tailwind](https://github.com/vercel/next.js/blob/canary/examples/blog-starter/) can be found on the Next.js GitHub repo. It is also worth mentioning that the [Tailwind CSS VS Code plugin](https://tailwindcss.com/docs/editor-setup#intelli-sense-for-vs-code) provides autocompletion like TypeScript. As previously discussed, it's not type checked like the rest of the code, but it gives a TypeScript-like code editor experience.
+
+### Incremental type checking
+
+Type checking can slow down an application if it gets too large. One way to help mitigate this is with [incremental type checking](https://www.typescriptlang.org/tsconfig#incremental). This will tell TypeScript to save information about the project graph from the last compilation to help speed up type checking in bigger applications.
+
+```json
+// tsconfig.json
+
+{
+  "compilerOptions": {
+    "incremental": true,
+  },
+}
+```
+
+### Ignoring TypeScript errors while type checking in production
+
+Sometimes you have some TypeScript errors that you know aren't an issue but are causing your build to crash when running `next build`. If you absolutely have to [ignore TypeScript errors in production](https://nextjs.org/docs/api-reference/next.config.js/ignoring-typescript-errors) (which is highly ill-advised), you can do so with the following setting in your `next.config.js` file:
+
+```js
+// next.config.js
+
+module.exports = {
+  typescript: {
+    // WARNING!!!
+    // Dangerously allow production builds to successfully
+    // complete even if your project has type errors.
+    ignoreBuildErrors: true,
+  },
+}
+```
+
+In these situations, it may be tempting to throw an `any` type instead. However, using `any` is effectively the same as `ignoreBuildErrors`, except scoped to a specific location and with negative trickle-down effects. Other strategies, like using `unknown` in place of `any`, type assertion with `as`, and `// @ts-ignore` are better alternatives to `any`.
+
+## Final thoughts for the future
+
+In this article, we've discussed the rising popularity of TypeScript and the benefits of including types in your JavaScript code. We also saw how to create new Next.js projects from scratch and how to migrate existing Next.js projects to TypeScript.
+
+But what is the implication of the Next.js and broader JavaScript framework ecosystem moving to a TypeScript-first world? There are a handful of different implications to consider:
+
+* Types may be built into the language itself somehow through the TC39 process. Right now there is a Stage 1 proposal called [Type Annotations](https://github.com/tc39/proposal-type-annotations) that may build types directly into the language in a way where they can be ignored by browsers.
+* Types may become required for many frameworks. `create-t3-app` for example cannot be used with JavaScript at all.
+* Developers reacting against this trend may become more resistant to using types and build identities around not using TypeScript similar to how people have built identities around using “[vanilla JavaScript](https://gomakethings.com/)” instead of frameworks.
+* More jobs will be looking for developers who know how to use TypeScript or can easily switch between JavaScript and TypeScript.
