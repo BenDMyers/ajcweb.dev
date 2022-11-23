@@ -37,9 +37,6 @@ const url = new URL(Astro.request.url)
 		<a href="/posts" aria-current={url.pathname === "/posts" ? "page" : false}>
 			Blog
 		</a>
-		<a href="/tags" aria-current={url.pathname === "/tags" ? "page" : false}>
-			Tags
-		</a>
 	</nav>
 
 	<ThemeToggle />

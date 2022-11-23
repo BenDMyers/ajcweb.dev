@@ -25,9 +25,7 @@ const formatDate = getLocaleTime(date)
 							<ul class={postTagsList}>
 								{tags.map((tag) => (
 									<li>
-										<a class={tagLink} aria-label={`View more ${tag}`} href={`/tags/${tag}`}>
-											{tag}
-										</a>
+										{tag}
 									</li>
 								))}
 							</ul>
