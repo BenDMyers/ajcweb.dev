@@ -1,0 +1,833 @@
+---
+canonicalURL: "https://ajcwebdev.com/2022/11/20/a-first-look-at-solidstart"
+title: "a first look at solidstart"
+description: "SolidStart is a project starter and metaframework for SolidJS that provides a first-class way to build and deploy SolidJS applications."
+publishDate: "2022-11-10"
+tags: [ "SolidJS", "SolidStart", "Vite", "Netlify" ]
+image: 
+layout: "@/layouts/BlogPost"
+---
+
+## Outline
+
+- [Introduction](#introduction)
+  - [A History of SolidJS](#a-history-of-solidjs)
+  - [Comparing React and SolidJS](#comparing-react-and-solidjs)
+  - [SolidJS Benchmark Performance](#solidjs-benchmark-performance)
+  - [SolidStart Motivations](#solidstart-motivations)
+- [Create Client Rendered Solid Project](#create-client-rendered-solid-project)
+  - [TypeScript and Vite Configuration](#typescript-and-vite-configuration)
+  - [HTML Entry Point and CSS Stylesheet](#html-entry-point-and-css-stylesheet)
+  - [App Entry Point and Render Function](#app-entry-point-and-render-function)
+  - [Start Development Server](#start-development-server)
+- [Migrate Project to SolidStart](#migrate-project-to-solidstart)
+  - [SolidStart Scripts and Vite Configuration](#solidstart-scripts-and-vite-configuration)
+  - [Index Route](#index-route)
+  - [Root and Entry Points](#root-and-entry-points)
+- [Components and Reactive Primitives](#components-and-reactive-primitives)
+  - [Create Signal](#create-signal)
+  - [Create Effect](#create-effect)
+  - [Create Route Data](#create-route-data)
+- [API Routes](#api-routes)
+- [Deployment Adapters](#deployment-adapters)
+  - [Deploy to Netlify](#deploy-to-netlify)
+  - [Deploy to Vercel](#deploy-to-vercel)
+  - [Deploy to Cloudflare](#deploy-to-cloudflare)
+
+## Introduction
+
+On [November 9, 2022](https://twitter.com/solid_js/status/1590432218308292608/), Ryan Carniato published [Introducing SolidStart: The SolidJS Framework](https://www.solidjs.com/blog/introducing-solidstart) to announce the beta launch of SolidStart, the eagerly awaited metaframework for SolidJS. SolidStart provides a first-party project starter and metaframework for SolidJS. It prescribes a recommended way to organize, architect, and deploy SolidJS applications.
+
+Vite is included for the build tool along with extra Solid packages for common functionality and a CLI for generating templated projects. These packages enable features such as routing, MetaTags, different rendering modes, TypeScript support, and deployment adapters. In addition to [Node](https://github.com/solidjs/solid-start/tree/main/packages/start-node) and [static hosting](https://github.com/solidjs/solid-start/tree/main/packages/start-static), adapters currently exist for the following platforms:
+
+- [Netlify Functions and Edge](https://github.com/solidjs/solid-start/tree/main/packages/start-netlify)
+- [Vercel Functions and Edge](https://github.com/solidjs/solid-start/tree/main/packages/start-vercel)
+- Cloudflare [Workers](https://github.com/solidjs/solid-start/tree/main/packages/start-cloudflare-workers) and [Pages](https://github.com/solidjs/solid-start/tree/main/packages/start-cloudflare-pages)
+- [Deno Deploy](https://github.com/solidjs/solid-start/tree/main/packages/start-deno)
+
+### A History of SolidJS
+
+Before diving into SolidStart, it's worth taking a moment to outline the history and motivation behind the creation of Solid. Branded as "a reactive JavaScript library for building user interfaces," [Ryan open sourced the framework on April 24, 2018](https://github.com/solidjs/solid/tree/a194f02e3df560f0e75d96a96f9df6631285199e). It was designed as a spiritual successor to the reactive programming model exemplified by KnockoutJS.
+
+> _React wasn’t the first JavaScript “Just a Render Library”. I attribute that honor to a much older library, KnockoutJS. Knockout didn’t have components but identified an application was built from 3 parts, `Model`, `ViewModel`, and `View`, and only cared about how you organized the latter. The `ViewModel` was a revolutionary concept._
+> 
+> _`ViewModels` are instances much like components. But what set Knockout apart was `ViewModels` could be anything you wanted; an object, a function, a class. There were no lifecycle functions. You could bring your own models and organize your application as you saw fit. Without best practices it could be a complete mess._
+> 
+> _But it was truly “Just a Render Library.” Those boundaries haven’t changed in over a decade... As `Controllers` transformed to `Routers`, `Models` to `Stores`, and `ViewModels`/`Views` got wrapped together as `Components`, the anatomy of a Component (even in a smaller library like React) is still 3 main parts:_
+> - _Container_
+> - _Change (Local State) Manager_
+> - _Renderer_
+> 
+> _Ryan Carniato_ - ***[B.Y.O.F. Writing a JS Framework in 2018 (November 10, 2018)](https://ryansolid.medium.com/b-y-o-f-part-1-writing-a-js-framework-in-2018-b02a41026929)***
+
+As the 2010s progressed, Ryan believed the JavaScript world had moved on from using composable reactive primitives in favor of class components and lifecycle methods. Dissatisfied with this direction, Ryan aimed for Solid to be a more modern reactive framework inspired by Knockout but with features informed by newer component frameworks like Angular, React, and Vue.
+
+Shortly after the framework's release, React introduced hooks. Their debut in [_React Today and Tomorrow and 90% Cleaner React With Hooks, October 26, 2018_](https://www.youtube.com/watch?v=dpw9EHDh2bM) became a pivotal moment for Solid. React hooks are functions that can access React state and lifecycle methods from functional components. These functions can be composed into more complex UIs much like Solid.
+
+### Comparing React and SolidJS
+
+Within a few years, the majority of React developers would be developing with composable, functional patterns. This ensured that React developers would find Solid easily comprehensible. But despite the surface level similarities between Solid and React's syntax, Solid has a few key advantages over React due to its underlying implementation.
+
+Solid removes the need for some of React's more complex hooks that patch over the leaky abstraction underlying React. `useCallback` exists to give React developers a mechanism for preventing rerenders. But in Solid, components only mount once and don't rerender so there is no need for an equivalent hook.
+
+### SolidJS Benchmark Performance
+
+Solid is also one of the most performant JavaScript libraries. This is evidenced by the results of the [JS Framework Benchmark](https://github.com/krausest/js-framework-benchmark). A large, randomized table of entries is created and modified. Rendering duration is measured along with how long various operations take to complete (lower scores are better).
+
+While admittedly a contrived example, the benchmark allows factoring multiple measurements into a single geometric mean representing comparative performance between frameworks. For a combination of all types of read and write operations, Solid ranks just below vanilla JavaScript:
+
+| Framework  | Version | Mean     |
+| ---------- | ------- | -------- |
+| Vanilla JS | N/A     | __1.00__ |
+| Solid      | 1.5.4   | __1.10__ |
+| Lit-html   | 1.1.0   | __1.19__ |
+| Vue        | 3.2.37  | __1.25__ |
+| Svelte     | 3.50.1  | __1.30__ |
+| Preact     | 10.7.3  | __1.43__ |
+| Angular    | 13.0.0  | __1.58__ |
+| Marko      | 4.12.3  | __1.70__ |
+| React      | 18.2.0  | __1.73__ |
+
+Solid ties vanilla JS and ranks just below Svelte on lighthouse startup metrics:
+
+| Framework  | Version | Mean     |
+| ---------- | ------- | -------- |
+| Svelte     | 3.50.1  | __1.03__ |
+| Solid      | 1.5.4   | __1.04__ |
+| Vanilla JS | N/A     | __1.04__ |
+| Preact     | 10.7.3  | __1.06__ |
+| Lit-html   | 1.1.0   | __1.07__ |
+| Marko      | 4.12.3  | __1.18__ |
+| Vue        | 3.2.37  | __1.27__ |
+| React      | 18.2.0  | __1.69__ |
+| Angular    | 13.0.0  | __1.77__ |
+
+### SolidStart Motivations
+
+SolidStart takes influence from other JavaScript metaframeworks including Next.js, Nuxt.js, and SvelteKit by introducing multiple build modes, routing conventions, opinionated project structures, and pre-configured deployment adapters. The framework can produce sites or applications that employ either:
+
+- [Static site generation (SSG)](https://www.patterns.dev/posts/static-rendering/)
+- [Client-side rendering (CSR)](https://www.patterns.dev/posts/client-side-rendering/)
+- [Server-side rendering (SSR)](https://www.patterns.dev/posts/server-side-rendering/)
+- [Streaming SSR (SSSR)](https://www.patterns.dev/posts/ssr/)
+
+In the future, you'll also be able to choose:
+
+- [Some combination of all the above through route level controls](https://github.com/solidjs/solid-start/issues/381)
+- [Islands through newly created conventions like Hybrid Routing and Minimal Hydration](https://github.com/solidjs/solid-start/issues/400)
+
+## Create Client Rendered Solid Project
+
+```bash
+mkdir ajcwebdev-solidstart
+cd ajcwebdev-solidstart
+pnpm init
+pnpm add solid-js @solidjs/meta @solidjs/router solid-start
+pnpm add -D solid-start-node vite-plugin-solid vite undici typescript
+```
+
+Add `vite` scripts to `package.json` and set `type` to `module`.
+
+```json
+{
+  "name": "ajcwebdev-solidstart",
+  "version": "1.0.0",
+  "description": "An example SolidStart application deployed on Netlify, Vercel, and Cloudflare Pages",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "keywords": [ "SolidJS", "SolidStart", "Netlify", "Vercel", "Cloudflare" ],
+  "author": "Anthony Campolo",
+  "license": "MIT"
+}
+```
+
+Create a `.gitignore` file.
+
+```bash
+echo 'node_modules\n.env\n.DS_Store\ndist\n.solid\nnetlify\n.netlify\n.vercel' > .gitignore
+```
+
+There's only a handful of files needed for a working Solid project. These include a configuration file for Vite (`vite.config.ts`), an entry point for our JavaScript application (`src/root.tsx`), and an entry point for our HTML page (`index.html`).
+
+Run the following commands:
+
+```bash
+mkdir src
+echo > tsconfig.json   # TypeScript Configuration
+echo > vite.config.ts  # Vite Configuration
+echo > index.html      # HTML entry point where JavaScript app loads
+echo > src/root.css    # CSS stylesheet
+echo > src/root.tsx    # Defines the document the app renders
+```
+
+In addition to the required files we also created optional files for CSS styling and TypeScript configuration. Later in the tutorial when we migrate this project to SolidStart, we'll remove the HTML file and replace it with two files, `entry-server.tsx` and `entry-client.tsx`.
+
+### TypeScript and Vite Configuration
+
+Copy/paste this impenetrable hunk of gibberish into your `tsconfig.json` and say a prayer to Microsoft.
+
+```json
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "jsxImportSource": "solid-js",
+    "jsx": "preserve",
+    "types": ["vite/client"],
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["./src/*"]
+    }
+  }
+}
+```
+
+The `vite.config.ts` file is where we'll add the Solid Plugin to define our Vite Configuration. Import `solidPlugin` from `vite-plugin-solid` and add it to the `plugins` array inside Vite's `defineConfig` helper.
+
+```ts
+// vite.config.ts
+
+import solidPlugin from "vite-plugin-solid"
+import { defineConfig } from "vite"
+
+export default defineConfig({
+  plugins: [solidPlugin()]
+})
+```
+
+### HTML Entry Point and CSS Stylesheet
+
+The root Solid component will be imported as an ESM module from `/src/root.tsx` and set to the `src` attribute.
+
+```html
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="An example SolidJS single-page application." />
+    <title>A First Look at SolidStart</title>
+  </head>
+  
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script src="/src/root.tsx" type="module"></script>
+  </body>
+</html>
+```
+
+Include the following CSS styles in `src/root.css`.
+
+```css
+/* src/root.css */
+
+body {
+  background-color: #282c34;
+  color: white;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin: 0;
+  text-align: center;
+}
+
+header {
+  font-size: calc(10px + 2vmin);
+  margin: 1rem;
+}
+
+a {
+  color: #b318f0;
+}
+```
+
+### App Entry Point and Render Function
+
+To mount Solid and automatically create a reactive root, import [`render`](https://www.solidjs.com/docs/latest/api#render) from `solid-js/web` and pass in two arguments, a top-level component function and an element to mount on:
+- The first argument returns the root component and must be passed a function.
+- The mounting container is passed for the second argument and wired up to the `root` div.
+
+```tsx
+// src/root.tsx
+
+/* @refresh reload */
+import { render } from "solid-js/web"
+import "./root.css"
+
+function App() {
+  return (
+    <>
+      <header>
+        <h1>A First Look at SolidStart</h1>
+        <a href="https://github.com/solidjs/solid">Learn Solid</a>
+      </header>
+      <footer>
+        <span>
+          Visit <a href="https://ajcwebdev.com">ajcwebdev.com</a> for more tutorials
+        </span>
+      </footer>
+    </>
+  )
+}
+
+render(
+  () => <App />, document.getElementById('root') as HTMLElement
+)
+```
+
+### Start Development Server
+
+```bash
+pnpm dev # or npm run dev | yarn dev
+```
+
+Open [`localhost:5173`](http://localhost:5173) to view the running application in your browser. The page will reload if you make edits.
+
+![01 - Solid homepage with styling on localhost 5173](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7f3xp7lhky550uq4ecbk.jpg)
+
+At this point, we could build and deploy a `dist` folder to any static host provider. Run `pnpm build` and `pnpm serve` to test serving your bundle on [`localhost:4173`](http://localhost:4173). Instead of deploying this project, we'll continue to the next section and begin modifying our project to make it work with SolidStart.
+
+## Migrate Project to SolidStart
+
+First, delete your existing HTML file and create a `routes` directory inside `src`.
+
+```bash
+rm -rf index.html
+mkdir src/routes
+echo > src/entry-server.tsx # Server entry point
+echo > src/entry-client.tsx # Browser entry point
+echo > src/routes/index.tsx # Home route
+```
+
+### SolidStart Scripts and Vite Configuration
+
+Replace the Vite scripts with the following SolidStart scripts.
+
+```json
+{
+  "scripts": {
+    "dev": "solid-start dev",
+    "build": "solid-start build",
+    "start": "solid-start start"
+  },
+}
+```
+
+Remove `solidPlugin` from `vite-plugin-solid` and replace it with `solid` from `solid-start/vite`.
+
+```ts
+// vite.config.ts
+
+import solid from "solid-start/vite"
+import { defineConfig } from "vite"
+
+export default defineConfig({
+  plugins: [solid()]
+})
+```
+
+### Index Route
+
+Copy the `App` component from `src/root.tsx` and include it in `src/routes/index.tsx` with `export default`.
+
+```jsx
+// src/routes/index.tsx
+
+export default function App() {
+  return (
+    <>
+      <header>
+        <h1>A First Look at SolidStart</h1>
+        <a href="https://github.com/solidjs/solid">Learn Solid</a>
+      </header>
+      <footer>
+        <span>
+          Visit <a href="https://ajcwebdev.com">ajcwebdev.com</a> for more tutorials
+        </span>
+      </footer>
+    </>
+  )
+}
+```
+
+### Root and Entry Points
+
+[`root.tsx`](https://start.solidjs.com/api/root) is the point where your code runs on both the server and client. It exports a `Root` component that is shared on the server and browser as an isomorphic entry point to your application. Since SolidStart is designed for file-system routing, routes are defined via a folder structure under the `/routes` folder. You can pass them into the [`<Routes>`](https://start.solidjs.com/api/Routes) component with the [`<FileRoutes>`](https://start.solidjs.com/api/FileRoutes) component.
+
+This collects routes from the file-system in the `/routes` folder to be inserted into a parent `<Routes>` component. Since `<FileRoutes>` returns a route configuration, it must be placed directly between `<Routes>`, typically in the `root.tsx` file. `<Routes>` is a special `Switch` component that renders the correct [`<Route>`](https://start.solidjs.com/api/Route) child based on the users' location, and switches between them as the user navigates.
+
+```tsx
+// src/root.tsx
+
+// @refresh reload
+import { Suspense } from "solid-js"
+import { Body, ErrorBoundary, FileRoutes, Head, Html, Meta, Routes, Scripts, Title } from "solid-start"
+import "./root.css"
+
+export default function Root() {
+  return (
+    <Html lang="en">
+      <Head>
+        <Title>A First Look at SolidStart</Title>
+        <Meta charset="utf-8" />
+        <Meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Meta name="description" content="An example SolidStart application deployed on Netlify, Vercel, and Cloudflare Pages." />
+      </Head>
+      <Body>
+        <ErrorBoundary>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              <FileRoutes />
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
+        <Scripts />
+      </Body>
+    </Html>
+  )
+}
+```
+
+[`entry-client.tsx`](https://start.solidjs.com/api/entry-client) starts the application in the browser by passing `<StartClient>` to a `mount` function. `mount` is an alias over Solid's `hydrate` and `render` methods. It ensures that the client always starts up properly whether you are using SolidStart for client-only rendering or server-side rendering.
+
+```tsx
+// src/entry-client.tsx
+
+import { mount, StartClient } from "solid-start/entry-client"
+
+mount(() => <StartClient />, document)
+```
+
+[`entry-server.tsx`](https://start.solidjs.com/api/entry-server) starts the application on the server by passing `<StartServer>` to a render function called `renderAsync`. `createHandler` enables a mechanism for introducing middleware into server rendering. `<StartServer>` wraps the application root and includes Context providers for Routing and MetaData. It takes the `Event` object originating from the underlying runtime and includes information such as the `request`, `responseHeaders` and status codes.
+
+```tsx
+// src/entry-server.tsx
+
+import { StartServer, createHandler, renderAsync } from "solid-start/entry-server"
+
+export default createHandler(
+  renderAsync((event) => <StartServer event={event} />)
+)
+```
+
+While this example uses `renderAsync`, there are three different render functions provided by SolidStart. Each wraps Solid's rendering method and returns a unique output:
+
+- [`renderSync`](https://start.solidjs.com/api/entry-server#rendersynccodefn-options) calls `renderToString` to synchronously respond immediately and render the application to a string.
+- [`renderAsync`](https://start.solidjs.com/api/entry-server#renderasynccodefn-options) calls `renderToStringAsync` to asynchronously respond when the page has fully been loaded and render the application to a promise.
+- [`renderStream`](https://start.solidjs.com/api/entry-server#renderstreamcodefn-options) calls `renderToStream` to asynchronously respond as soon as it can and render the application to a `ReadableStream`.
+
+Check that everything still displays as expected.
+
+```bash
+pnpm dev
+```
+
+Open [localhost:3000](http://localhost:3000).
+
+## Components and Reactive Primitives
+
+Since this is a tutorial about a frontend framework it will be considered illegitimate until we build a counter. Create a `components` directory and then a file called `Counter.tsx` inside of it.
+
+```bash
+mkdir src/components
+echo > src/components/Counter.tsx
+```
+
+There are two foundational building blocks at the core of Solid's fine grained reactivity that will enable us to craft this magnificent counter into existence:
+- __Components__ contain stateless DOM elements within functions that accept `props` and return JSX elements.
+- __Reactive Primitives__ including Signals, Effects, and Memos track and broadcast the changing values that represent the state of the components over time.
+
+In this component we'll create a signal to track the changing value of the counter and an effect to modify the value with button clicks.
+
+### Create Signal
+
+[__Signals__](https://www.solidjs.com/tutorial/introduction_signals) contain values that change over time. They are tracked by the framework and update automatically by broadcasting to the rest of the interface. Use [`createSignal`](https://www.solidjs.com/docs/latest#createsignal) to initialize a value of `0` and set it to `count`. Increment the counter once every second by passing a `setCount(count() + 1)` function to a `setInterval()` method that executes every 1000 milliseconds.
+
+```jsx
+// src/components/Counter.tsx
+
+import { createSignal } from "solid-js"
+
+export default function Counter() {
+  const [count, setCount] = createSignal(0)
+
+  setInterval(() => setCount(count() + 1), 1000)
+
+  return (
+    <>The count is now: {count()}</>
+  )
+}
+```
+
+Inside `src/routes/index.tsx`, import `Counter` from `../components/Counter`. Return a `<Counter />` component in the return function of the `App` component.
+
+```jsx
+// src/routes/index.tsx
+
+import Counter from "../components/Counter"
+
+export default function App() {
+  return (
+    <>
+      <header>
+        <h1>A First Look at SolidStart</h1>
+        <a href="https://github.com/solidjs/solid">Learn Solid</a>
+      </header>
+      <main>
+        <Counter />
+      </main>
+      <footer>
+        <span>
+          Visit <a href="https://ajcwebdev.com">ajcwebdev.com</a> for more tutorials
+        </span>
+      </footer>
+    </>
+  )
+}
+```
+
+![02 - Homepage with counter](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dwlwd7ejdpp0s91ngfwt.jpg)
+
+### Create Effect
+
+An [__Effect__](https://www.solidjs.com/tutorial/introduction_effects) is an example of an observer that runs a side effect depending on a signal. [`createEffect`](https://www.solidjs.com/docs/latest#createeffect) creates a new computation (for example to modify the DOM manually) and runs the given function in a tracking scope.
+
+```jsx
+// src/components/Counter.tsx
+
+import { createSignal, createEffect } from "solid-js"
+
+export default function Counter() {
+  const [count, setCount] = createSignal(0)
+
+  createEffect(() => count())
+
+  return (
+    <>
+      <button onClick={() => setCount(count() + 1)}>
+        Click Me
+      </button>
+      <div>The count is now: {count()}</div>
+    </>
+  )
+}
+```
+
+This automatically tracks the dependencies and reruns the function whenever the dependencies update.
+
+![03 - Create effect button](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/aewt8q11dt1k1je9j2f0.jpg)
+
+### Create Route Data
+
+Create a new file called `students.tsx` inside the `src/routes` directory. This will contain a third party API call to return a list of Harry Potter characters.
+
+```bash
+echo > src/routes/students.tsx
+```
+
+`createRouteData` is a wrapper over `createResource` for handling async data fetching and refetching. With SolidStart's file system routing, components defined under `/routes` can utilize a `routeData` function which executes when navigation to that component begins. This hook returns the JSON parsed data from the loader function. We'll use the Fetch API to query Harry Potter information on Deno Deploy.
+
+```jsx
+// src/routes/students.tsx
+
+import { useRouteData, createRouteData } from "solid-start"
+
+type Student = { name: string; }
+
+export function routeData() {
+  return createRouteData(async () => {
+    const response = await fetch("https://hogwarts.deno.dev/students")
+    return (await response.json()) as Student[]
+  })
+}
+
+export default function Page() { }
+```
+
+This `routeData` function can be thought of like a "loader" function (what a brilliant idea, amazing no one thought of it before) which includes a `useRouteData` hook to access the returned data.
+
+```jsx
+// src/routes/students.tsx
+
+import { useRouteData, createRouteData } from "solid-start"
+
+type Student = { name: string; }
+
+export function routeData() {
+  return createRouteData(async () => {
+    const response = await fetch("https://hogwarts.deno.dev/students")
+    return (await response.json()) as Student[]
+  })
+}
+
+export default function Page() {
+  const students = useRouteData<typeof routeData>()
+
+  return (
+    <>
+      <header>
+        <h1>Students</h1>
+      </header>
+      <main>
+        <code>{JSON.stringify(students(), null, 2)}</code>
+      </main>
+    </>
+  )
+}
+```
+
+`useRouteData` can use whatever data is returned from the `routeData` loader function.
+
+![04 - Return student data to page as raw JSON](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0bgr3mrfotmxgpex4lun.jpg)
+
+The `<For>` component loops over an array of objects. The `<For>` component has only one prop, `each`, which is passed an array to loop over with a callback similar to JavaScript's map callback.
+
+```jsx
+// src/routes/students.tsx
+
+import { useRouteData, createRouteData } from "solid-start"
+import { For } from "solid-js"
+
+type Student = { name: string; }
+
+export function routeData() {
+  return createRouteData(async () => {
+    const response = await fetch("https://hogwarts.deno.dev/students")
+    return (await response.json()) as Student[]
+  })
+}
+
+export default function Page() {
+  const students = useRouteData<typeof routeData>()
+
+  return (
+    <>
+      <header>
+        <h1>Students</h1>
+      </header>
+      <main>
+        <For each={students()}>
+          {student => <li>{student.name}</li>}
+        </For>
+      </main>
+    </>
+  )
+}
+```
+
+![05 - Loop over json response and display data with for component](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ww1skphz70p00f3fdlg0.jpg)
+
+## API Routes
+
+API routes are similar to other routes except instead of exporting a default Solid component with a `routeData` function, they export functions that are named after the HTTP methods they handle such as `GET` or `POST`.
+
+```bash
+mkdir src/routes/api
+echo > src/routes/api/index.ts
+```
+
+[`json`](https://start.solidjs.com/api/json) is a helper function to send JSON HTTP responses. Return a JSON object with the key set to `hello` and the value set to `world`.
+
+```ts
+// src/routes/api/index.ts
+
+import { json } from "solid-start"
+ 
+export function GET() {
+  return json(
+    { hello: "world" }
+  )
+}
+```
+
+Open [127.0.0.1:3000/api](http://127.0.0.1:3000/api) or make a request with cURL.
+
+```bash
+curl http://127.0.0.1:3000/api
+```
+
+```json
+{"hello":"world"}
+```
+
+## Deployment Adapters
+
+Here is the directory and file structure for the final project before including any files related to deployment:
+
+```
+.
+├── src
+│   ├── components
+│   │   └── Counter.tsx
+│   ├── routes
+│   │   ├── api
+│   │   │   └── index.ts
+│   │   ├── index.tsx
+│   │   └── students.tsx
+│   ├── entry-client.tsx
+│   ├── entry-server.tsx
+│   ├── root.css
+│   └── root.tsx
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
+```
+
+Push your project to a GitHub repository.
+
+```bash
+git init
+git add .
+git commit -m "mr solid"
+gh repo create ajcwebdev-solidstart \
+  --description="An example SolidJS application deployed on Netlify, Vercel, and Cloudflare Pages." \
+  --remote=upstream \
+  --source=. \
+  --public \
+  --push
+```
+
+If you only want to use a single deployment platform, select one of the next three options and push the changes to the main branch. I will deploy the project to all three by creating a different branch for each and specifying the correct branch on the deployment platform.
+
+### Deploy to Netlify
+
+Import the `netlify` adapter from `solid-start-netlify`.
+
+```ts
+// vite.config.ts
+
+// @ts-ignore
+import netlify from "solid-start-netlify"
+import solid from "solid-start/vite"
+import { defineConfig } from "vite"
+
+export default defineConfig({
+  plugins: [solid({
+    adapter: netlify({ edge: true })
+  })]
+})
+```
+
+Install `solid-start-netlify` and the Netlify CLI.
+
+```bash
+pnpm add -D solid-start-netlify netlify-cli @types/node
+```
+
+Create a `netlify.toml` file for the build instructions.
+
+```bash
+echo > netlify.toml
+```
+
+Set the `command` to `pnpm build` and the `publish` directory to `netlify`.
+
+```toml
+# netlify.toml
+
+[build]
+  command = "pnpm build"
+  publish = "netlify"
+```
+
+Connect the repository to your Netlify account through the Netlify dashboard or use the following commands with the Netlify CLI.
+
+```bash
+pnpm ntl login
+pnpm ntl init
+```
+
+The build commands will be automatically entered from the `netlify.toml` file.
+
+```bash
+pnpm ntl deploy --prod --build
+```
+
+Open [ajcwebdev-solidstart.netlify.app](https://ajcwebdev-solidstart.netlify.app/) to see a running example.
+
+### Deploy to Vercel
+
+Install `solid-start-vercel` and the Vercel CLI.
+
+```bash
+pnpm add -D solid-start-vercel vercel
+```
+
+Import the `vercel` adapter from `solid-start-vercel`.
+
+```ts
+// vite.config.ts
+
+// @ts-ignore
+import vercel from "solid-start-vercel"
+import solid from "solid-start/vite"
+import { defineConfig } from "vite"
+
+export default defineConfig({
+  plugins: [solid({
+    adapter: vercel({ edge: true })
+  })]
+})
+```
+
+Deploy the project with the Vercel CLI.
+
+```bash
+pnpm vercel --yes --prod
+```
+
+Open [ajcwebdev-solidstart.vercel.app](https://ajcwebdev-solidstart.vercel.app/).
+
+### Deploy to Cloudflare
+
+SolidStart includes two adapters for Cloudflare, one for Cloudflare Workers and another for Cloudflare Pages. It's important to note that the Cloudflare Pages adapter is also using Workers through [Pages Functions](https://blog.cloudflare.com/pages-full-stack-frameworks/#solidstart). Install `solid-start-cloudflare-pages` and the `wrangler` CLI.
+
+```bash
+pnpm add -D solid-start-cloudflare-pages wrangler
+```
+
+Import the `cloudflare` adapter from `solid-start-cloudflare-pages`.
+
+```ts
+// vite.config.ts
+
+// @ts-ignore
+import cloudflare from "solid-start-cloudflare-pages"
+import solid from "solid-start/vite"
+import { defineConfig } from "vite"
+
+export default defineConfig({
+  plugins: [solid({
+    adapter: cloudflare({})
+  })],
+})
+```
+
+Build the project's assets and run a local Worker emulation on [localhost:8788](http://localhost:8788/) with `wrangler pages dev`.
+
+```bash
+pnpm wrangler login
+pnpm build
+pnpm wrangler pages dev ./dist/public
+```
+
+Create a project with [`wrangler pages project create`](https://developers.cloudflare.com/workers/wrangler/commands/#project-create) and deploy the project with [`wrangler pages publish`](https://developers.cloudflare.com/workers/wrangler/commands/#publish-1).
+
+```bash
+pnpm wrangler pages project create ajcwebdev-solidstart \
+  --production-branch production
+pnpm wrangler pages publish dist/public \
+  --project-name=ajcwebdev-solidstart \
+  --branch=production
+```
+
+Open [ajcwebdev-solidstart.pages.dev](https://ajcwebdev-solidstart.pages.dev/).
