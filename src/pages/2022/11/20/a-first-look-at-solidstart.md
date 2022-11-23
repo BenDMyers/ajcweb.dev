@@ -4,7 +4,7 @@ title: "a first look at solidstart"
 description: "SolidStart is a project starter and metaframework for SolidJS that provides a first-class way to build and deploy SolidJS applications."
 publishDate: "2022-11-10"
 tags: [ "SolidJS", "SolidStart", "Vite", "Netlify" ]
-image: 
+image: "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/yupcvx2vo601qcdllvsp.jpeg"
 layout: "@/layouts/BlogPost"
 ---
 
