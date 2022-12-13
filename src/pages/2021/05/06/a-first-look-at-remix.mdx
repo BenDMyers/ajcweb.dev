@@ -18,7 +18,7 @@ Originally requiring a paid license, it launched as a "supporter preview" in Oct
 
 Kent had become infatuated with Remix and [rebuilt his entire platform around the framework](https://kentcdodds.com/blog/why-i-love-remix). During the rebuild he also attempted to individually tell every single person on the internet why using anything except Remix to build literally anything was a terrible choice. He was soon hired as a Developer Advocate and early co-founder of the newly formed company.
 
-In this example we will use the Vercel starter to make Fetch requests containing GraphQL queries. All the code for this example can be found [on my GitHub](https://github.com/ajcwebdev/ajcwebdev-remix).
+In this example we will use the Vercel starter to make Fetch requests containing GraphQL queries. All the code for this example can be found [on my GitHub](https://github.com/ajcwebdev/a-first-look/tree/main/remix).
 
 ## Initialize Starter Project
 
@@ -75,7 +75,7 @@ export let loader = () => {
     resources: [
       { name: "My Blog", url: "https://ajcwebdev.com" },
       { name: "A First Look at Remix", url: "https://ajcwebdev.com/a-first-look-at-remix" },
-      { name: "Example Repo", url: "https://github.com/ajcwebdev/ajcwebdev-remix" }
+      { name: "Example Repo", url: "https://github.com/ajcwebdev/a-first-look/tree/main/remix" }
     ]
   }
   return json(data)
