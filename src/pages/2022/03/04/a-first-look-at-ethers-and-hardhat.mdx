@@ -8,6 +8,34 @@ image: "https://cdn.hashnode.com/res/hashnode/image/upload/v1646465150713/F6hCCT
 layout: "@/layouts/BlogPost"
 ---
 
+## Outline
+
+* [Introduction](#introduction)
+* [Create Project](#create-project)
+  * [Install Dependencies](#install-dependencies)
+  * [Initialize Hardhat Environment](#initialize-hardhat-environment)
+  * [Sample Deployment Script](#sample-deployment-script)
+  * [Hardhat Configuration](#hardhat-configuration)
+  * [Greeter Solidity Contract](#greeter-solidity-contract)
+* [Deploy to Testnet](#deploy-to-testnet)
+  * [Compile Application Binary Interface](#compile-application-binary-interface)
+  * [Start Test Node](#start-test-node)
+  * [Run Deployment Script](#run-deployment-script)
+* [Connect to MetaMask](#connect-to-metamask)
+  * [Import Account into MetaMask](#import-account-into-metamask)
+* [Create React App](#create-react-app)
+  * [Start Development Server](#start-development-server)
+  * [Connect React App to MetaMask](#connect-react-app-to-metamask)
+* [Deploy to Ropsten Testnet](#deploy-to-ropsten-testnet)
+  * [Connect MetaMask to Ropsten](#connect-metamask-to-ropsten)
+  * [Create an Alchemy Account](#create-an-alchemy-account)
+  * [Create an Alchemy Application](#create-an-alchemy-application)
+  * [Get Alchemy Key](#get-alchemy-key)
+  * [Add Alchemy Endpoint to Hardhat Configuration](#add-alchemy-endpoint-to-hardhat-configuration)
+  * [Deploy Contract to Ropsten](#deploy-contract-to-ropsten)
+
+All the code for this project can be found at [`ajcwebdev/a-first-look/ethers`](https://github.com/ajcwebdev/a-first-look/tree/main/ethers).
+
 ## Introduction
 
 [ethers.js](https://ethers.org/) is a library that aims to be a complete and compact tool for interacting with the Ethereum Blockchain and its ecosystem. This example uses [Hardhat](https://hardhat.org/), an Ethereum development environment, to compile a smart contract and deploy it to [Ropsten](https://ropsten.etherscan.io/), an Ethereum test network that allows for blockchain development testing.
@@ -19,18 +47,19 @@ The contract is written in [Solidity](https://docs.soliditylang.org/), an object
 This article is heavily based on Nader Dabit's definitive article, [The Complete Guide to Full Stack Ethereum Development](https://dev.to/dabit3/the-complete-guide-to-full-stack-ethereum-development-3j13). I've made a few alternations including using Vite instead of Create React App and the inclusion of `dotenv` for environment variables but all credit due to Sensei Dabit.
 
 ```bash
-yarn create vite ajcwebdev-ethers --template react
+pnpm create vite ajcwebdev-ethers --template react
 cd ajcwebdev-ethers
 ```
+
+Remove `"type": "module"` from `package.json`.
 
 ### Install Dependencies
 
 In addition to Ethers and Hardhat we will also install [Waffle](https://ethereum-waffle.readthedocs.io/) and [Chai](https://www.chaijs.com/) for testing our contracts.
 
 ```bash
-yarn add dotenv ethers hardhat \
-  chai @nomiclabs/hardhat-ethers @nomiclabs/hardhat-waffle \
-  ethereum-waffle @openzeppelin/contracts
+pnpm add dotenv ethers hardhat chai ethereum-waffle \
+   @nomiclabs/hardhat-ethers @nomiclabs/hardhat-waffle
 ```
 
 Create a `.env` file to store environment variables later in the tutorial.
@@ -51,43 +80,31 @@ VITE_GREETER_ADDRESS=
 
 Developing smart contracts requires the ability to deploy your contracts, run tests, and debug Solidity code. We will also need a way to compile Solidity code into code that can be run in a client-side application. Hardhat compiles your contracts and runs them on a development network. This lets you develop without having to deal with live environments.
 
-```bash
-yarn hardhat
-```
-
-Choose `Create a basic sample project`.
-
-```
-👷 Welcome to Hardhat v2.8.0 👷
-
-✔ What do you want to do? · Create a basic sample project
-✔ Hardhat project root: · /Users/ajcwebdev/ajcwebdev-ethers
-✔ Do you want to add a .gitignore? (Y/n) · y
-
-✨ Project created ✨
-
-See the README.txt file for some example tasks you can run.
-```
-
-This creates the following files/directories:
+We'll create the following files/directories:
 
 * `hardhat.config.js` - Entire Hardhat setup including config, plugins, and custom tasks.
-* `scripts` - Contains a script named `sample-script.js` that deploys your smart contract when executed
-* `test` - Contains an example testing script
-* `contracts` - Contains an example Solidity smart contract
+* `scripts` - Contains a script named `deploy.js` that deploys your smart contract when executed
+* `contracts` - Contains a file called `Greeter.sol` with an example Solidity smart contract
+
+```bash
+mkdir scripts contracts
+echo > scripts/deploy.js
+echo > contracts/Greeter.sol
+echo > hardhat.config.js
+```
 
 ### Sample Deployment Script
 
-In `sample-script.js` we use `getContractFactory` to create a `ContractFactory`, an abstraction used to deploy new smart contracts.
+In `deploy.js` we use `getContractFactory` to create a `ContractFactory`, an abstraction used to deploy new smart contracts. `Greeter` is a factory for instances of our greeting contract. Calling `deploy()` on a `ContractFactory` will start the deployment, and return a `Promise` that resolves to a `Contract`. This is the object that has a method for each of your smart contract functions. Modify the text to send your own message.
 
 ```js
-// scripts/sample-script.js
+// scripts/deploy.js
 
 const hre = require("hardhat")
 
 async function main() {
   const Greeter = await hre.ethers.getContractFactory("Greeter")
-  const greeter = await Greeter.deploy("Hello, Hardhat!")
+  const greeter = await Greeter.deploy("Hello from ajcwebdev!")
   await greeter.deployed()
   console.log("Greeter deployed to:", greeter.address)
 }
@@ -100,16 +117,10 @@ main()
   })
 ```
 
-`Greeter` is a factory for instances of our greeting contract. Calling `deploy()` on a `ContractFactory` will start the deployment, and return a `Promise` that resolves to a `Contract`. This is the object that has a method for each of your smart contract functions. Modify the text to send your own message.
-
-```js
-const greeter = await Greeter.deploy("Hello from ajcwebdev!")
-```
-
 I'll also add a few more console logs to the `main` function to log additional pieces of information including the `signer`, `hash`, and `blockHash`.
 
 ```js
-// scripts/sample-script.js
+// scripts/deploy.js
 
 const hre = require("hardhat")
 
@@ -174,7 +185,7 @@ Solidity files start with a pragma that is used by the Solidity compiler to vali
 // contracts/Greeter.sol
 
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.7;
 
 import "hardhat/console.sol";
 
@@ -187,7 +198,7 @@ The `constructor` is executed only once when the contract is created. The `Greet
 // contracts/Greeter.sol
 
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.7;
 
 import "hardhat/console.sol";
 
@@ -214,14 +225,6 @@ These methods will be available for a user to interact with when deployed to the
 * `greet` reads from the blockchain and does not require money for [gas](https://www.investopedia.com/terms/g/gas-ethereum.asp).
 * `setGreeting` writes to the blockchain and requires payment for the transaction if you want to deploy to [mainnet](https://ethereum.org/en/glossary/#mainnet) and not a [testnet](https://ethereum.org/en/glossary/#testnet).
 
-Change the version of Solidity to match the `hardhat.config.js` file.
-
-```js
-// contracts/Greeter.sol
-
-pragma solidity ^0.8.7
-```
-
 ## Deploy to Testnet
 
 To deploy to the local network, you first need to compile your contract and then start a local test node. Our React app will interact with the smart contract using a combination of the Ethers library, the contract address, and the ABI that will be created from the contract by `hardhat`.
@@ -231,7 +234,7 @@ To deploy to the local network, you first need to compile your contract and then
 ABI stands for application binary interface. It is the interface between your client-side application and the Ethereum blockchain where the smart contract you are going to be interacting with is deployed.
 
 ```bash
-yarn hardhat compile
+pnpm hardhat compile
 ```
 
 ABIs are typically compiled from Solidity smart contracts by a development framework like Hardhat. You can also often find the ABIs for a smart contract on [Etherscan](https://etherscan.io/).
@@ -239,7 +242,7 @@ ABIs are typically compiled from Solidity smart contracts by a development frame
 ### Start Test Node
 
 ```bash
-yarn hardhat node
+pnpm hardhat node
 ```
 
 This will return a list of addresses and private keys.
@@ -269,16 +272,10 @@ Leave this terminal running and open another for the next command.
 
 ### Run Deployment Script
 
-Change the name of `sample-script.js` to `deploy.js`.
-
-```bash
-mv scripts/sample-script.js scripts/deploy.js
-```
-
 Run the deploy script and give a flag to the CLI to let it know that we would like to deploy to our local network:
 
 ```bash
-yarn hardhat run scripts/deploy.js \
+pnpm hardhat run scripts/deploy.js \
   --network localhost
 ```
 
@@ -295,7 +292,7 @@ The address returned on the first line (`0x5FbDB2315678afecb367f032d93F642f64180
 
 ## Connect to MetaMask
 
-To send transactions to the smart contract, we will need to connect our MetaMask wallet using one of the accounts created when we ran `yarn hardhat node`. In the terminal running our local node, you will see the following output verifying that the `Greeter` contract was successfully deployed.
+To send transactions to the smart contract, we will need to connect our MetaMask wallet using one of the accounts created when we ran `pnpm hardhat node`. In the terminal running our local node, you will see the following output verifying that the `Greeter` contract was successfully deployed.
 
 ```
 web3_clientVersion
@@ -326,11 +323,11 @@ eth_getTransactionReceipt
 
 In the list of contracts that the CLI logs out, you should see both an Account number as well as a Private Key for the account you originally chose at the beginning of the tutorial. We can import this account into MetaMask in order to start using some of its fake Eth. To do so, first open MetaMask and check the available networks.
 
-![01-check-metamask-networks](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461252889/Gfq4Peccz.png)
+![01 - check metamask networks](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dsuehp9d7vb1mfylez2q.png)
 
 If you only see the Ethereum Mainnet, go to Settings > Advanced and make sure "Show test networks" is set to ON.
 
-![02-set-metamask-to-localhost8545](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461254802/gUZKLyiZb.png)
+![02 - set metamask to localhost 8545](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8bxwvd2v3uz093u2hoe3.png)
 
 Update the network to Localhost 8545.
 
@@ -338,23 +335,23 @@ Update the network to Localhost 8545.
 
 Once you are connected to Localhost 8545, click the icon at the top right to see your accounts. Select "Import Account."
 
-![03-import-account-into-metamask](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461256650/SnWD5sLnR.png)
+![03 - import account into metamask](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/cskqw7cw2h5g7532zc92.png)
 
-Go back to the list of accounts printed by `yarn hardhat node` and copy the account's private keys. I'll be using Account #11.
+Go back to the list of accounts printed by `pnpm hardhat node` and copy the account's private keys. I'll be using Account #11.
 
-![04-paste-private-key-to-import-account](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461258373/eIykDOCha.png)
+![04 - paste private key to import account](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/sxzhie84g1jqarghftuv.png)
 
 After importing the account you will see ether in the account.
 
-![05-ether-account-balance-in-metamask](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461260150/bKXtF8FO2.png)
+![05 - ether account balance in metamask](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bvx212ng4nyagzbt7rge.png)
 
 If you are using MetaMask for other purposes, it will be important to distinguish this account from an account that is actually holding funds. Go to "Account details."
 
-![06-get-account-details-in-metamask](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461261884/ob4wI-XQf.png)
+![06 - get account details in metamask](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bowt63izdzaa5anjaccu.png)
 
 Click the pencil icon next to the account name to give it a more descriptive name.
 
-![07-rename-account-to-hardhat-account-11](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461263528/BC_SHoE71.png)
+![07 - rename account to hardhat account 11](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5hst60nomgcxutmt5c0y.png)
 
 ## Create React App
 
@@ -411,7 +408,7 @@ function App() {
   return (
     <div>
       <header>
-        <h1>Ethers.js, Hardhat, Solidity, ENS</h1>
+        <h1>Ethers.js, Hardhat, Solidity</h1>
         <h2>and React, Alchemy, and MetaMask</h2>
       </header>
 
@@ -434,24 +431,40 @@ export default App
 I'll include Water.css in `index.html` for some nice looking CSS defaults.
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <title>A First look at Ethers and Hardhat</title>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
 ```
 
 ### Start Development Server
 
-Start the development server with `yarn dev`.
+Start the development server with `pnpm dev`.
 
 ```bash
-yarn dev
+pnpm dev
 ```
 
 Open [localhost:3000](http://localhost:3000).
 
-![08-react-app-on-localhost-3000-with-fetch-greeting-button](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461265167/PstcR7Qb-.png)
+![08 - react app on localhost 3000 with fetch greeting button](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/zkoxpx53ht60b3o7ki34.png)
 
 Click the "Fetch Greeting" button to display the greeting from the deployed contract.
 
-![09-greeting-displayed-after-clicking-fetch-greeting-button](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461266842/iT-8_kX9i.png)
+![09 - greeting displayed after clicking fetch greeting button](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5a26a1vq1urbtvaewprp.png)
 
 `setGreeting` calls the smart contract and sends an update.
 
@@ -503,7 +516,7 @@ function App() {
   return (
     <div>
       <header>
-        <h1>Ethers.js, Hardhat, Solidity, ENS</h1>
+        <h1>Ethers.js, Hardhat, Solidity</h1>
         <h2>and React, Alchemy, and MetaMask</h2>
       </header>
 
@@ -534,15 +547,15 @@ export default App
 
 Select account to connect with MetaMask.
 
-![10-select-account-to-connect-with-metamask](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461268598/OO3geTFWr.png)
+![10 - select account to connect with metamask](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/rytdc1cj071kk4xcm27v.png)
 
 Connect to the account.
 
-![11-connect-to-account-with-metamask](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461270503/GQZR1KMoA.png)
+![11 - connect to account with metamask](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qft6ta0lj5xhk4i0knu8.png)
 
 Enter input and click Set Greeting. You will be asked to pay a gas fee.
 
-![12-pay-gas-fee](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461272458/xtjGSXFQf.png)
+![12 - pay gas fee](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xppbyh6zwtqgacjojjax.png)
 
 The greeting value will be set to the new inputted greeting.
 
@@ -554,7 +567,7 @@ Ethereum provides test networks like Ropsten, Rinkeby, or Kovan that we can use 
 
 Update your MetaMask wallet to connect to the [Ropsten](https://ropsten.etherscan.io/) network.
 
-![13-change-to-ropsten-testnet](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461274182/D5iJEMHgJ.png)
+![13 - change to ropsten testnet](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xeefv78bpy2vj1i1xdi8.png)
 
 We can get access to Ropsten and other test networks by using a service like [Infura](https://infura.io/), [Alchemy](https://www.alchemy.com/), or [QuickNode](https://www.quicknode.com/).
 
@@ -562,27 +575,27 @@ We can get access to Ropsten and other test networks by using a service like [In
 
 Alchemy Supernode is a blockchain API that can connect to various tools in the blockchain ecosystem such as Ethereum, Polygon, Arbitrum, Optimism, and Flow. It provides common node functionality including JSON-RPC support with built in reliability, data correctness and scalability. After creating an account, you will see your dashboard.
 
-![14-alchemy-dashboard](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461276041/W2M0Njefi.png)
+![14 - alchemy dashboard](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1w8axkijbifzcfa9lqu7.png)
 
 ### Create an Alchemy Application
 
 Click **Create App** and give your app a name and description. Select development for the environment, Ethereum for the chain, and Ropsten for the network.
 
-![15-create-app-on-alchemy](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461278339/vAaON2hgm.png)
+![15 - create app on alchemy](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/drxvimw53jqlu4nrmcii.png)
 
 After creating the app you will see it appear in your dashboard.
 
-![16-alchemy-dashboard-with-ajcwebdev-ethers-app](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461280172/XKAUVnamV.png)
+![16 - alchemy dashboard with ajcwebdev-ethers app](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0fpw8akulm90jgp6vup0.png)
 
 ### Get Alchemy Key
 
 Click the name of the app to see more details.
 
-![17-alchemy-app-view-details](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461282570/QX9cRf3Cb.png)
+![17 - alchemy app view details](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qjzpqe9zgmo3nzcstkmy.png)
 
 Click **View Key** to see your endpoints.
 
-![18-alchemy-endpoints](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461284586/axVjmM1kQ.png)
+![18 - alchemy endpoints](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nvxdpozaswc9u4fy4ccc.png)
 
 The https endpoint will look something like this:
 
@@ -592,7 +605,7 @@ https://eth-ropsten.alchemyapi.io/v2/PROJECT_ID
 
 Click **Edit App** and add the account address from `App.jsx` to the allowed accounts.
 
-![19-allowed-addresses](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461286159/wHipG-HK2.png)
+![19 - allowed addresses](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2ved13q0s5d1lrgnmofu.png)
 
 ### Add Alchemy Endpoint to Hardhat Configuration
 
@@ -627,7 +640,7 @@ module.exports = {
     hardhat: {},
     ropsten: {
       url: `${ALCHEMY_URL}`,
-      accounts: [`${ALCHEMY_KEY}`]
+      accounts: [`0x` + `${ALCHEMY_KEY}`]
     }
   }
 }
@@ -638,7 +651,7 @@ module.exports = {
 Send yourself test Ether by visiting a test faucet like [faucet.ropsten.be](https://faucet.ropsten.be/) or [faucet.dimensions.network](https://faucet.dimensions.network/). Run the following script to deploy.
 
 ```bash
-yarn hardhat run scripts/deploy.js \
+pnpm hardhat run scripts/deploy.js \
   --network ropsten
 ```
 
@@ -651,4 +664,4 @@ Deploy transaction block hash: null
 
 Once your contract is deployed you can view the live contract on [Etherscan Ropsten Testnet Explorer](https://ropsten.etherscan.io/).
 
-![20-contract-on-etherscan](https://cdn.hashnode.com/res/hashnode/image/upload/v1646461287922/kMllfY-1x.png)
+![20 - contract on etherscan](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hcbigmb5felstbcdeiio.png)
