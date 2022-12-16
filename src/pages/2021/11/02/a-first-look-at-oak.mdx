@@ -8,11 +8,32 @@ image: "https://cdn.hashnode.com/res/hashnode/image/upload/v1652502091865/_cA4L8
 layout: "@/layouts/BlogPost"
 ---
 
+## Outline
+
+- [Introduction](#introduction)
+- [Setup](#setup)
+  - [Install Deno Executable](#install-deno-executable)
+  - [Install deployctl](#install-deployctl)
+  - [Create Project Files](#create-project-files)
+- [Create Deno Server](#create-deno-server)
+  - [Run Deno Server](#run-deno-server)
+- [Create Oak Server](#create-oak-server)
+  - [Application Class](#application-class)
+  - [Respond with HTML](#respond-with-html)
+  - [Add Router](#add-router)
+- [Deno Deploy](#deno-deploy)
+  - [Run Oak Server with deployctl](#run-oak-server-with-deployctl)
+  - [Initialize GitHub Repository](#initialize-github-repository)
+  - [Install the Deno Deploy GitHub App](#install-the-deno-deploy-github-app)
+  - [Sign Up for Deno Deploy](#sign-up-for-deno-deploy)
+  - [Create Deno Deploy Project](#create-deno-deploy-project)
+  - [Connect GitHub Repository](#connect-github-repository)
+
+All the code for this article can be found at [`ajcwebdev/a-first-look/oak`](https://github.com/ajcwebdev/a-first-look/tree/main/oak).
+
 ## Introduction
 
 [Oak](https://oakserver.github.io/oak/) is a middleware framework for Deno's native HTTP server and Deno Deploy. It is influenced by [Koa](https://github.com/koajs/koa) (hence the anagram) and includes a middleware router inspired by [@koa/router](https://github.com/koajs/router).
-
-All the code for this article can be found [on my GitHub](https://github.com/ajcwebdev/a-first-look/tree/main/oak).
 
 ## Setup
 

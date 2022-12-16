@@ -1,28 +1,51 @@
 ---
 canonicalURL: "https://ajcwebdev.com/2021/11/27/a-first-look-at-astro"
 title: "a first look at astro"
-description: "Astro is a web framework that supports the Islands Architecture and includes integrations for React, Preact, Svelte, Vue, SolidJS, AlpineJS and Lit."
+description: "Astro is a web framework that supports the Islands Architecture and includes integrations for React, Svelte, Vue, Solid, and many more."
 publishDate: "2021-11-27"
 tags: [ "Astro", "Vite", "Partial Hydration", "GraphQL", "Netlify" ]
 image: "https://cdn.hashnode.com/res/hashnode/image/upload/v1652419180486/EBwR78V3iI.jpeg"
 layout: "@/layouts/BlogPost"
 ---
 
+## Outline
+
+* [Introduction](#introduction)
+  * [Partial Hydration](#partial-hydration)
+  * [Client Directives](#client-directives)
+* [Create Project](#create-project)
+  * [Install Astro Dependency](#install-astro-dependency)
+  * [Add CLI Commands](#add-cli-commands)
+  * [Create a Page](#create-a-page)
+  * [Start Development Server](#start-development-server)
+  * [Add Styling](#add-styling)
+* [Add Components](#add-components)
+  * [Create a Markdown Component](#create-a-markdown-component)
+  * [Create a React Component](#create-a-react-component)
+  * [Create a Svelte Component](#create-a-svelte-component)
+  * [Create a Vue Component](#create-a-vue-component)
+  * [Create a GraphQL Data Fetching Component](#create-a-graphql-data-fetching-component)
+* [Deploy to Netlify](#deploy-to-netlify)
+  * [Create a GitHub Repository](#create-a-github-repository)
+  * [Connect GitHub Repository to Netlify](#connect-github-repository-to-netlify)
+
+All the code for this tutorial can be found at [`ajcwebdev/a-first-look/astro`](https://github.com/ajcwebdev/a-first-look/tree/main/astro).
+
 ## Introduction
 
 [Astro](https://astro.build/) is an open source web framework influenced by the [Islands Architecture](https://jasonformat.com/islands-architecture/). It was created by Fred K. Schott, Matthew Phillips, Nate Moore, and Drew Powers as an outgrowth of the work being done simultaneously on Snowpack and Skypack.
 
-It supports a variety of UI integrations including React, Preact, Svelte, Vue, SolidJS, AlpineJS and Lit. The framework deserves a fair amount of credit for bringing partial hydration and the concept of "Islands of Interactivity" to the mainstream web development conversation.
+It supports a variety of UI integrations including React, Svelte, Vue, Solid, and many more. The framework deserves a fair amount of credit for bringing partial hydration and the concept of "Islands of Interactivity" to the mainstream web development conversation.
 
 ### Partial Hydration
 
-I have an [entirely separate, lengthy article](https://ajcwebdev.com/what-is-partial-hydration-and-why-is-everyone-talking-about-it) about this, but here's the summary. The conversation had been present but on the fringes for well over a decade. The first framework that fully supported these techniques, Marko, was created in 2014 but remained the odd duck out until around 2019.
+I have an [entirely separate, lengthy article](https://ajcwebdev.com/2021/11/22/what-is-partial-hydration-and-why-is-everyone-talking-about-it/) about this, but here's the summary. The conversation had been present but on the fringes for well over a decade. The first framework that fully supported these techniques, Marko, was created in 2014 but remained the odd duck out until around 2019.
 
 However, in the last 2 years there has been an influx of frameworks drawing on similar motivations and prior art including Slinkity, Elder.js, îles, and Qwik. Fred K. Schott describes the architecture and goals of Astro in [Introducing Astro: Ship Less JavaScript (June 8, 2021)](https://astro.build/blog/introducing-astro/):
 
-> Astro works a lot like a static site generator. If you have ever used Eleventy, Hugo, or Jekyll (or even a server-side web framework like Rails, Laravel, or Django) then you should feel right at home with Astro.
-> 
-> In Astro, you compose your website using UI components from your favorite JavaScript web framework (React, Svelte, Vue, etc). Astro renders your entire site to static HTML during the build. The result is a fully static website with all JavaScript removed from the final page.
+> _Astro works a lot like a static site generator. If you have ever used Eleventy, Hugo, or Jekyll (or even a server-side web framework like Rails, Laravel, or Django) then you should feel right at home with Astro._
+>
+> _In Astro, you compose your website using UI components from your favorite JavaScript web framework (React, Svelte, Vue, etc). Astro renders your entire site to static HTML during the build. The result is a fully static website with all JavaScript removed from the final page._
 
 While there are plenty of frameworks based on [React](https://nextjs.org/docs/advanced-features/static-html-export), [Vue](https://nuxtjs.org/announcements/going-full-static/), and [Svelte](https://sapper.svelte.dev/docs#sapper_export) that let you render components to static HTML during build time, if you want to hydrate these projects on the client then you have to ship an entire bundle of dependencies along with the static HTML. Astro, on the other hand, includes the ability to load just a single component and its dependencies where that component is needed.
 
@@ -37,8 +60,6 @@ Astro includes five `client:*` directives to hydrate components on the client at
 |`<Component client:visible />`|Hydrates the component as soon as the element enters the viewport.|
 |`<Component client:media={QUERY} />`|Hydrates the component as soon as the browser matches the given media query.|
 |`<Component client:only />`|Hydrates the component at page load, similar to `client:load`. The component will be skipped at build time.|
-
-All the code for this tutorial can be found [on my GitHub](https://github.com/ajcwebdev/a-first-look/tree/main/astro).
 
 ## Create Project
 
@@ -100,7 +121,7 @@ touch src/pages/index.astro
 
 Inside the `src/pages` directory we created an `index.astro` file.
 
-```html
+```jsx
 ---
 // src/pages/index.astro
 
@@ -147,7 +168,7 @@ yarn dev
 
 Open [localhost:3000](https://localhost:3000) to see the home page.
 
-![01-ajcwebdev-astro-home-page](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/79gx6ieqcw5cbu02dd2h.png)
+![01 - ajcwebdev-astro-home-page](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/79gx6ieqcw5cbu02dd2h.png)
 
 ### Add Styling
 
@@ -163,7 +184,7 @@ I'll include [Water.css](https://watercss.kognise.dev/) in the `head` of `index.
 </head>
 ```
 
-![02-ajcwebdev-astro-home-page-with-styling](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kwtz1bqa5imqgued7o8c.png)
+![02 - ajcwebdev-astro-home-page-with-styling](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kwtz1bqa5imqgued7o8c.png)
 
 ## Add Components
 
@@ -180,7 +201,7 @@ touch src/components/markdown/HelloMarkdown.astro
 
 Import the `Markdown` component from `astro/components` and write some Markdown.
 
-```html
+```jsx
 ---
 // src/components/markdown/HelloMarkdown.astro
 
@@ -202,7 +223,7 @@ import { Markdown } from 'astro/components'
 
 Return to `index.astro` and import `HelloMarkdown` from `'../components/markdown/HelloMarkdown.astro'`. Place `<HelloMarkdown />` inside the `main` tags.
 
-```html
+```jsx
 ---
 // src/pages/index.astro
 
@@ -226,7 +247,7 @@ let title = 'ajcwebdev-astro'
 </html>
 ```
 
-![03-home-page-with-markdown-component](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/c2h0ds2hvcev0wg7529u.png)
+![03 - home-page-with-markdown-component](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/c2h0ds2hvcev0wg7529u.png)
 
 ### Create a React Component
 
@@ -285,7 +306,7 @@ export default function HelloReact({ children, count: initialCount }) {
 
 Importing the `HelloReact` component is much like the `HelloMarkdown` component. However, this time we're including `someProps` in the front matter to set the initial `count` to `0`.
 
-```html
+```jsx
 ---
 // src/pages/index.astro
 
@@ -320,7 +341,7 @@ let title = 'ajcwebdev-astro'
 
 We also include `client:visible` to hydrate the component as soon as the element enters the viewport.
 
-![04-home-page-with-react-component](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tnk6cjimj0gmhdqu3n5q.png)
+![04 - home-page-with-react-component](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tnk6cjimj0gmhdqu3n5q.png)
 
 ### Create a Svelte Component
 
@@ -385,7 +406,7 @@ Our Svelte component will contain the same functionality as our React component.
 
 Import `HelloSvelte` and set it to `client:visible`.
 
-```html
+```jsx
 ---
 // src/pages/index.astro
 
@@ -423,7 +444,7 @@ let title = 'ajcwebdev-astro'
 </html>
 ```
 
-![05-home-page-with-svelte-component](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/b9tojm1qbuso56z1inds.png)
+![05 - home-page-with-svelte-component](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/b9tojm1qbuso56z1inds.png)
 
 ### Create a Vue Component
 
@@ -495,7 +516,7 @@ Our Vue component will contain the same functionality as our React and Svelte co
 
 Import `HelloVue` and set it to `client:visible`.
 
-```html
+```jsx
 ---
 // src/pages/index.astro
 
@@ -538,7 +559,7 @@ let title = 'ajcwebdev-astro'
 </html>
 ```
 
-![06-home-page-with-vue-component](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7af6v0ry3f41i8e83fzl.png)
+![06 - home-page-with-vue-component](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7af6v0ry3f41i8e83fzl.png)
 
 ### Create a GraphQL Data Fetching Component
 
@@ -547,7 +568,7 @@ mkdir src/components/graphql
 touch src/components/graphql/HelloGraphQL.astro src/pages/graphql.astro
 ```
 
-```html
+```jsx
 ---
 // src/components/graphql/HelloGraphQL.astro
 
@@ -582,7 +603,7 @@ const { characters } = data
 
 Import `HelloGraphQL`.
 
-```html
+```jsx
 ---
 // src/pages/graphql.astro
 
@@ -608,7 +629,7 @@ let title = 'GraphQL'
 </html>
 ```
 
-![07-graphql-page-with-graphql-data-fetching-component](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/13zxil1nxfslupdt9onu.png)
+![07 - graphql-page-with-graphql-data-fetching-component](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/13zxil1nxfslupdt9onu.png)
 
 ## Deploy to Netlify
 
@@ -670,10 +691,10 @@ gh repo create ajcwebdev-astro --public --push \
 
 Connect your GitHub repository to Netlify.
 
-![08-connect-github-repository-to-netlify](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/swov4429p9qim3zqk76x.jpeg)
+![08 - connect-github-repository-to-netlify](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/swov4429p9qim3zqk76x.jpeg)
 
 Go to "Site settings," to give yourself a custom domain name.
 
-![09-add-a-custom-domain](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2byjbeb82upj9wntcemf.jpeg)
+![09 - add-a-custom-domain](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2byjbeb82upj9wntcemf.jpeg)
 
 Open [ajcwebdev-astro.netlify.app](https://ajcwebdev-astro.netlify.app/) to see the deployed site.

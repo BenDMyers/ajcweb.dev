@@ -8,13 +8,32 @@ image: "https://cdn.hashnode.com/res/hashnode/image/upload/v1647328480168/bT873e
 layout: "@/layouts/BlogPost"
 ---
 
+## Outline
+
+- [Introduction](#introduction)
+  - [Migrating from Nuxt 2 to Nuxt 3](#migrating-from-nuxt-2-to-nuxt-3)
+  - [Try Online Example](#try-online-example)
+- [Create Nuxt 3 Project from Scratch](#create-nuxt-3-project-from-scratch)
+  - [App Component](#app-component)
+  - [Project Scripts](#project-scripts)
+  - [Start Development Server](#start-development-server)
+  - [Build for Production](#build-for-production)
+  - [Pages Directory](#pages-directory)
+- [Server Engine](#server-engine)
+  - [Server Directory for API Routes](#server-directory-for-api-routes)
+- [Deployment](#deployment)
+  - [Deploy to Vercel](#deploy-to-vercel)
+  - [Deploy to Netlify](#deploy-to-netlify)
+
+All the code for the project in this article can be found at [`ajcwebdev/a-first-look/nuxt3`](https://github.com/ajcwebdev/a-first-look/tree/main/nuxt3).
+
 ## Introduction
 
 Nuxt is a Vue metaframework that aims to make web development intuitive and performant while keeping great developer experience in mind. The original version, created by [Sébastien Chopin in October 2016](https://github.com/nuxt/nuxt.js/commit/0072ed31da6ce39d21046e05898f956cff190390), was built to emulate the features of Next.js (such as file-system based routing, server-side rendering, and API routes) but with Vue instead of React. Version 3 has been [over a year in the making](https://nuxtjs.org/announcements/nuxt3-beta/).
 
-> We are excited to open source Nuxt 3 after more than a year of intense development. On top of supporting Vue 3 and Vite, Nuxt 3 contains a new server engine, unlocking new full-stack capabilities to Nuxt server and beyond.
+> _We are excited to open source Nuxt 3 after more than a year of intense development. On top of supporting Vue 3 and Vite, Nuxt 3 contains a new server engine, unlocking new full-stack capabilities to Nuxt server and beyond._
 > 
-> [Introducing Nuxt 3 Beta](https://nuxtjs.org/announcements/nuxt3-beta/)
+> ***[Introducing Nuxt 3 Beta](https://nuxtjs.org/announcements/nuxt3-beta/)***
 
 Nuxt 3 is composed of the following [core packages](https://github.com/nuxt/framework/tree/main/packages):
 
@@ -41,7 +60,7 @@ In addition to curating and integrating these tools, Nuxt also provides director
 
 ### Migrating from Nuxt 2 to Nuxt 3
 
-> Note: If you don't have a Nuxt 2 project, skip ahead to the section, "[Create Nuxt 3 Project from Scratch](#heading-create-nuxt-3-project-from-scratch)."
+> _Note: If you don't have a Nuxt 2 project, skip ahead to the section, "[Create Nuxt 3 Project from Scratch](#create-nuxt-3-project-from-scratch)."_
 
 The team has created two [migration guides](https://v3.nuxtjs.org/getting-started/migration) and tooling in the form of [Nuxt Bridge](https://v3.nuxtjs.org/bridge/overview/) to make migrating as smooth as possible . If you have an existing Nuxt 2 project, the team **strongly recommends** you begin by using Nuxt Bridge to experiment with new features while avoiding breaking changes. Bridge is a forward-compatibility layer that allows you to experience new Nuxt 3 features by installing and enabling a Nuxt module.
 
@@ -49,7 +68,7 @@ All Nuxt 2 modules should be forward compatible with Nuxt 3 as long as they migr
 
 ### Try Online Example
 
-We will be building a Nuxt application from scratch. However, you can start playing with Nuxt 3 online in your browser on either [StackBlitz](https://stackblitz.com/github/nuxt/starter/tree/v3-stackblitz) or [CodeSandBox](https://codesandbox.io/s/github/nuxt/starter/tree/v3-codesandbox). All the code for the project in this article can be found [on my GitHub](https://github.com/ajcwebdev/a-first-look/tree/main/nuxt3).
+We will be building a Nuxt application from scratch. However, you can start playing with Nuxt 3 online in your browser on either [StackBlitz](https://stackblitz.com/github/nuxt/starter/tree/v3-stackblitz) or [CodeSandBox](https://codesandbox.io/s/github/nuxt/starter/tree/v3-codesandbox).
 
 ## Create Nuxt 3 Project from Scratch
 
@@ -62,7 +81,7 @@ yarn init -y
 yarn add -D nuxt@3.0.0-rc.3 vercel
 ```
 
-> Version is current as of June 10, 2022, check the [release schedule on GitHub](https://github.com/nuxt/framework/releases) for most recent version.
+> _Version is current as of June 10, 2022, check the [release schedule on GitHub](https://github.com/nuxt/framework/releases) for most recent version._
 
 The project will start with only two additional files:
 * `app.vue` to display our Vue application
