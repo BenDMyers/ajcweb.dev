@@ -12,25 +12,29 @@ layout: "@/layouts/BlogPost"
 
 [Docker Compose](https://docs.docker.com/compose/) is a tool for defining and running multi-container Docker applications. With Compose, you use a YAML file to configure your application's services. You can create and start all your services with a single command.
 
-This example containerizes Redwood's Web and API sides into individual containers that can be run with Docker Compose. The code for this example can be found [on my GitHub](https://github.com/ajcwebdev/redwood-docker-compose).
+This example containerizes Redwood's Web and API sides into individual containers that can be run with Docker Compose. The code for this example can be found [on my GitHub](https://github.com/ajcwebdev/a-first-look/rw-docker-compose).
 
 ## Create Project
 
 This example will start with a new Redwood project.
 
 ```bash
-yarn create redwood-app redwood-docker-compose
-cd redwood-docker-compose
+yarn create redwood-app rw-docker-compose
+cd rw-docker-compose
 ```
 
 Create the following files:
-* Dockerfiles inside the `web` and `api` directories
-* Nginx configuration file in `web` directory
-* `docker-compose.yml` and `.dockerignore` files in the root of the project
+
+- Dockerfiles inside the `web` and `api` directories
+- Nginx configuration file in `web` directory
+- `docker-compose.yml` and `.dockerignore` files in the root of the project
 
 ```bash
-touch web/Dockerfile api/Dockerfile web/nginx.conf \
-  docker-compose.yml .dockerignore
+echo > web/Dockerfile
+echo > api/Dockerfile
+echo > web/nginx.conf
+echo > docker-compose.yml
+echo 'node_modules' > .dockerignore
 ```
 
 ## Set up API Side
@@ -210,12 +214,6 @@ yarn rw g scaffold post
 
 We will have two Dockerfiles, a `.dockerignore` file, an `nginx.conf` configuration file, and a `docker-compose.yml` file to stitch it all together.
 
-### dockerignore
-
-```
-node_modules
-```
-
 ### API Dockerfile
 
 Our `Dockerfile` is using the [`node:14-alpine`](https://hub.docker.com/layers/simbo/node/14-alpine/images/sha256-a054e37f1ed6b2944060f68b0f52b94750d7f7a10444b13bb57a6c5cc58061aa) image. This may cause issues if you are on an M1 and want to build the image locally. Change `node:14-alpine` to `node:14` if you encounter this issue.
@@ -308,6 +306,8 @@ server {
 We will have two services in our `docker-compose.yml` file: `web` and `api`. Each will have `ports` exposed and a `build` that is set to the root directory for the `context` along with the corresponding location for the Dockerfiles.
 
 ```yaml
+# docker-compose.yml
+
 version: "3.9"
 services:
   web:
@@ -346,8 +346,8 @@ Keep in mind that I am on an M1 so this image is much larger than it would be wi
 
 ```
 REPOSITORY           TAG       IMAGE ID       CREATED          SIZE
-redwood-docker_api   latest    243369952fa0   57 seconds ago   2.96GB
-redwood-docker_web   latest    c1610495648c   42 minutes ago   137MB
+rw-docker_api   latest    243369952fa0   57 seconds ago   2.96GB
+rw-docker_web   latest    c1610495648c   42 minutes ago   137MB
 ```
 
 See the specific running containers with `docker ps`.
@@ -358,8 +358,8 @@ docker ps
 
 ```
 CONTAINER ID   IMAGE                COMMAND                  CREATED          STATUS          PORTS                            NAMES
-a4d2a221278f   redwood-docker_web   "/docker-entrypoint.…"   35 seconds ago   Up 34 seconds   80/tcp, 0.0.0.0:8910->8910/tcp   redwood-docker-web-1
-f5ab7bf289a9   redwood-docker_api   "yarn rw serve api -…"   35 seconds ago   Up 34 seconds   0.0.0.0:8911->8911/tcp           redwood-docker-api-1
+a4d2a221278f   rw-docker_web   "/docker-entrypoint.…"   35 seconds ago   Up 34 seconds   80/tcp, 0.0.0.0:8910->8910/tcp   rw-docker-web-1
+f5ab7bf289a9   rw-docker_api   "yarn rw serve api -…"   35 seconds ago   Up 34 seconds   0.0.0.0:8911->8911/tcp           rw-docker-api-1
 ```
 
 ### Test GraphQL Endpoint
@@ -426,7 +426,7 @@ git commit -m "I can barely contain my excitement"
 You can create a blank repository by visiting [repo.new](https://repo.new) or using the [`gh repo create`](https://cli.github.com/manual/gh_repo_create) command with the [GitHub CLI](https://cli.github.com/). Enter the following command to create a new repository, set the remote name from the current directory, and push the project to the newly created repository.
 
 ```bash
-gh repo create redwood-docker-compose \
+gh repo create rw-docker-compose \
   --public \
   --source=. \
   --remote=upstream \
@@ -436,7 +436,7 @@ gh repo create redwood-docker-compose \
 If you created a repository from the GitHub website instead of the CLI then you will need to set the remote and push the project with the following commands.
 
 ```bash
-git remote add origin https://github.com/YOUR_USERNAME/redwood-docker-compose.git
+git remote add origin https://github.com/YOUR_USERNAME/rw-docker-compose.git
 git push -u origin main
 ```
 
@@ -451,7 +451,9 @@ export CR_PAT=xxxx
 Login with your own username in place of `YOUR_USERNAME`.
 
 ```bash
-echo $CR_PAT | docker login ghcr.io -u YOUR_USERNAME --password-stdin
+echo $CR_PAT | docker login ghcr.io \
+  -u YOUR_USERNAME \
+  --password-stdin
 ```
 
 ### Tag Images
@@ -459,8 +461,8 @@ echo $CR_PAT | docker login ghcr.io -u YOUR_USERNAME --password-stdin
 Docker tags are mutable named references for pulling and running images, similar to branch refs in Git.
 
 ```bash
-docker tag redwood-docker-compose_web ghcr.io/YOUR_USERNAME/redwood-docker-compose_web
-docker tag redwood-docker-compose_api ghcr.io/YOUR_USERNAME/redwood-docker-compose_api
+docker tag rw-docker-compose_web ghcr.io/YOUR_USERNAME/rw-docker-compose_web
+docker tag rw-docker-compose_api ghcr.io/YOUR_USERNAME/rw-docker-compose_api
 ```
 
 ### Push to Registry
@@ -468,8 +470,8 @@ docker tag redwood-docker-compose_api ghcr.io/YOUR_USERNAME/redwood-docker-compo
 Once you have tagged your image, you can push and pull the images much like you would push or pull a Git repository.
 
 ```bash
-docker push ghcr.io/YOUR_USERNAME/redwood-docker-compose_web:latest
-docker push ghcr.io/YOUR_USERNAME/redwood-docker-compose_api:latest
+docker push ghcr.io/YOUR_USERNAME/rw-docker-compose_web:latest
+docker push ghcr.io/YOUR_USERNAME/rw-docker-compose_api:latest
 ```
 
 ### Pull from Registry
@@ -477,6 +479,6 @@ docker push ghcr.io/YOUR_USERNAME/redwood-docker-compose_api:latest
 To test that our project has a docker image published to a public registry, pull it from your local development environment.
 
 ```bash
-docker pull ghcr.io/YOUR_USERNAME/redwood-docker-compose_web:latest
-docker pull ghcr.io/YOUR_USERNAME/redwood-docker-compose_api:latest
+docker pull ghcr.io/YOUR_USERNAME/rw-docker-compose_web:latest
+docker pull ghcr.io/YOUR_USERNAME/rw-docker-compose_api:latest
 ```
