@@ -1,23 +1,47 @@
 ---
 import PageLayout from "@/layouts/Base"
 
+const link = "inline-block cactus-link"
+const listNoBullets = "my-4 space-y-4 sm:space-y-2"
+const listWithBullets = "my-4 space-y-4 sm:space-y-2 list-disc list-inside"
+
 const meta = {
 	title: "About",
 	description: "A page about Anthony Campolo and what he does on the web",
+}
+
+const l = {
+	edgio: "https://edg.io/",
+	redwood: "https://redwoodjs.com/",
+	fsjam: "https://fsjam.org/",
+	twitter: "https://twitter.com/ajcwebdev",
+	astro: "https://astro.build",
+	cactus: "https://github.com/chrismwilliams/astro-theme-cactus",
+	integrations: "https://astro.build/integrations/official/",
+	image: "https://docs.astro.build/en/guides/integrations-guide/image/",
+	sitemap: "https://docs.astro.build/en/guides/integrations-guide/sitemap/",
+  cloudflare: "https://docs.astro.build/en/guides/integrations-guide/cloudflare/",
+  tailwind: "https://docs.astro.build/en/guides/integrations-guide/tailwind/",
+  mdx: "https://docs.astro.build/en/guides/integrations-guide/mdx/",
+	astroEmbedYoutube: "https://github.com/astro-community/astro-embed/tree/main/packages/astro-embed-youtube",
+	repo: "https://github.com/ajcwebdev/ajcweb.dev",
 }
 ---
 
 <PageLayout meta={meta}>
 	<div class="space-y-6">
-		<h1 class="title">About</h1>
+		<h1 class="title">About Me</h1>
 
 		<p>
-			Hello 👋, my name is Anthony Campolo. I'm a Developer Advocate at <a class="inline-block cactus-link" href="https://quicknode.com/" target="_blank">QuickNode</a>, a member of the <a class="inline-block cactus-link" href="https://redwoodjs.com/" target="_blank">RedwoodJS</a> core team, and co-host of the <a class="inline-block cactus-link" href="https://fsjam.org/" target="_blank">FSJam Podcast</a>.
+			Hello 👋, my name is Anthony Campolo.
+			I'm a Developer Advocate at <a class={link} href={l.edgio}>Edgio</a>,
+			a member of the <a class={link} href={l.redwood}>RedwoodJS</a> core team,
+			and co-host of the <a class={link} href={l.fsjam}>FSJam Podcast</a>.
 		</p>
 
-		<h2 class="mb-4 text-xl title">What do I do?</h2>
+		<h2 class="text-xl title">What do I do?</h2>
 
-		<ul class="space-y-4 sm:space-y-2">
+		<ul class={listNoBullets}>
 			<li>✍️ - Write blog articles</li>
 			<li>💬 - Give meetup talks</li>
 			<li>🎥 - Code on livestreams</li>
@@ -26,31 +50,38 @@ const meta = {
 		</ul>
 
 		<p>
-			My content mostly focuses on web development frameworks and deployment platforms, although recently I have also been exploring blockchain and web3 topics. If you want to get in touch, feel free to send me a message on <a class="inline-block cactus-link" href="https://twitter.com/ajcwebdev" target="_blank">Twitter</a>.
-		</p>
-	</div>
-
-	<section class="mt-6">
-		<h2 class="mb-4 text-xl title">Technologies</h2>
-
-		<p>
-			This site was built with the <code>astro-theme-cactus</code> starter.
-			<a class="inline-block cactus-link" href="https://github.com/chrismwilliams/astro-theme-cactus" target="_blank" aria-label="github repository">Clone or fork</a> the repo if you like it!
+			My content mostly focuses on web development frameworks and deployment platforms, although I also have material covering other topics such as blockchain smart contracts. If you want to get in touch, feel free to send me a message on <a class={link} href={l.twitter}>Twitter</a>.
 		</p>
 
-		<ul class="mt-4 space-y-4 sm:space-y-2">
-			<li>
-				<a href="https://astro.build" target="_blank" class="inline-block cactus-link">Astro</a>: <p class="inline-block sm:mt-2">Build fast websites, faster.</p>
-			</li>
-			<li>
-				<a href="https://docs.astro.build/en/guides/integrations-guide/image/" target="_blank" class="inline-block cactus-link">@astro/image</a>: <p class="inline-block sm:mt-2">An Astro integration for optimizing images in Astro projects.</p>
-			</li>
-			<li>
-				<a href="https://tailwindcss.com" target="_blank" class="inline-block cactus-link">Tailwind CSS</a>: <p class="inline-block sm:mt-2">Rapidly build modern websites without ever leaving your HTML.</p>
-			</li>
-			<li>
-				<a href="https://mdxjs.com/" target="_blank" class="inline-block cactus-link">MDX</a>: <p class="inline-block sm:mt-2">Markdown for the component era.</p>
-			</li>
-		</ul>
-	</section>
+    <h2 class="my-4 text-xl title">Website Stack</h2>
+
+	  <section>
+	  	<p>
+			  This site was built with <a href={l.astro} class={link}>Astro</a>, specifically the
+				<a class={link} href={l.cactus}>astro-theme-cactus</a> starter. This site is currently
+				using the following Astro <a href={l.integrations} class={link}>integrations</a>:
+		  </p>
+	  	<ul class={listWithBullets}>
+	  		<!-- <li>
+	  			<a href={l.image} class={link}>@astrojs/image</a>
+	  		</li> -->
+	  		<li>
+	  			<a href={l.sitemap} class={link}>@astrojs/sitemap</a>
+	  		</li>
+	  		<!-- <li>
+	  			<a href={l.cloudflare} class={link}>@astrojs/cloudflare</a>
+	  		</li> -->
+	  		<li>
+	  			<a href={l.tailwind} class={link}>@astrojs/tailwind</a>
+	  		</li>
+	  		<li>
+	  			<a href={l.mdx} class={link}>@astrojs/mdx</a>
+	  		</li>
+	  		<li>
+	  			<a href={l.astroEmbedYoutube} class={link}>@astro-community/astro-embed-youtube</a>
+	  		</li>
+	  	</ul>
+	  </section>
+		<p>Feel free to <a href={l.repo} class={link}>clone or fork this repo</a> if you like it!</p>
+  </div>
 </PageLayout>

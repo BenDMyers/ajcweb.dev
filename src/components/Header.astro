@@ -6,21 +6,20 @@ const url = new URL(Astro.request.url)
 
 <script>
 	function toggleClass(element: HTMLElement, className: string) {
-	  element.classList.toggle(className);
+	  element.classList.toggle(className)
   }
 
 	document.addEventListener("DOMContentLoaded", () => {
-		const { body } = document;
-		const toggleMenuButton = document.getElementById("toggle-navigation-menu");
-		let menuOpen = false;
-
+		const { body } = document
+		const toggleMenuButton = document.getElementById("toggle-navigation-menu")
+		let menuOpen = false
 		toggleMenuButton.addEventListener("click", () => {
-			toggleClass(body, "menu-open");
-			toggleClass(toggleMenuButton, "text-accent");
-			menuOpen = !menuOpen;
-			toggleMenuButton.setAttribute("aria-expanded", menuOpen.toString());
-		});
-	});
+			toggleClass(body, "menu-open")
+			toggleClass(toggleMenuButton, "text-accent")
+			menuOpen = !menuOpen
+			toggleMenuButton.setAttribute("aria-expanded", menuOpen.toString())
+		})
+	})
 </script>
 
 <header>
@@ -28,13 +27,22 @@ const url = new URL(Astro.request.url)
 		<span class="mr-8">ajcwebdev</span>
 	</a>
 	<nav id="navigation-menu" aria-label="Main">
-		<a href="/" aria-current={url.pathname === "/" ? "page" : false}>
+		<a
+		  href="/"
+			aria-current={url.pathname === "/" ? "page" : false}
+		>
 			Home
 		</a>
-		<a href="/about" aria-current={url.pathname === "/about" ? "page" : false}>
+		<a
+		  href="/about"
+			aria-current={url.pathname === "/about" ? "page" : false}
+		>
 			About
 		</a>
-		<a href="/posts" aria-current={url.pathname === "/posts" ? "page" : false}>
+		<a
+		  href="/posts"
+			aria-current={url.pathname === "/posts" ? "page" : false}
+		>
 			Blog
 		</a>
 	</nav>
