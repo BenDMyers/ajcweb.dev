@@ -2,7 +2,7 @@
 import BaseLayout from "./Base.astro"
 import { getLocaleTime } from "src/util"
 import {
-	baseLayoutContainer, postTitle, dateAndTags, postDate, tagsContainer, postTagsList, coverImage, blogPostContent, tocAside, tocHeader, tocUnorderedList, tocHeading
+	baseLayoutContainer, postTitle, dateAndTags, postDate, tagsContainer, postTagsList, coverPreviewImage, blogPostContent, tocAside, tocHeader, tocUnorderedList, tocHeading
 } from "../styles/styles"
 
 const {
@@ -32,7 +32,7 @@ const formatDate = getLocaleTime(date)
 						</div>
 				)}
 			</span>
-			<img class={coverImage} src={image}>
+			<img class={coverPreviewImage} src={image}>
 			<div class={blogPostContent}><slot /></div>
 		</article>
 	
