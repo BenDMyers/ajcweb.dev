@@ -1,9 +1,8 @@
 ---
 import BaseLayout from "./Base.astro"
 import { getLocaleTime } from "src/util"
-import {
-	baseLayoutContainer, postTitle, dateAndTags, postDate, tagsContainer, postTagsList, coverPreviewImage, blogPostContent, tocAside, tocHeader, tocUnorderedList, tocHeading
-} from "../styles/styles"
+import { baseLayoutContainer, postTitle, dateAndTags, postDate, tagsContainer, postTagsList, coverImage, blogPostContent } from "../styles/post"
+import { tocAside, tocHeader, tocUnorderedList, tocHeading } from "../styles/toc"
 
 const {
 	content: { title, description, publishDate, tags, image, canonicalURL },
@@ -24,15 +23,13 @@ const formatDate = getLocaleTime(date)
 						<div class={tagsContainer}>
 							<ul class={postTagsList}>
 								{tags.map((tag) => (
-									<li>
-										{tag}
-									</li>
+									<li>{tag}</li>
 								))}
 							</ul>
 						</div>
 				)}
 			</span>
-			<img class={coverPreviewImage} src={image}>
+			<img class={coverImage} src={image}>
 			<div class={blogPostContent}><slot /></div>
 		</article>
 	

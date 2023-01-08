@@ -1,0 +1,6 @@
+export const postPreviewTitle = "inline-block cactus-link line-clamp-1 text-xl"
+// export const postPreviewTitle = "inline-block cactus-link title text-xl mt-4"
+export const postPreviewDate = "min-w-[120px] text-gray-500 text-xl"
+export const postPreviewDesc = "block italic line-clamp-3 mt-4 mb-4 text-lg"
+// export const postPreviewDesc = "block italic mt-4 mb-4 text-lg"
+export const coverImage = "mt-4"
