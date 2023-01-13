@@ -41,15 +41,15 @@ IPFS can be used with [IPFS Desktop](https://docs.ipfs.io/install/ipfs-desktop/)
 You can find installation instructors for your OS [here](https://docs.ipfs.io/install/command-line/#official-distributions). Since I am on an M1 I will download the `darwin-arm64` binary from [IPFS Distributions](https://dist.ipfs.io/#go-ipfs) and then unzip it.
 
 ```bash
-curl -O https://dist.ipfs.io/go-ipfs/v0.12.0/go-ipfs_v0.12.0_darwin-amd64.tar.gz
-tar -xvzf go-ipfs_v0.12.0_darwin-amd64.tar.gz
+curl -O https://dist.ipfs.io/go-ipfs/v0.12.0/go-ipfs_v0.12.0_darwin-arm64.tar.gz
+tar -xvzf go-ipfs_v0.12.0_darwin-arm64.tar.gz
 ```
 
 Run the `install.sh` script (this may require `sudo`) and then clean up the installation files.
 
 ```bash
 bash go-ipfs/install.sh
-rm -rf go-ipfs go-ipfs_v0.12.0_darwin-amd64.tar.gz
+rm -rf go-ipfs go-ipfs_v0.12.0_darwin-arm64.tar.gz
 ```
 
 Finally, check the version number to verify it was installed correctly.
@@ -221,7 +221,7 @@ ipfs cat QmUKwop8CmB4ictvQyCJQru97NRVakJFVWpV74guJ89tcb
 ipfs cat Qmckpy8mWjWmLB8Jmkpvrmkv3fb4UXZuNZS648bh4fuj4M/index.html
 ```
 
-```
+```html
 <h2>Example site from A First Look at IPFS</h2>
 ```
 
@@ -232,7 +232,7 @@ ipfs cat QmWV9i6qQVrK3aEEd4PbzME42shTGwZuCdR1DFMD3ZvzsG
 ipfs cat Qmckpy8mWjWmLB8Jmkpvrmkv3fb4UXZuNZS648bh4fuj4M/about.html
 ```
 
-```
+```html
 <h2>About the InterPlanetary File and Name System</h2>
 ```
 
