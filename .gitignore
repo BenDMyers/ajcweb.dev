@@ -22,3 +22,5 @@ pnpm-debug.log*
 # misc
 *.pem
 .cache
+# Edgio generated build directory
+.edgio
