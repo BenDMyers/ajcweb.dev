@@ -24,3 +24,4 @@ pnpm-debug.log*
 .cache
 # Edgio generated build directory
 .edgio
+pnpm-lock.yaml
