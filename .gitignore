@@ -25,5 +25,5 @@ pnpm-debug.log*
 # Edgio generated build directory
 .edgio
 pnpm-lock.yaml
-.astro
+_astro
 package-lock.json
