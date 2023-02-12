@@ -30,19 +30,8 @@ const year = new Date().getFullYear()
 		<script define:vars={{ siteMeta }}>
 			const root = document.documentElement
 			const colorThemeMetaTag = document.querySelector("meta[name='theme-color']")
-			const theme =
-				typeof localStorage !== "undefined"
-					? localStorage.getItem("theme")
-					: null
-			if (
-				theme === "dark" || (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
-			) {
-				root.classList.add("dark")
-				colorThemeMetaTag.setAttribute("content", siteMeta.themeColorDark)
-			} else {
-				root.classList.remove("dark")
-				colorThemeMetaTag.setAttribute("content", siteMeta.themeColorLight)
-			}
+			root.classList.add("dark")
+			colorThemeMetaTag.setAttribute("content", siteMeta.themeColorDark)
 		</script>
 	</head>
 	
