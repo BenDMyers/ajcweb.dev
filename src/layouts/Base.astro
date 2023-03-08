@@ -1,9 +1,25 @@
 ---
-import type { SiteMeta } from "@/util"
-import BaseHead from "@/components/BaseHead"
-import Header from "@/components/Header"
-import siteMeta from "@/util"
 import { footerContainer, skip, icons } from "../styles/layout"
+import "../styles/global.css"
+
+type SiteMeta = {
+	title: string
+	description?: string
+	image?: string
+	canonicalURL?: string
+	publishDate?: Date
+}
+
+const siteMeta = {
+  title: "ajcwebdev",
+  description: "Web developer, writer, speaker, and advocate",
+	canonicalURL: "https://ajcwebdev.com",
+  githubUrl: "https://github.com/ajcwebdev/ajcweb.dev",
+	publishDate: "2022-11-14",
+	image: "https://github.com/ajcwebdev/social-cards/blob/main/background-html.png?raw=true",
+	github: "https://github.com/ajcwebdev",
+  twitter: "https://twitter.com/ajcwebdev"
+}
 
 export type Props = {
 	meta: SiteMeta
@@ -13,33 +29,95 @@ const {
 	meta: { title, description, image, canonicalURL, publishDate },
 } = Astro.props as Props
 
-const l = {
-	github: "https://github.com/ajcwebdev",
-  twitter: "https://twitter.com/ajcwebdev"
-}
-
 const year = new Date().getFullYear()
+const url = new URL(Astro.request.url)
 ---
 
-<html lang={siteMeta.lang}>
+<html lang="en-US">
 	<head>
-		<BaseHead
-		  title={title} description={description} image={image} canonicalURL={canonicalURL} publishDate={publishDate}
-		/>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
-		<script define:vars={{ siteMeta }}>
-			const root = document.documentElement
-			const colorThemeMetaTag = document.querySelector("meta[name='theme-color']")
-			root.classList.add("dark")
-			colorThemeMetaTag.setAttribute("content", siteMeta.themeColorDark)
-		</script>
+		<title>{title}</title>
+		<meta name="title" content={title} />
+		<meta name="description" content={description} />
+		
+		<link rel="icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" href="/images/icon/192x192.png" />
+		<link rel="manifest" href="/manifest.webmanifest" />
+		<meta name="theme-color" content="#1d1f21" />
+		
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalURL} />
+		<link rel="canonical" href={canonicalURL} />
+		<meta property="og:title" content={title} />
+		<meta property="og:site_name" content="ajcwebdev" />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={image} />
+		<meta property="og:article:published_time" content={publishDate} />
+		
+		<meta property="twitter:card" content={image ? "summary_large_image" : "summary"} />
+		<meta property="twitter:title" content={title} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content={image} />
 	</head>
 	
 	<body>
 		<a href="#main" class={skip}>
 			Skip to content
 	  </a>
-		<Header />
+		<script define:vars={{ siteMeta }}>
+			const root = document.documentElement
+			const colorThemeMetaTag = document.querySelector("meta[name='theme-color']")
+			root.classList.add("dark")
+			colorThemeMetaTag.setAttribute("content", "#1d1f21")
+			function toggleClass(element, className) {
+				element.classList.toggle(className)
+			}
+		
+			document.addEventListener("DOMContentLoaded", () => {
+				const { body } = document
+				const toggleMenuButton = document.getElementById("toggle-navigation-menu")
+				let menuOpen = false
+				toggleMenuButton.addEventListener("click", () => {
+					toggleClass(body, "menu-open")
+					toggleClass(toggleMenuButton, "text-accent")
+					menuOpen = !menuOpen
+					toggleMenuButton.setAttribute("aria-expanded", menuOpen.toString())
+				})
+			})
+		</script>
+		
+		<header>
+			<a href="/" class="logo" aria-current={url.pathname === "/" ? "page" : false}>
+				<span class="mr-8">ajcwebdev</span>
+			</a>
+			<nav id="navigation-menu" aria-label="Main">
+				<a href="/" aria-current={url.pathname === "/" ? "page" : false}>
+					Home
+				</a>
+				<a href="/about" aria-current={url.pathname === "/about" ? "page" : false}>
+					About
+				</a>
+				<a href="/posts" aria-current={url.pathname === "/posts" ? "page" : false}>
+					Blog
+				</a>
+			</nav>
+		
+			<button
+				id="toggle-navigation-menu"
+				type="button"
+				aria-label="primary navigation"
+				aria-expanded="false"
+			>
+				<svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+					<path fill-rule="evenodd" d="M3 7a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 13a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+				</svg>
+			</button>
+		</header>
+		
 		<main id="main" class="flex-1">
 			<slot />
 		</main>
@@ -52,7 +130,7 @@ const year = new Date().getFullYear()
 				<p class="text-base">Find me online at</p>
 				<ul class="flex items-center flex-1 sm:flex-initial">
 					<li>
-						<a class={icons} href={l.github} target="_blank">
+						<a class={icons} href={siteMeta.github} target="_blank">
 							<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 								<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
 								<path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"></path>
@@ -61,7 +139,7 @@ const year = new Date().getFullYear()
 						</a>
 					</li>
 					<li>
-						<a class={icons} href={l.twitter} target="_blank">
+						<a class={icons} href={siteMeta.twitter} target="_blank">
 							<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 								<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
 								<path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z"></path>
@@ -73,4 +151,44 @@ const year = new Date().getFullYear()
 			</div>	
 		</footer>
 	</body>
+	<style>
+		header {
+			@apply relative z-50 mb-28 flex items-center sm:pl-[4.5rem];
+			.logo {
+				@apply inline-flex items-center grayscale hover:filter-none sm:relative sm:inline-block;
+				svg {
+					@apply mr-3 h-10 w-6 sm:absolute sm:left-[-4.5rem] sm:mr-0 sm:h-20 sm:w-12;
+				}
+				> span {
+					@apply text-xl font-bold sm:text-2xl;
+				}
+			}
+	
+			#toggle-navigation-menu {
+				@apply ml-8 sm:invisible sm:hidden;
+				svg {
+					@apply h-6 w-6;
+				}
+			}
+	
+			nav {
+				@apply mt-1 -ml-4 hidden text-accent sm:flex sm:divide-x sm:divide-dashed sm:divide-accent;
+				a {
+					@apply px-4 sm:hover:underline;
+				}
+			}
+	
+			@media (max-width: 640px) {
+				:global(body.menu-open) & {
+					@apply relative z-50;
+					nav {
+						@apply absolute -inset-x-4 top-14 m-0 flex flex-col items-end gap-y-4 rounded-md bg-[color:var(--theme-menu-bg)] py-4 shadow backdrop-blur backdrop-filter;
+						a {
+							@apply p-4;
+						}
+					}
+				}
+			}
+		}
+	</style>
 </html>
