@@ -554,10 +554,14 @@ Open [`localhost:5173`](http://localhost:5173/) to see the React app.
 
 ### Create Hello Query with Tanstack Query Client
 
+Create a `components` folder and then a `Hello.tsx` component inside that folder.
+
 ```bash
 mkdir src/components
 echo >> src/components/Hello.tsx
 ```
+
+In `Hello.tsx`, we'll import `api` from `pages/index`, run [`useQuery`](https://tanstack.com/query/v4/docs/react/reference/useQuery) on `api.hello`, and input a key-value pair with the key `name` and a value containing a string message.
 
 ```tsx
 // src/components/Hello.tsx
@@ -589,13 +593,9 @@ export function Hello() {
 }
 ```
 
-We'll initialize the TanStack Query client in `index.tsx`:
+For this to work we'll need to initialize the TanStack Query client in `index.tsx`. [`QueryClient`](https://tanstack.com/query/v4/docs/reference/QueryClient) is used to interact with React Query's cache and [`QueryClientProvider`](https://tanstack.com/query/v4/docs/reference/QueryClientProvider) connects and provides `QueryClient` to the application.
 
-- [`QueryClient`](https://tanstack.com/query/v4/docs/reference/QueryClient) is used to interact with React Query's cache. `queryClient`
-- [`QueryClientProvider`](https://tanstack.com/query/v4/docs/reference/QueryClientProvider) connects and provides `QueryClient` to the application.
-- `createClient` and `trpcClient`
-- [`httpBatchLink`](https://trpc.io/docs/links/httpBatchLink) is a terminating link that batches an array of individual tRPC operations into a single HTTP request that's sent to a single tRPC procedure. The terminating link is the last link in a link chain. Instead of calling the `next` function, the terminating link is responsible for sending your composed tRPC operation to the tRPC server and returning an `OperationResultEnvelope`.
-- The `links` array added to the tRPC client config should have at least one link and that link should be a terminating link. If `links` don't have a terminating link at the end of them, the tRPC operation will not be sent to the tRPC server.
+[`httpBatchLink`](https://trpc.io/docs/links/httpBatchLink) is a terminating link that batches an array of individual tRPC operations into a single HTTP request that's sent to a single tRPC procedure. The terminating link is the last link in a link chain. Instead of calling the `next` function, the terminating link is responsible for sending your composed tRPC operation to the tRPC server and returning an `OperationResultEnvelope`.
 
 ```tsx
 // src/pages/index.tsx
@@ -627,7 +627,7 @@ export default function Index() {
 }
 ```
 
-At this point you'll get the following error in your browser console:
+The `links` array added to the tRPC client config should have at least one link and that link should be a terminating link. If `links` don't have a terminating link at the end of them, the tRPC operation will not be sent to the tRPC server. At this point you'll get the following error in your browser console:
 
 > Access to fetch at `http://localhost:2022/hello?...` from origin `http://127.0.0.1:5173` has been blocked by CORS policy. Response to preflight request doesn't pass access control check.
 > 
@@ -793,7 +793,7 @@ export default async function handler(req: NextRequest) {
 }
 ```
 
-Set the `endpoint` to `/api` and the `router` to `appRouter`. In `createContext` an arrow function is run that returns an empty JavaScript object and nothing else. We also set the `runtime` to `experimental-edge` inside our `config` object because this example uses the [Next.js Edge Runtime](https://nextjs.org/docs/api-reference/edge-runtime) via tRPC's fetch adapter.
+Set the `endpoint` to `/api` and the `router` to `appRouter`. In `createContext` an arrow function is run that returns an empty JavaScript object and nothing else. We also set the `runtime` to `edge` inside our `config` object because this example uses the [Next.js Edge Runtime](https://nextjs.org/docs/api-reference/edge-runtime) via tRPC's fetch adapter.
 
 ```ts
 // src/pages/api/[trpc].ts
