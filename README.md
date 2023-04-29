@@ -6,7 +6,7 @@
 
 ## Commands
 
-Replace pnpm with your choice of npm / yarn
+Replace pnpm with your choice of npm or yarn
 
 | Command        | Action                                       |
 | :------------- | :------------------------------------------- |
@@ -44,54 +44,55 @@ layout: "@/layouts/BlogPost"
 `_redirects`.
 
 ```
-/2023/01/09/a-first-look-at-trpc /a-first-look-at-trpc
-/2023/01/09/a-first-look-at-trpc /trpc
-/2022/11/20/a-first-look-at-solidstart /a-first-look-at-solidstart
-/2022/08/13/a-first-look-at-create-t3-app /a-first-look-at-create-t3-app
-/2022/08/02/does-remix-scale /does-remix-scale
-/2022/06/12/a-first-look-at-ipfs /a-first-look-at-ipfs
-/2022/03/05/storing-nft-information-off-chain-with-fauna /storing-nft-information-off-chain-with-fauna
-/2022/03/04/a-first-look-at-ethers-and-hardhat /a-first-look-at-ethers-and-hardhat
-/2022/02/01/query-a-mongodb-database-with-prisma-and-railway /query-a-mongodb-database-with-prisma-and-railway
-/2021/11/27/a-first-look-at-astro /a-first-look-at-astro
-/2021/11/22/what-is-partial-hydration-and-why-is-everyone-talking-about-it /what-is-partial-hydration-and-why-is-everyone-talking-about-it
-/2021/11/10/how-to-display-a-custom-daily-greeting /how-to-display-a-custom-daily-greeting
-/2021/11/02/a-first-look-at-oak /a-first-look-at-oak
-/2021/10/15/a-first-look-at-nuxt-3 /a-first-look-at-nuxt-3
-/2021/10/05/why-am-i-hung-up-on-the-term-fullstack /why-am-i-hung-up-on-the-term-fullstack
-/2021/10/04/three-ways-to-deploy-a-serverless-graphql-api /three-ways-to-deploy-a-serverless-graphql-api
-/2021/09/27/a-first-look-at-pulumi /a-first-look-at-pulumi
-/2021/09/20/a-first-look-at-graphql-helix /a-first-look-at-graphql-helix
-/2021/09/15/deploy-a-graphql-server-with-docker-and-fly /deploy-a-graphql-server-with-docker-and-fly
-/2021/09/06/a-first-look-at-aws-fargate /a-first-look-at-aws-fargate
-/2021/09/02/how-to-deploy-a-docker-container-on-aws-lambda /how-to-deploy-a-docker-container-on-aws-lambda
-/2021/09/02/a-first-look-at-serverless-cloud /a-first-look-at-serverless-cloud
-/2021/08/25/a-first-look-at-keystonejs /a-first-look-at-keystonejs
-/2021/08/08/a-first-look-at-slinkity /a-first-look-at-slinkity
-/2021/08/04/a-first-look-at-fly /a-first-look-at-fly
-/2021/07/20/a-first-look-at-github-actions /a-first-look-at-github-actions
-/2021/07/17/a-first-look-at-postgraphile-with-railway /a-first-look-at-postgraphile-with-railway
-/2021/07/12/a-first-look-at-docker /a-first-look-at-docker
-/2021/07/11/a-first-look-at-azure-functions /a-first-look-at-azure-functions
-/2021/06/10/a-first-look-at-serverless-framework /a-first-look-at-serverless-framework
-/2021/06/08/a-first-look-at-react-18-with-vite-and-netlify /a-first-look-at-react-18-with-vite-and-netlify
-/2021/05/28/edge-graphql-with-cloudflare-workers /edge-graphql-with-cloudflare-workers
-/2021/05/14/a-first-look-at-architect /a-first-look-at-architect
-/2021/05/09/a-first-look-at-amplify-with-vite /a-first-look-at-amplify-with-vite
-/2021/05/06/a-first-look-at-remix /a-first-look-at-remix
-/2021/05/03/a-first-look-at-cloudflare-workers /a-first-look-at-cloudflare-workers
-/2021/05/02/a-first-look-at-aws-sam /a-first-look-at-aws-sam
-/2021/04/30/a-first-look-at-aws-cdk /a-first-look-at-aws-cdk
-/2021/04/21/can-I-use-mongodb-with-prisma-yet /can-I-use-mongodb-with-prisma-yet
-/2021/04/08/a-first-look-at-cloudflare-pages /a-first-look-at-cloudflare-pages
-/2021/03/25/query-rick-and-morty-graphql-api /query-rick-and-morty-graphql-api
-/2021/03/21/generics /generics
-/2021/03/12/notes-on-es-modules-with-chantastic /notes-on-es-modules-with-chantastic
-/2021/03/05/a-first-look-at-vite /a-first-look-at-vite
-/2020/12/12/semantic-github /semantic-github
-/2020/11/10/graphql-caching /graphql-caching
-/2020/11/06/a-first-look-at-sveltekit /a-first-look-at-sveltekit
-/2020/07/24/why-do-so-many-musicians-become-programmers /why-do-so-many-musicians-become-programmers
+ /2023/03/08/2023-03-08-a-first-look-at-trpc /2023/03/08/a-first-look-at-trpc 301
+ /a-first-look-at-trpc /2023/03/08/a-first-look-at-trpc 301
+ /trpc /2023/03/08/a-first-look-at-trpc 301
+ /a-first-look-at-solidstart /2022/11/20/a-first-look-at-solidstart 301
+ /a-first-look-at-create-t3-app /2022/08/13/a-first-look-at-create-t3-app 301
+ /does-remix-scale /2022/08/02/does-remix-scale 301
+ /a-first-look-at-ipfs /2022/06/12/a-first-look-at-ipfs 301
+ /storing-nft-information-off-chain-with-fauna /2022/03/05/storing-nft-information-off-chain-with-fauna 301
+ /a-first-look-at-ethers-and-hardhat /2022/03/04/a-first-look-at-ethers-and-hardhat 301
+ /query-a-mongodb-database-with-prisma-and-railway /2022/02/01/query-a-mongodb-database-with-prisma-and-railway 301
+ /a-first-look-at-astro /2021/11/27/a-first-look-at-astro 301
+ /what-is-partial-hydration-and-why-is-everyone-talking-about-it /2021/11/22/what-is-partial-hydration-and-why-is-everyone-talking-about-it 301
+ /how-to-display-a-custom-daily-greeting /2021/11/10/how-to-display-a-custom-daily-greeting 301
+ /a-first-look-at-oak /2021/11/02/a-first-look-at-oak 301
+ /a-first-look-at-nuxt-3 /2021/10/15/a-first-look-at-nuxt-3 301
+ /why-am-i-hung-up-on-the-term-fullstack /2021/10/05/why-am-i-hung-up-on-the-term-fullstack 301
+ /three-ways-to-deploy-a-serverless-graphql-api /2021/10/04/three-ways-to-deploy-a-serverless-graphql-api 301
+ /a-first-look-at-pulumi /2021/09/27/a-first-look-at-pulumi 301
+ /a-first-look-at-graphql-helix /2021/09/20/a-first-look-at-graphql-helix 301
+ /deploy-a-graphql-server-with-docker-and-fly /2021/09/15/deploy-a-graphql-server-with-docker-and-fly 301
+ /a-first-look-at-aws-fargate /2021/09/06/a-first-look-at-aws-fargate 301
+ /how-to-deploy-a-docker-container-on-aws-lambda /2021/09/02/how-to-deploy-a-docker-container-on-aws-lambda 301
+ /a-first-look-at-serverless-cloud /2021/09/02/a-first-look-at-serverless-cloud 301
+ /a-first-look-at-keystonejs /2021/08/25/a-first-look-at-keystonejs 301
+ /a-first-look-at-slinkity /2021/08/08/a-first-look-at-slinkity 301
+ /a-first-look-at-fly /2021/08/04/a-first-look-at-fly 301
+ /a-first-look-at-github-actions /2021/07/20/a-first-look-at-github-actions 301
+ /a-first-look-at-postgraphile-with-railway /2021/07/17/a-first-look-at-postgraphile-with-railway 301
+ /a-first-look-at-docker /2021/07/12/a-first-look-at-docker 301
+ /a-first-look-at-azure-functions /2021/07/11/a-first-look-at-azure-functions 301
+ /a-first-look-at-serverless-framework /2021/06/10/a-first-look-at-serverless-framework 301
+ /a-first-look-at-react-18-with-vite-and-netlify /2021/06/08/a-first-look-at-react-18-with-vite-and-netlify 301
+ /edge-graphql-with-cloudflare-workers /2021/05/28/edge-graphql-with-cloudflare-workers 301
+ /a-first-look-at-architect /2021/05/14/a-first-look-at-architect 301
+ /a-first-look-at-amplify-with-vite /2021/05/09/a-first-look-at-amplify-with-vite 301
+ /a-first-look-at-remix /2021/05/06/a-first-look-at-remix 301
+ /a-first-look-at-cloudflare-workers /2021/05/03/a-first-look-at-cloudflare-workers 301
+ /a-first-look-at-aws-sam /2021/05/02/a-first-look-at-aws-sam 301
+ /a-first-look-at-aws-cdk /2021/04/30/a-first-look-at-aws-cdk 301
+ /can-I-use-mongodb-with-prisma-yet /2021/04/21/can-I-use-mongodb-with-prisma-yet 301
+ /a-first-look-at-cloudflare-pages /2021/04/08/a-first-look-at-cloudflare-pages 301
+ /query-rick-and-morty-graphql-api /2021/03/25/query-rick-and-morty-graphql-api 301
+ /generics /2021/03/21/generics 301
+ /notes-on-es-modules-with-chantastic /2021/03/12/notes-on-es-modules-with-chantastic 301
+ /a-first-look-at-vite /2021/03/05/a-first-look-at-vite 301
+ /semantic-github /2020/12/12/semantic-github 301
+ /graphql-caching /2020/11/10/graphql-caching 301
+ /a-first-look-at-sveltekit /2020/11/06/a-first-look-at-sveltekit 301
+ /why-do-so-many-musicians-become-programmers /2020/07/24/why-do-so-many-musicians-become-programmers 301
 ```
 
 ## Deploy
