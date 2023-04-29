@@ -83,7 +83,7 @@ layout: "@/layouts/BlogPost"
  /a-first-look-at-cloudflare-workers /2021/05/03/a-first-look-at-cloudflare-workers 301
  /a-first-look-at-aws-sam /2021/05/02/a-first-look-at-aws-sam 301
  /a-first-look-at-aws-cdk /2021/04/30/a-first-look-at-aws-cdk 301
- /can-I-use-mongodb-with-prisma-yet /2021/04/21/can-I-use-mongodb-with-prisma-yet 301
+ /can-i-use-mongodb-with-prisma-yet /2021/04/21/can-i-use-mongodb-with-prisma-yet 301
  /a-first-look-at-cloudflare-pages /2021/04/08/a-first-look-at-cloudflare-pages 301
  /query-rick-and-morty-graphql-api /2021/03/25/query-rick-and-morty-graphql-api 301
  /generics /2021/03/21/generics 301
