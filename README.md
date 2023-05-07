@@ -50,3 +50,81 @@ Site is deployed on Netlify and uses [Cloudflare Redirects](https://developers.c
 ## Acknowledgment
 
 This theme is inspired by [Hexo Theme Cactus](https://github.com/probberechts/hexo-theme-cactus). Licensed under the MIT License, Copyright © 2022.
+
+## Configuration
+
+Astro configuration.
+
+```js
+// astro.config.mjs
+
+import { defineConfig } from "astro/config"
+import mdx from "@astrojs/mdx"
+import tailwind from "@astrojs/tailwind"
+import image from "@astrojs/image"
+import sitemap from "@astrojs/sitemap"
+import prefetch from "@astrojs/prefetch"
+
+export default defineConfig({
+  site: "https://ajcwebdev.com/",
+  markdown: {
+    shikiConfig: {
+      theme: "dracula",
+      wrap: false
+    }
+  },
+  integrations: [
+		mdx({}),
+		tailwind({ config: { applyBaseStyles: false } }),
+    sitemap(),
+		image({ serviceEntryPoint: "@astrojs/image/sharp" }),
+    prefetch()
+  ],
+  vite: {
+		optimizeDeps: {
+			exclude: ["@resvg/resvg-js"]
+		}
+	}
+})
+```
+
+Post interface.
+
+```ts
+// src/util.ts
+
+interface Post {
+	canonicalURL: string
+	title: string
+	description: string
+	publishDate: Date
+	tags?: string[]
+	image: string
+	layout: string
+}
+```
+
+Site meta.
+
+```astro
+<!-- src/layouts/Base.astro -->
+
+type SiteMeta = {
+	title: string
+	description?: string
+	image?: string
+	canonicalURL?: string
+	publishDate?: string
+}
+
+const siteMeta = {
+  title: "ajcwebdev",
+  description: "Web developer, writer, speaker, and advocate",
+	canonicalURL: "https://ajcwebdev.com",
+  githubUrl: "https://github.com/ajcwebdev/ajcweb.dev",
+	publishDate: "2022-11-14",
+	image: "https://github.com/ajcwebdev/social-cards/blob/main/background-html.png?raw=true",
+	github: "https://github.com/ajcwebdev",
+  twitter: "https://twitter.com/ajcwebdev"
+}
+```
