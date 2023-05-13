@@ -1,8 +1,8 @@
 // src/index.astro
 export const p = "mb-4"
-export const postTitle3 = "mb-6 title"
-export const postTitle2 = "mb-4 text-xl title"
-export const postPreviewList2 = "flex flex-wrap items-center gap-x-2 [&_q]:w-full"
+export const header = "mb-6 title"
+export const recentPosts = "mb-4 text-xl title"
+export const indexPostPreviewList = "flex flex-wrap items-center gap-x-2 [&_q]:w-full"
 export const unorderedList24 = "space-y-24"
 
 // src/pages/about/index.astro
