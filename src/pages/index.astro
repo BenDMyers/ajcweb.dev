@@ -3,16 +3,7 @@ import PageLayout from "@/layouts/Base"
 import BlogPostPreview from "@/components/BlogPostPreview"
 import { sortMDByDate } from "@/util"
 import type { Post } from "@/util"
-// import { postPreviewList, postTitle } from "../styles/styles"
-
-const p = "mb-4"
-// const p = "my-4"
-const postTitle = "mb-6 title"
-const postTitle2 = "mb-4 text-xl title"
-const postPreviewList = "flex flex-wrap items-center gap-x-2 [&_q]:w-full"
-
-// const unorderedList12 = "space-y-12"
-const unorderedList24 = "space-y-24"
+import { p, postPreviewList2, postTitle2, postTitle3, unorderedList24 } from "../styles"
 
 const meta = {
 	title: "ajcwebdev",
@@ -26,7 +17,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, 5)
 
 <PageLayout meta={meta}>
 	<section>
-		<h1 class={postTitle}>Anthony Campolo, Developer Advocate</h1>
+		<h1 class={postTitle3}>Anthony Campolo, Developer Advocate</h1>
 
 		<p class={p}>
 			Oh hello, didn't see you there. This is my blog.
@@ -39,7 +30,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, 5)
 		<ul class={unorderedList24}>
 			{
 				allPostsByDate.map((p) => (
-					<li class={postPreviewList}>
+					<li class={postPreviewList2}>
 						<BlogPostPreview post={p} as="h2" />
 					</li>
 				))
