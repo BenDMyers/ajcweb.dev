@@ -21,6 +21,10 @@ export const coverImage = "mt-4"
 
 // src/layouts/Base.astro
 export const footerContainer = "flex flex-wrap items-center sm:items-center gap-x-4"
+export const footerText = "text-base"
+export const footerList = "flex items-center flex-1 sm:flex-initial"
+export const footerSVG = "w-6 h-6"
+export const span = "sr-only"
 export const skip = "focus:fixed focus:top-1.5 focus:left-1 sr-only focus:not-sr-only"
 export const icons = "inline-block p-2 sm:hover:text-link"
 
