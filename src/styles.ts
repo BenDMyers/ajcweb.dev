@@ -6,6 +6,9 @@ export const indexPostPreviewList = "flex flex-wrap items-center gap-x-2 [&_q]:w
 export const unorderedList24 = "space-y-24"
 
 // src/pages/about/index.astro
+export const aboutHeader = "title"
+export const aboutHeader2 = "text-xl title"
+export const aboutHeader3 = "my-4 text-xl title"
 export const link = "inline-block cactus-link"
 export const listNoBullets = "my-4 space-y-4 sm:space-y-2"
 export const listWithBullets = "my-4 space-y-4 sm:space-y-2 list-disc list-inside"

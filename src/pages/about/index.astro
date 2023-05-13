@@ -1,6 +1,6 @@
 ---
 import PageLayout from "@/layouts/Base"
-import { link, listNoBullets, listWithBullets } from "../../styles"
+import { aboutHeader, aboutHeader2, aboutHeader3, link, listNoBullets, listWithBullets } from "../../styles"
 
 const meta = {
 	canonicalURL: "https://ajcwebdev.com/about/",
@@ -28,7 +28,7 @@ const l = {
 
 <PageLayout meta={meta}>
 	<div class="space-y-6">
-		<h1 class="title">About Me</h1>
+		<h1 class={aboutHeader}>About Me</h1>
 
 		<p>
 			Hello 👋, my name is Anthony Campolo.
@@ -37,7 +37,7 @@ const l = {
 			and co-host of the <a class={link} href={l.fsjam}>FSJam Podcast</a>.
 		</p>
 
-		<h2 class="text-xl title">What do I do?</h2>
+		<h2 class={aboutHeader2}>What do I do?</h2>
 
 		<ul class={listNoBullets}>
 			<li>✍️ - Write blog articles</li>
@@ -51,7 +51,7 @@ const l = {
 			My content mostly focuses on web development frameworks and deployment platforms, although I also have material covering other topics such as blockchain smart contracts. If you want to get in touch, feel free to send me a message on <a class={link} href={l.twitter}>Twitter</a>.
 		</p>
 
-    <h2 class="my-4 text-xl title">Website Stack</h2>
+    <h2 class={aboutHeader3}>Website Stack</h2>
 
 	  <section>
 	  	<p>
