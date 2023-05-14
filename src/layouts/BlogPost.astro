@@ -30,7 +30,8 @@ const formatDate = getLocaleTime(date)
 			<h1 class={postTitle}>{title}</h1>
 			<span class={dateAndTags}>
 				<time class={postPublishDate}>{formatDate}</time>
-				{tags?.length && (
+				{
+				  tags?.length && (
 						<div class={tagsContainer}>
 							<ul class={postTagsList}>
 								{tags.map((tag) => (
@@ -38,7 +39,8 @@ const formatDate = getLocaleTime(date)
 								))}
 							</ul>
 						</div>
-				)}
+				  )
+				}
 			</span>
 			<img class={coverImage} src={image} alt={title + " cover image"}>
 			<div class={blogPostContent}><slot /></div>
