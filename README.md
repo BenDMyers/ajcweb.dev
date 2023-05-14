@@ -151,6 +151,53 @@ const siteMeta = {
 }
 ```
 
+### Site Configuration
+
+- `author` - Used as both a meta property (`src/components/BaseHead.astro`) and the generated satori png (`src/pages/og-image/[slug].png.ts`)
+- `title` - Meta property used to construct the meta title property found in `src/components/BaseHead.astro`
+- `description` - Meta property used as a default description meta property
+- `lang` - HTML lang property, found in `src/layouts/Base.astro`
+- `ogLocale` - Meta property, found in `src/components/BaseHead.astro`
+- `themeColorLight`/`themeColorDark` - Sets the meta data theme-color, found in `src/components/BaseHead.astro`
+  - Toggling the dark mode will update the meta content with either light/dark color, implementation in `src/layouts/Base.astro`
+- `date` - `Date.prototype.toLocaleDateString()` parameters, found in `src/utils/date.ts`
+
+```ts
+// src/site.config.ts
+
+interface SiteConfig {
+	author: string
+	title: string
+	description: string
+	lang: string
+	ogLocale: string
+	themeColorLight: string
+	themeColorDark: string
+	date: {
+		locale: string | string[] | undefined
+		options: Intl.DateTimeFormatOptions
+	}
+}
+
+export const siteConfig: SiteConfig = {
+	author: "Anthony Campolo",
+	title: "ajcwebdev",
+	description: "Web developer, writer, speaker, and advocate. Developer Advocate at Edgio and Redwood. Host of JavaScript Jam and the FSJam Podcast.",
+	lang: "en-US",
+	ogLocale: "en_US",
+	themeColorLight: "#fafafa",
+	themeColorDark: "#1d1f21",
+	date: {
+		locale: "en-GB",
+		options: {
+			day: "numeric",
+			month: "short",
+			year: "numeric",
+		},
+	},
+}
+```
+
 ### Social Links
 
 - Edit social links in `src/data/shared.ts` and in turn `src/layouts/Base.astro` to add/replace your media profile.

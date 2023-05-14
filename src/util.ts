@@ -21,6 +21,12 @@ export type {
 	Post,
 }
 
+// export function sortMDByDate(posts: CollectionEntry<"post">[] = []) {
+// 	return posts.sort(
+// 		(a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()
+// 	)
+// }
+
 export function sortMDByDate(posts: MDXInstance<Post>[] = []) {
 	return posts.sort(
 		(a, b) =>
@@ -28,6 +34,19 @@ export function sortMDByDate(posts: MDXInstance<Post>[] = []) {
 			new Date(a.frontmatter.publishDate).valueOf()
 	)
 }
+
+// export function getFormattedDate(
+// 	date: string | number | Date,
+// 	options?: Intl.DateTimeFormatOptions
+// ) {
+// 	if (typeof options !== "undefined") {
+// 		return new Date(date).toLocaleDateString(siteConfig.date.locale, {
+// 			...(siteConfig.date.options as Intl.DateTimeFormatOptions),
+// 			...options,
+// 		})
+// 	}
+// 	return dateFormat.format(new Date(date))
+// }
 
 export function getLocaleTime(
 	date: number | Date,
