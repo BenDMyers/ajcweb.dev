@@ -224,7 +224,7 @@ pnpm install astro-google-analytics
 
 Edit `src/layouts/Base.astro` and replace `id` with your own Google Analytics ID:
 
-```ts
+```tsx
 ---
 import { GoogleAnalytics } from 'astro-google-analytics'
 ---
@@ -252,4 +252,15 @@ My site is deployed on Netlify and uses [Cloudflare Redirects](https://developer
   # command = 'pnpm run build'
   command = 'npx pnpm i --store=node_modules/.pnpm-store && npm run build'
   publish = 'dist'
+```
+
+### Cloudflare Pages Configuration
+
+```toml
+# wranger.toml
+
+name = "ajcweb.dev"
+
+[vars]
+  NODE_VERSION = "16"
 ```
