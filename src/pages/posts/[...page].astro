@@ -5,12 +5,14 @@ import Pagination from "@/components/Paginator"
 import { sortMDByDate } from "@/utils"
 import type { Post, Page, MDXInstance } from "@/utils"
 
-// const postPreviewList = "flex flex-wrap items-center gap-x-2 [&_q]:w-full mb-8"
 const postPreviewList = "flex flex-wrap items-center gap-x-2 [&_q]:w-full"
-// const unorderedList12 = "space-y-12"
 const unorderedList24 = "space-y-24"
 
-export async function getStaticPaths({ paginate }) {
+interface StaticPathsProps {
+  paginate: (input: any[], options: {pageSize: number}) => any[]
+}
+
+export async function getStaticPaths({ paginate }: StaticPathsProps) {
 	const allPosts = await Astro.glob<Post>("../*/*/*/*.mdx")
 	const allPostsByDate = sortMDByDate(allPosts)
 
