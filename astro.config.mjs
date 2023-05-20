@@ -3,7 +3,6 @@ import mdx from "@astrojs/mdx"
 import tailwind from "@astrojs/tailwind"
 import image from "@astrojs/image"
 import sitemap from "@astrojs/sitemap"
-import prefetch from "@astrojs/prefetch"
 
 export default defineConfig({
   site: "https://ajcwebdev.com/",
@@ -17,8 +16,7 @@ export default defineConfig({
 		mdx({}),
 		tailwind({ config: { applyBaseStyles: false } }),
     sitemap(),
-		image({ serviceEntryPoint: "@astrojs/image/sharp" }),
-    prefetch()
+		image({ serviceEntryPoint: "@astrojs/image/sharp" })
   ],
   vite: {
 		optimizeDeps: {
