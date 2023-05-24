@@ -8,36 +8,13 @@ image: "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/p9pzb06139y6uwz
 layout: "@/layouts/BlogPost"
 ---
 
+> ___All of this project's code can be found in the [First Look monorepo](https://github.com/ajcwebdev/a-first-look/tree/main/deployment/azure-functions/) on my GitHub.___
+
 ## Introduction
 
 [Azure Functions](https://azure.microsoft.com/en-us/services/functions/) is an event-driven serverless compute platform that manages deploying and maintaining servers. It provides all up-to-date resources and orchestration needed to keep your applications running. Developer tools for debugging are included along with triggers and bindings for integrating services.
 
-## Outline
-
-1. Setup environment
-  * Install the Azure Functions Core Tools
-  * Create a local Functions project with `func init`
-  * `host.json`
-  * `local.settings.json`
-2. Create an HTTP trigger function with `func new`
-  * `index.js`
-  * `function.json`
-  * Test function locally with `func start`
-3. Create an Azure subscription
-  * Install the Azure CLI
-  * Check version number with `az version`
-  * Log in with `az login`
-  * Configure subscription with `az account set`
-4. Create a function app
-  * Create a resource group with `az group create`
-  * Create a storage account with `az storage account create`
-  * Create a function app with `az functionapp create`
-  * Publish app with `func azure functionapp publish`
-  * Test deployed functions with curl
-
 ## 1. Setup environment
-
-> ___All of this project's code can be found in the [First Look monorepo](https://github.com/ajcwebdev/a-first-look/tree/main/deployment/azure-functions/) on my GitHub.___
 
 ### Install the Azure Functions Core Tools
 
