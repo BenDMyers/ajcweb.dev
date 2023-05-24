@@ -8,6 +8,26 @@ image: "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hkvpkmk2urt0ld3
 layout: "@/layouts/BlogPost"
 ---
 
+## Outline
+
+- [Introduction](#introduction)
+- [Setup](#setup)
+  - [Configure AWS CLI](#configure-aws-cli)
+  - [Install CDK CLI](#install-cdk-cli)
+  - [Create Project Directory](#create-project-directory)
+  - [Initialize Project](#initialize-project)
+  - [List Stacks](#list-stacks)
+- [Project Structure](#project-structure)
+  - [CDK Configuration](#cdk-configuration)
+  - [App Entry Point](#app-entry-point)
+  - [HelloCdkStack](#hellocdkstack)
+- [Add S3 Bucket](#add-s3-bucket)
+  - [Define S3 Bucket Construct](#define-s3-bucket-construct)
+  - [Generate CloudFormation Template](#generate-cloudformation-template)
+  - [Deploy Stack to AWS](#deploy-stack-to-aws)
+
+> ___All of this project's code can be found in the [First Look monorepo](https://github.com/ajcwebdev/a-first-look/tree/main/deployment/aws-cdk/) on my GitHub.___
+
 ## Introduction
 
 AWS [Cloud Development Kit (CDK)](https://aws.amazon.com/cdk/) is a software development framework for defining cloud infrastructure in code and provisioning it through AWS [CloudFormation](https://aws.amazon.com/cloudformation/). It supports TypeScript, JavaScript, Python, Java, C#/.Net, and (almost) Go.
@@ -16,26 +36,7 @@ Developers can use one of the supported programming languages to define reusable
 
 ![01-constructs](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n0mrliwpxev3ai1mba1n.png)
 
-## Outline
-
-* [Setup](#setup)
-  * [Configure AWS CLI](#configure-aws-cli)
-  * [Install CDK CLI](#install-cdk-cli)
-  * [Create Project Directory](#create-project-directory)
-  * [Initialize Project](#initialize-project)
-  * [List Stacks](#list-stacks)
-* [Project Structure](#project-structure)
-  * [CDK Configuration](#cdk-configuration)
-  * [App Entry Point](#app-entry-point)
-  * [HelloCdkStack](#hellocdkstack)
-* [Add S3 Bucket](#add-s3-bucket)
-  * [Define S3 Bucket Construct](#define-s3-bucket-construct)
-  * [Generate CloudFormation Template](#generate-cloudformation-template)
-  * [Deploy Stack to AWS](#deploy-stack-to-aws)
-
 ## Setup
-
-The code for this article can be found [on my GitHub](https://github.com/ajcwebdev/a-first-look/tree/main/cdk).
 
 ### Configure AWS CLI
 

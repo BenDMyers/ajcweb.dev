@@ -8,6 +8,22 @@ image: "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/c53lwyayptdahtr
 layout: "@/layouts/BlogPost"
 ---
 
+## Outline
+
+- [Introduction](#introduction)
+- [Deploy Database on MongoDB Atlas](#deploy-database-on-mongodb-atlas)
+- [Create Prisma Project](#create-prisma-project)
+  - [Install Dependencies](#install-dependencies)
+  - [Initialize Prisma Schema](#initialize-prisma-schema)
+  - [Prisma Schema](#prisma-schema)
+  - [Generate Prisma Client](#generate-prisma-client)
+  - [Use Prisma Client](#use-prisma-client)
+  - [Environment Variable](#environment-variable)
+  - [Run Script](#run-script)
+- [Next Steps](#next-steps)
+
+> ___All of this project's code can be found in the [First Look monorepo](https://github.com/ajcwebdev/a-first-look/tree/main/backend/prisma-mongo-atlas/) on my GitHub.___
+
 ## Introduction
 
 *Warning: The MongoDB connector for Prisma 2 is not ready for production and should not be used by anyone under any circumstances. It is in [Preview mode](https://github.com/prisma/prisma/releases/tag/2.27.0) as of v2.27.0.*
@@ -22,7 +38,7 @@ And you're willing to write [lots and lots and lots and lots and lots and lots a
 
 Well it's your lucky day...
 
-## MongoDB Atlas
+## Deploy Database on MongoDB Atlas
 
 The first thing you'll need is a Mongo database (shocking). The easiest ([not cheapest](https://www.loginradius.com/blog/async/self-hosted-mongo/)) way to get a Mongo database is with [MongoDB Atlas](https://www.mongodb.com/cloud/atlas2). I apologize for the [click-ops](https://m.subbu.org/clickops-3cf0e5bc5ecf). After creating an account you will be asked to name your organization and project.
 
@@ -72,24 +88,17 @@ Click "Connect your application" to connect your application.
 
 ![12-environment-variable](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0vifnwasl1i0ahrohnj6.png)
 
-## Prisma
+## Create Prisma Project
 
-Now that the boring stuff is out of the way we can get to the ORMing.
-
-### Create a new blog
+Now that the boring stuff is out of the way we can get to the ORMing. Create a new project and initialize a `package.json`.
 
 ```bash
 mkdir ajcwebdev-prismongo
 cd ajcwebdev-prismongo
-```
-
-### Initialize package.json
-
-```bash
 npm init -y
 ```
 
-### Install development dependencies
+### Install Dependencies
 
 ```bash
 npm install -D prisma typescript ts-node @types/node
@@ -185,7 +194,7 @@ Inside `.env` include your `DATABASE_URL`.
 DATABASE_URL=mongodb+srv://ajcwebdev:dont-steal-my-db-ill-kill-you@nailed-it.5mngs.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 ```
 
-### Hold your breath and run the script
+### Run Script
 
 ```bash
 npx ts-node index.ts

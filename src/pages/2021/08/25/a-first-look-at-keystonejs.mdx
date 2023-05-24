@@ -8,6 +8,8 @@ image: "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/t154djw4rn2nk4x
 layout: "@/layouts/BlogPost"
 ---
 
+> ___All of this project's code can be found in the [First Look monorepo](https://github.com/ajcwebdev/a-first-look/tree/main/backend/keystonejs/) on my GitHub.___
+
 ## Introduction
 
 [KeystoneJS](https://keystonejs.com/) is a CMS for developers that provides a GraphQL API & Management UI for content and data based on your schema. In this tutorial we will use `create-keystone-app` to scaffold a basic blog dashboard with users. In a future part we will deploy this project.
@@ -41,7 +43,7 @@ Give your project a name. Mine will be called `ajcwebdev-keystone`.
 
 You will need a database URL. If you want one fast you can use [Railway](https://railway.app/), [Supabase](https://supabase.io/), [Fly](https://fly.io/), or any of the other couple dozen "spin up Postgres in 30 seconds" services out there. I'll be using Railway.
 
-You can follow the first half of [this guide](https://dev.to/ajcwebdev/a-first-look-at-postgraphile-with-railway-1k9d) to see how to spin up the database. The only important difference is when you copy your connection string from Railway, change the first part from `postgresql://` to `postgres://`.
+You can follow the first half of [this guide](https://ajcwebdev.com/2021/07/17/a-first-look-at-postgraphile-with-railway) to see how to spin up the database. The only important difference is when you copy your connection string from Railway, change the first part from `postgresql://` to `postgres://`.
 
 Your connection string will look like this with a password instead of `xxxx`:
 

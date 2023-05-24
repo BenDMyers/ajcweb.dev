@@ -8,18 +8,9 @@ image: "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fw4ka27ogxkv4g5
 layout: "@/layouts/BlogPost"
 ---
 
-## Introduction
-
-[AWS Amplify](https://aws.amazon.com/amplify/) is a set of tools and services to help frontend web and mobile developers build scalable fullstack applications with AWS infrastructure that includes:
-* [Amplify Console](https://console.aws.amazon.com/amplify/home) for managing frontend web app, backend environments, CI/CD, and the Admin UI
-* [Amplify CLI](https://docs.amplify.aws/cli) for creating and deploying [CloudFormation stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html)
-* Open source libraries for [JavaScript](https://github.com/aws-amplify/amplify-js), [iOS](https://github.com/aws-amplify/aws-sdk-ios), [Android](https://github.com/aws-amplify/aws-sdk-android), and [Flutter](https://github.com/aws-amplify/amplify-flutter)
-* [Admin UI](https://sandbox.amplifyapp.com/getting-started) for modeling data, adding authentication, authorization and managing users and groups
-
-With these tools combined, Amplify has achieved a unique synecdoche¹ by creating their own opinionated version of AWS within AWS itself.
-
 ## Outline
 
+* [Introduction](#introduction)
 * [Setup](#setup)
   * [Configure AWS CLI](#configure-aws-cli)
   * [Install Amplify CLI](#install-amplify-cli)
@@ -30,9 +21,21 @@ With these tools combined, Amplify has achieved a unique synecdoche¹ by creatin
 * [Initialize Amplify Project](#initialize-amplify-project)
   * [Deploy to CloudFront and S3](#deploy-to-cloudfront-and-s3)
 
+> ___All of this project's code can be found in the [First Look monorepo](https://github.com/ajcwebdev/a-first-look/tree/main/deployment/aws-amplify/) on my GitHub.___
+
+## Introduction
+
+[AWS Amplify](https://aws.amazon.com/amplify/) is a set of tools and services to help frontend web and mobile developers build scalable fullstack applications with AWS infrastructure that includes:
+* [Amplify Console](https://console.aws.amazon.com/amplify/home) for managing frontend web app, backend environments, CI/CD, and the Admin UI
+* [Amplify CLI](https://docs.amplify.aws/cli) for creating and deploying [CloudFormation stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html)
+* Open source libraries for [JavaScript](https://github.com/aws-amplify/amplify-js), [iOS](https://github.com/aws-amplify/aws-sdk-ios), [Android](https://github.com/aws-amplify/aws-sdk-android), and [Flutter](https://github.com/aws-amplify/amplify-flutter)
+* [Admin UI](https://sandbox.amplifyapp.com/getting-started) for modeling data, adding authentication, authorization and managing users and groups
+
+With these tools combined, Amplify has achieved a unique synecdoche¹ by creating their own opinionated version of AWS within AWS itself.
+
 ## Setup
 
-This tutorial will follow the Getting Started guide for React from the [Amplify documentation](https://docs.amplify.aws/start/q/integration/react), except we will be using Vite and the [officially supported](https://vitejs.dev/guide/#scaffolding-your-first-vite-project) [React template](https://github.com/vitejs/vite/tree/main/packages/create-app/template-react) instead of [create-react-app](https://github.com/facebook/create-react-app). This way the kids will know that I am, "with it." The code for this article can be found on my [GitHub](https://github.com/ajcwebdev/a-first-look/tree/main/amplify).
+This tutorial will follow the Getting Started guide for React from the [Amplify documentation](https://docs.amplify.aws/start/q/integration/react), except we will be using Vite and the [officially supported](https://vitejs.dev/guide/#scaffolding-your-first-vite-project) [React template](https://github.com/vitejs/vite/tree/main/packages/create-app/template-react) instead of [create-react-app](https://github.com/facebook/create-react-app). This way the kids will know that I am, "with it." The code for this article can be found on my [GitHub](https://github.com/ajcwebdev/a-first-look/tree/main/deployment/aws-amplify/).
 
 ### Configure AWS CLI
 
@@ -65,7 +68,7 @@ npm install -g @aws-amplify/cli
 
 ### Initialize Project
 
-You need a React app, which means first you have to create one. You could do the sensible thing and use a tool literally called [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html), or you could listen to a random person on the internet and use this thing you've never heard of and have no idea how to pronounce. If you're not convinced you can refer to [this blog post](https://dev.to/ajcwebdev/a-first-look-at-vite-m8n) from the aforementioned random person on the internet.
+You need a React app, which means first you have to create one. You could do the sensible thing and use a tool literally called [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html), or you could listen to a random person on the internet and use this thing you've never heard of and have no idea how to pronounce. If you're not convinced you can refer to [this blog post](https://ajcwebdev.com/2021/03/05/a-first-look-at-vite) from the aforementioned random person on the internet.
 
 [Vite](https://vitejs.dev/) (French word for "fast", pronounced `/vit/`, rhymes with "street") is a build tool that aims to provide a faster and leaner development experience for modern web projects. It consists of two parts:
 

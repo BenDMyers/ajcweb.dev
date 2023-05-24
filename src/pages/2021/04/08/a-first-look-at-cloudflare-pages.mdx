@@ -1,12 +1,20 @@
 ---
-canonicalURL: "https://ajcwebdev.com/2021/04/08/a-first-look-at-cloudflare-pages/"
+canonicalURL: "https://ajcwebdev.com/2021/04/08/a-first-look-at-cloudflare-pages"
 title: "a first look at cloudflare pages"
 description: "Cloudflare Pages is a Jamstack platform for frontend developers to collaborate and deploy websites by syncing a GitHub repo and building a static frontend."
 publishDate: "2021-04-08"
+updatedDate: "2023-05-23"
 tags: [ "Cloudflare", "React", "Jamstack", "CDN" ]
 image: "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3pjmiqf1pcvibr0bkm0a.jpeg"
 layout: "@/layouts/BlogPost"
 ---
+
+## Outline
+
+- [Introduction](#introduction)
+- [Create a React App](#create-a-react-app)
+
+> ___All of this project's code can be found in the [First Look monorepo](https://github.com/ajcwebdev/a-first-look/tree/main/deployment/cloudflare-pages/) on my GitHub.___
 
 ## Introduction
 
@@ -14,9 +22,7 @@ layout: "@/layouts/BlogPost"
 
 What's that? That sounds like they just created a carbon copy of Netlify on their own CDN and slapped a new name on it? You say that like it's a bad thing.
 
-## Create a React app
-
-The code for this article can be found at [ajcwebdev-cfpages](https://github.com/ajcwebdev/a-first-look/tree/main/cfpages).
+## Create a React App
 
 ```bash
 npx create-react-app ajcwebdev-cfpages

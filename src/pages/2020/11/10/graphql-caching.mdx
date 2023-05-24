@@ -3,10 +3,39 @@ canonicalURL: "https://ajcwebdev.com/2020/11/10/graphql-caching"
 title: "graphQL caching"
 description: "Since the GraphQL specification aims to be as general as possible, caching has been considered out-of-scope for the spec itself."
 publishDate: "2020-11-10"
+updatedDate: "2023-05-23"
 tags: [ "GraphQL", "Apollo", "Caching", "urql" ]
 image: "https://cdn.hashnode.com/res/hashnode/image/upload/v1654996830003/0w9P9BhIS.jpg"
 layout: "@/layouts/BlogPost"
 ---
+
+## Outline
+
+- [Introduction](#introduction)
+- [Does the GraphQL Specification Address Caching](#does-the-graphql-specification-address-caching)
+- [HTTP Caching](#http-caching)
+  - [Client Side and Gateway Caches](#client-side-and-gateway-caches)
+  - [Freshness and Validation](#freshness-and-validation)
+- [GraphQL Caching](#graphql-caching)
+  - [Globally Unique IDs](#globally-unique-ids)
+  - [Compatibility with Existing APIs](#compatibility-with-existing-apis)
+  - [Alternatives](#alternatives)
+- [Apollo Client](#apollo-client)
+  - [InMemoryCache](#inmemorycache)
+  - [Data Normalization](#data-normalization)
+  - [readQuery](#readquery)
+  - [readFragment](#readfragment)
+  - [writeQuery and writeFragment](#writequery-and-writefragment)
+  - [Combining Reads and Writes](#combining-reads-and-writes)
+  - [Modify Cache](#modify-cache)
+- [urql](#urql)
+- [micro-graphql-react](#micro-graphql-react)
+  - [Import client for global subscriptions to keep cache correct](#import-client-for-global-subscriptions-to-keep-cache-correct)
+  - [Sync changes when relevant mutations happen](#sync-changes-when-relevant-mutations-happen)
+  - [Cache Resetting](#cache-resetting)
+- [Section and Distributed GraphQL](#section-and-distributed-graphql)
+- [Persistent Queries](#persistent-queries)
+- [Resources](#resources)
 
 ## Introduction
 
@@ -16,7 +45,7 @@ In the words of the immortal Ken Wheeler:
 
 I tend to agree with this sentiment but that doesn't mean I think GraphQL is perfect. One of the most persistent challenges that has faced GraphQL since its introduction 5 years ago is client side caching.
 
-## Does the GraphQL Specification Address Caching?
+## Does the GraphQL Specification Address Caching
 
 The GraphQL specification aims to support a broad range of use cases. Caching has been considered out-of-scope for the spec itself since it wants to be as general as possible. Out of the roughly 30,000 words contained in the current working draft the word cache appears exactly once in section [3.5.5 on ID's](https://spec.graphql.org/draft/#sec-ID):
 
@@ -310,7 +339,7 @@ It does not parse your queries or mutations on the client-side like Apollo and U
 
 ## Section and Distributed GraphQL
 
-I know nothing about this and this article's length is already out of control but I found one nascent approach that seems worth mentioning. A company called [Section](https://www.section.io/blog/caching-distributed-graphql-at-the-edge/) is trying to build a distributed GraphQL solution. It is fully configurable to address caching challenges without having to maintain a distributed system as the distributed system would be managed by them.
+I know nothing about this and this article's length is already out of control but I found one nascent approach that seems worth mentioning. A company called [Section](https://www.section.io/docs/tutorials/distributed-apis/) is trying to build a distributed GraphQL solution. It is fully configurable to address caching challenges without having to maintain a distributed system as the distributed system would be managed by them.
 
 They say that it's simultaneously similar to Apollo Federation but also solving a problem Apollo Federation doesn't solve, so I'm curious how exactly that works. On first look it seems like they are taking the approach of `micro-graphql-react` and giving more cache control back to the developers.
 

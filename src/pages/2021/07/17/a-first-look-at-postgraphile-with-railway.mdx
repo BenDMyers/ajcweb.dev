@@ -8,12 +8,9 @@ image: "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n4pxof36x7fdjvq
 layout: "@/layouts/BlogPost"
 ---
 
-## Introduction
-
-PostGraphile builds a GraphQL API from a PostgreSQL schema that automatically detects tables, columns, indexes, relationships, views, types, functions, and comments. It combines PostgreSQL's [role-based grant system](https://www.postgresql.org/docs/current/static/user-manag.html) and [row-level security policies](https://www.postgresql.org/docs/current/static/ddl-rowsecurity.html) with Graphile Engine's [GraphQL look-ahead](https://www.graphile.org/graphile-build/look-ahead/) and [plugin expansion](https://www.graphile.org/graphile-build/plugins/) technologies.
-
 ## Outline
 
+* [Introduction](#introduction)
 * [Provision a PostgreSQL database with Railway](#provision-a-postgresql-database-with-railway)
   * [Railway Dashboard](#railway-dashboard)
   * [Railway CLI](#railway-cli)
@@ -31,6 +28,12 @@ PostGraphile builds a GraphQL API from a PostgreSQL schema that automatically de
   * [Introspect Railway Database](#introspect-railway-database)
   * [Test the endpoint](#test-the-endpoint)
   * [Connect to endpoint with ngrok](#connect-to-endpoint-with-ngrok)
+
+> ___All of this project's code can be found in the [First Look monorepo](https://github.com/ajcwebdev/a-first-look/tree/main/backend/postgraphile-railway/) on my GitHub.___
+
+## Introduction
+
+PostGraphile builds a GraphQL API from a PostgreSQL schema that automatically detects tables, columns, indexes, relationships, views, types, functions, and comments. It combines PostgreSQL's [role-based grant system](https://www.postgresql.org/docs/current/static/user-manag.html) and [row-level security policies](https://www.postgresql.org/docs/current/static/ddl-rowsecurity.html) with Graphile Engine's [GraphQL look-ahead](https://www.graphile.org/graphile-build/look-ahead/) and [plugin expansion](https://www.graphile.org/graphile-build/plugins/) technologies.
 
 ## Provision a PostgreSQL database with Railway
 

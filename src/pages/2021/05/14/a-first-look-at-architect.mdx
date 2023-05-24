@@ -8,17 +8,11 @@ image: "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9qtfb0bpocjlavw
 layout: "@/layouts/BlogPost"
 ---
 
-## Introduction
-
-[Architect](https://arc.codes/) is an Infrastructure as Code framework for provisioning build artifacts. Architect defines a high level manifest file in multiple open text formats which can be checked into version control. It compiles the manifest code into AWS CloudFormation and then deploys that stack. Supported formats include:
-* a native text file format `app.arc`
-* `package.json`
-* `arc.json`
-* `arc.yaml`
-* `arc.toml`
+> ___All of this project's code can be found in the [First Look monorepo](https://github.com/ajcwebdev/a-first-look/tree/main/deployment/architect/) on my GitHub.___
 
 ## Outline
 
+* [Introduction](#introduction)
 * [Setup](#setup)
   * [Install Architect CLI and AWS SDK](#install-architect-cli-and-aws-sdk)
   * [Initialize Project](#initialize-project)
@@ -32,9 +26,16 @@ layout: "@/layouts/BlogPost"
   * [Deploy to Staging Environment](#deploy-to-staging-environment)
   * [Deploy to Production Environment](#deploy-to-production-environment)
 
-## Setup
+## Introduction
 
-The code for this project can be found [on my GitHub](https://github.com/ajcwebdev/a-first-look/tree/main/architect).
+[Architect](https://arc.codes/) is an Infrastructure as Code framework for provisioning build artifacts. Architect defines a high level manifest file in multiple open text formats which can be checked into version control. It compiles the manifest code into AWS CloudFormation and then deploys that stack. Supported formats include:
+* a native text file format `app.arc`
+* `package.json`
+* `arc.json`
+* `arc.yaml`
+* `arc.toml`
+
+## Setup
 
 ### Install Architect CLI and AWS SDK
 

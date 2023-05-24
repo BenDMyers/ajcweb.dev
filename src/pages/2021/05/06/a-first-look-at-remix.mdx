@@ -8,6 +8,8 @@ image: "https://cdn.hashnode.com/res/hashnode/image/upload/v1654841323998/ygTH4b
 layout: "@/layouts/BlogPost"
 ---
 
+> ___All of this project's code can be found in the [First Look monorepo](https://github.com/ajcwebdev/a-first-look/tree/main/frontend/remix/) on my GitHub.___
+
 ## Introduction
 
 Remix is a React metaframework from Ryan Florence and Michael Jackson that builds on standard web APIs. At the time of the framework's release, they were already well known as the maintainers of React Router and educators behind React Training. But in the beginning of 2020, widespread quarantine measures were enacted across the country.
@@ -16,9 +18,7 @@ Quarantine effectively brought an end to all in-person technical training. Once 
 
 Originally requiring a paid license, it launched as a "supporter preview" in October 2020. A little over a year later, in November 2021, it was fully open-sourced. This was accompanied by the founders starting a company, raising a [$3 million seed round](https://remix.run/blog/seed-funding-for-remix), and hiring notable React developer and teacher, Kent C. Dodds.
 
-Kent had become infatuated with Remix and [rebuilt his entire platform around the framework](https://kentcdodds.com/blog/why-i-love-remix). During the rebuild he also attempted to individually tell every single person on the internet why using anything except Remix to build literally anything was a terrible choice. He was soon hired as a Developer Advocate and early co-founder of the newly formed company.
-
-In this example we will use the Vercel starter to make Fetch requests containing GraphQL queries. All the code for this example can be found [on my GitHub](https://github.com/ajcwebdev/a-first-look/tree/main/remix).
+Kent had become infatuated with Remix and [rebuilt his entire platform around the framework](https://kentcdodds.com/blog/why-i-love-remix). During the rebuild he also attempted to individually tell every single person on the internet why using anything except Remix to build literally anything was a terrible choice. He was soon hired as a Developer Advocate and early co-founder of the newly formed company. In this example we will use the Vercel starter to make Fetch requests containing GraphQL queries.
 
 ## Initialize Starter Project
 
@@ -74,8 +74,8 @@ export let loader = () => {
   let data = {
     resources: [
       { name: "My Blog", url: "https://ajcwebdev.com" },
-      { name: "A First Look at Remix", url: "https://ajcwebdev.com/a-first-look-at-remix" },
-      { name: "Example Repo", url: "https://github.com/ajcwebdev/a-first-look/tree/main/remix" }
+      { name: "A First Look at Remix", url: "https://ajcwebdev.com/2021/05/06/a-first-look-at-remix" },
+      { name: "Example Repo", url: "https://github.com/ajcwebdev/a-first-look/tree/main/frontend/remix/" }
     ]
   }
   return json(data)

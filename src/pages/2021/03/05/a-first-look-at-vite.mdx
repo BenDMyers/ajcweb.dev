@@ -3,10 +3,31 @@ canonicalURL: "https://ajcwebdev.com/2021/03/05/a-first-look-at-vite"
 title: "a first look at vite"
 description: "Vite is a frontend build tool and open source project created by Evan You. It increases development speed with ESBuild and serves native ES modules by default."
 publishDate: "2021-03-05"
+updatedDate: "2023-05-23"
 tags: [ "Vite", "Vue", "esbuild", "JavaScript", "Netlify" ]
 image: "https://cdn.hashnode.com/res/hashnode/image/upload/v1655028538741/dS1EWbVGP.png"
 layout: "@/layouts/BlogPost"
 ---
+
+## Outline
+
+- [Introduction](#introduction)
+- [Create a Project from Scratch](#create-a-project-from-scratch)
+  - [Create HTML Entry File](#create-html-entry-file)
+  - [Install Vite Dependency](#install-vite-dependency)
+  - [Add Dev Script](#add-dev-script)
+  - [Start Development Server](#start-development-server)
+  - [Create JavaScript Entry File](#create-javascript-entry-file)
+  - [Create CSS Stylesheet](#create-css-stylesheet)
+  - [Create a Single Page App that Renders a Root Component](#create-a-single-page-app-that-renders-a-root-component)
+- [Create Vue App](#create-vue-app)
+  - [Initialize Project](#initialize-project)
+  - [Project Structure](#project-structure)
+  - [App Vue Component](#app-vue-component)
+  - [HelloWorld Component](#helloworld-component)
+  - [Deploy to Netlify](#deploy-to-netlify)
+
+> ___All of this project's code can be found in the [First Look monorepo](https://github.com/ajcwebdev/a-first-look/tree/main/frontend/vite/) on my GitHub.___
 
 ## Introduction
 
@@ -16,8 +37,6 @@ layout: "@/layouts/BlogPost"
 * A build command that bundles your code with [Rollup](https://rollupjs.org), pre-configured to output highly optimized static assets for production
 
 ## Create a Project from Scratch
-
-You can find all the code for this article on my [GitHub](https://github.com/ajcwebdev/a-first-look/tree/main/vite).
 
 ```bash
 mkdir ajcwebdev-vite

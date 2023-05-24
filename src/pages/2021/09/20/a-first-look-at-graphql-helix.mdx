@@ -8,18 +8,21 @@ image: "https://cdn.hashnode.com/res/hashnode/image/upload/v1649611681104/lSumHL
 layout: "@/layouts/BlogPost"
 ---
 
-## Introduction
-
-[GraphQL Helix](https://github.com/contrawork/graphql-helix) is a framework and runtime agnostic collection of utility functions for building your own GraphQL HTTP server. Instead of providing a complete HTTP server or middleware plugin function, GraphQL Helix only provides a handful of functions for turning an HTTP request into a GraphQL execution result. You decide how to send back the response.
-
 ## Outline
 
+* [Introduction](#introduction)
 * [Motivations and API](#motivations-and-api)
 * [Serve GraphQL Helix Locally](#serve-graphql-helix-locally)
 * [Deploy GraphQL Helix with Serverless Framework](#deploy-graphql-helix-with-serverless-framework)
 * [Deploy GraphQL Helix with Amplify](#deploy-graphql-helix-with-amplify)
 * [Deploy GraphQL Helix with Docker and Fly](#deploy-graphql-helix-with-docker-and-fly)
 * [Resources](#resources)
+
+> ___All of this project's code can be found in the [First Look monorepo](https://github.com/ajcwebdev/a-first-look/tree/main/backend/graphql-helix/) on my GitHub.___
+
+## Introduction
+
+[GraphQL Helix](https://github.com/contrawork/graphql-helix) is a framework and runtime agnostic collection of utility functions for building your own GraphQL HTTP server. Instead of providing a complete HTTP server or middleware plugin function, GraphQL Helix only provides a handful of functions for turning an HTTP request into a GraphQL execution result. You decide how to send back the response.
 
 ## Motivations and API
 
@@ -666,7 +669,7 @@ EXPOSE 8080
 CMD [ "node", "index.js" ]
 ```
 
-For a more in depth explanation of these commands, see my previous article, [A First Look at Docker](https://dev.to/ajcwebdev/a-first-look-at-docker-3hfg).
+For a more in depth explanation of these commands, see my previous article, [A First Look at Docker](https://ajcwebdev.com/2021/07/12/a-first-look-at-docker).
 
 ### `.dockerignore`
 

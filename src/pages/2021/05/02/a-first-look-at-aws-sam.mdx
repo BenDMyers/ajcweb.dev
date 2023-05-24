@@ -8,10 +8,6 @@ image: "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/g81nl212agszuv8
 layout: "@/layouts/BlogPost"
 ---
 
-## Introduction
-
-AWS [Serverless Application Model (SAM)](https://aws.amazon.com/serverless/sam/) is an open-source framework for building serverless applications. It provides shorthand syntax to express functions, APIs, databases, and event source mappings. [Much like AWS CDK](https://dev.to/ajcwebdev/a-first-look-at-aws-cdk-2036), SAM transforms and expands its own syntax into CloudFormation syntax during deployment.
-
 ## Outline
 
 * [Comparison to CDK](#comparison-to-cdk)
@@ -34,6 +30,12 @@ AWS [Serverless Application Model (SAM)](https://aws.amazon.com/serverless/sam/)
   * [Configure SAM Deploy](#configure-sam-deploy)
   * [Delete Stack](#delete-stack)
 
+> ___All of this project's code can be found in the [First Look monorepo](https://github.com/ajcwebdev/a-first-look/tree/main/deployment/aws-sam/) on my GitHub.___
+
+## Introduction
+
+AWS [Serverless Application Model (SAM)](https://aws.amazon.com/serverless/sam/) is an open-source framework for building serverless applications. It provides shorthand syntax to express functions, APIs, databases, and event source mappings. [Much like AWS CDK](https://ajcwebdev.com/2021/04/30/a-first-look-at-aws-cdk), SAM transforms and expands its own syntax into CloudFormation syntax during deployment.
+
 ## Comparison to CDK
 
 * SAM uses a declarative, template-based syntax with JSON or YAML similar to [CloudFormation but syntactically simpler](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
@@ -44,8 +46,6 @@ SAM CLI is currently used to build locally, test, and package serverless applica
 ![01-yo-dawg-meme](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dwf5hz63kh4otar0vspc.jpeg)
 
 ## Setup
-
-The code for this article can be found on my [GitHub](https://github.com/ajcwebdev/a-first-look/tree/main/sam).
 
 ### Configure AWS CLI
 
