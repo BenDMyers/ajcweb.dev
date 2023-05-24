@@ -8,6 +8,36 @@ image: "https://cdn.hashnode.com/res/hashnode/image/upload/v1655101390111/vBEb8C
 layout: "@/layouts/BlogPost"
 ---
 
+## Outline
+
+- [Introduction](#introduction)
+- [Example Container Task Definition](#example-container-task-definition)
+- [Setup and Verify ECS CLI with PGP Signatures](#setup-and-verify-ecs-cli-with-pgp-signatures)
+  - [Install GnuPG and Create File for ECS PGP Public Key](#install-gnupg-and-create-file-for-ecs-pgp-public-key)
+  - [Import ECS PGP Public Key](#import-ecs-pgp-public-key)
+  - [Download and Verify ECS CLI Signature](#download-and-verify-ecs-cli-signature)
+  - [Apply Execute Permissions to CLI Binary](#apply-execute-permissions-to-cli-binary)
+  - [Check CLI Version Number](#check-cli-version-number)
+- [Configure AWS Credentials and IAM Role](#configure-aws-credentials-and-iam-role)
+  - [Create Directory and Project Files](#create-directory-and-project-files)
+  - [Create Task Execution Role](#create-task-execution-role)
+  - [Attach Task Execution Role Policy](#attach-task-execution-role-policy)
+  - [Configure ECS CLI](#configure-ecs-cli)
+  - [Create a CLI Profile](#create-a-cli-profile)
+- [Create ECS Cluster and Security Group](#create-ecs-cluster-and-security-group)
+  - [Create Cluster](#create-cluster)
+  - [Retrieve VPC Default Security Group ID](#retrieve-vpc-default-security-group-id)
+  - [Add Security Group Rule](#add-security-group-rule)
+- [Deploy Docker Container to the Cluster](#deploy-docker-container-to-the-cluster)
+  - [Define Docker Compose Web Service](#define-docker-compose-web-service)
+  - [ECS Parameters](#ecs-parameters)
+  - [Deploy Compose File](#deploy-compose-file)
+  - [View Running Containers](#view-running-containers)
+  - [View Web Application](#view-web-application)
+- [Clean Up and Summary](#clean-up-and-summary)
+  - [Delete Your Service](#delete-your-service)
+  - [Take Down Your Cluster](#take-down-your-cluster)
+
 > ___All of this project's code can be found in the [First Look monorepo](https://github.com/ajcwebdev/a-first-look/tree/main/deployment/aws-fargate/) on my GitHub.___
 
 ## Introduction
