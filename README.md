@@ -1,5 +1,5 @@
 <div align="center">
-  <img alt="ajcwebdev logo" src="./ajcwebdev-social-card-1280-640.jpeg" width="500" />
+  <img alt="ajcwebdev logo" src="./public/images/ajcwebdev-social-card-1280-640.jpeg" width="500" />
   <h1>ajcweb.dev</h1>
 </div>
 
