@@ -3,22 +3,29 @@ canonicalURL: "https://ajcwebdev.com/2021/05/28/edge-graphql-with-cloudflare-wor
 title: "run graphQL on the edge with cloudflare workers"
 description: "How to run a GraphQL server on the edge with Apollo GraphQL, Cloudflare Workers, Webpack, and Wrangler."
 publishDate: "2021-05-28"
-tags: [ "Cloudflare", "GraphQL", "Apollo" ]
+tags: [ "Cloudflare Workers", "GraphQL", "Apollo Server" ]
 image: "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3ncjrcfgmnx1qgdsr50h.png"
 layout: "@/layouts/BlogPost"
 ---
+
+## Outline
+
+- [Introduction](#introduction)
+  - [Generate Project](#generate-project)
+  - [Set Account ID in Wrangler Configuration](#set-account-id-in-wrangler-configuration)
+  - [Deploy to Cloudflare](#deploy-to-cloudflare)
 
 > ___All of this project's code can be found in the [First Look monorepo](https://github.com/ajcwebdev/a-first-look/tree/main/deployment/cloudflare-graphql/) on my GitHub.___
 
 ## Introduction
 
-### Generate project
+### Generate Project
 
 ```bash
 wrangler generate my-graphql-server https://github.com/signalnerve/workers-graphql-server
 ```
 
-### Set your account_id in wrangler.toml
+### Set Account ID in Wrangler Configuration
 
 ```toml
 name = "workers-graphql-server"
@@ -30,7 +37,7 @@ workers_dev = true
 webpack_config = "webpack.config.js"
 ```
 
-### Publish to Cloudflare's network
+### Deploy to Cloudflare
 
 ```bash
 cd my-graphql-server
