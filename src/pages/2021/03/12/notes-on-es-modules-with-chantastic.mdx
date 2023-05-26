@@ -8,31 +8,46 @@ image: "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jp1vudlgyydaexu
 layout: "@/layouts/BlogPost"
 ---
 
+## Outline
+
+- [Introduction](#introduction)
+  - [Index Main File](#index-main-file)
+  - [Prepared Module Files](#prepared-module-files)
+  - [Assignments](#assignments)
+- [Import a Module from the File System](#import-a-module-from-the-file-system)
+  - [Leaky Modules](#leaky-modules)
+  - [Add Globally Executing Code to a Module](#add-globally-executing-code-to-a-module)
+- [Import a Module Dynamically](#import-a-module-dynamically)
+  - [Change the Static Import to a Dynamic Import](#change-the-static-import-to-a-dynamic-import)
+- [Export Lists](#export-lists)
+  - [Add a Variable and Function Declaration to the Module](#add-a-variable-and-function-declaration-to-the-module)
+  - [Use an Export List to Export a Function](#use-an-export-list-to-export-a-function)
+- [Alias or Rename Imports and Exports](#alias-or-rename-imports-and-exports)
+  - [Rename a Function while Exporting](#rename-a-function-while-exporting)
+
 ## Introduction
 
-ES Modules (JavaScript Modules, if you like) help us structure, organize and isolate code.
+ES Modules (JavaScript Modules, if you like) help us structure, organize and isolate code. [These examples](https://github.com/chantastic/esmodule-reference-course) focus on the ESM features available in a Node environment such as dynamic modules, export lists, and module aliasing.
 
-[These examples](https://github.com/chantastic/esmodule-reference-course) focus on the ES Modules features available in a Node.js environment. Most JavaScript applications today (early 2021) still go through some form of bundling before being sent to the browser. The features we cover should be common to all Node.js bundling tools (Webpack, Rollup, esbuild) (the latest LTS) Node.js environments (v14+).
+Most JS apps in early 2021 are still bundled before being sent to the browser. Features covered here are common to the latest LTS Node environments for most popular Node bundling tools like Webpack, Rollup, and esbuild.
 
-### index.js - main file
+### Index Main File
 
 * This is where all exercises are run
 * Examples in `readme.md` can be copy/pasted into `index.js`
 
-### ./modules - prepared module files
+### Prepared Module Files
 
 * The names relate to the type of content inside
 * Various examples might use these prepared modules to explore a concept
 
-### assignment.mjs - examples
+### Assignments
 
 * `./modules/assignment.mjs` is an empty module.
 
-## 1. Import a module from the file system
+## Import a Module from the File System
 
-Modules are imported using the `import` keyword and a string path to that module. This is predominantly done at the opening of a file. We can import any module that exists on the file system.
-
-### Import the `assignment.mjs` module using the `import` keyword and file path
+Modules are imported using the `import` keyword and a string path to that module. This is predominantly done at the opening of a file. We can import any module that exists on the file system. Import the `assignment.mjs` module using the `import` keyword and file path:
 
 ```javascript
 // index.js
@@ -40,11 +55,11 @@ Modules are imported using the `import` keyword and a string path to that module
 import "./modules/assignment.mjs"
 ```
 
-## 2. Make your module leaky
+### Leaky Modules
 
 The first thing to know about modules is that they leak. They don't perfectly encapsulate all code. Global code is global code, even if in a module. This might sounds bad (and it can be) but it's an important feature.
 
-### Add globally executing code to the `assignment.mjs` module
+### Add Globally Executing Code to a Module
 
 Globally executing code can be `console.log("booo!!")` or an assignment like `global.leak = "oh no!"`.
 
@@ -68,7 +83,7 @@ sah dude
 oops
 ```
 
-## 3. Import a module dynamically
+## Import a Module Dynamically
 
 The `import` keyword has two variants: static and dynamic. You can change a static import to a dynamic import by adding parenthesis around the path string.
 
@@ -77,9 +92,9 @@ import "./modules/assignment.mjs" // static
 import("./modules/assignment.mjs") // dynamic
 ```
 
-### Change the static import to a dynamic import
+### Change the Static Import to a Dynamic Import
 
-Dynamic `import` returns a `Promise`, so try handling that promise using `await`.
+A dynamic `import` returns a `Promise`, so try handling that promise using `await`.
 
 ```javascript
 // index.js
@@ -89,15 +104,13 @@ await import("./modules/assignment.mjs")
 console.log(global.leak)
 ```
 
-Use `.then()` to resolve the Promise.
+Or use `.then()` to resolve the `Promise`.
 
 ```javascript
 // index.js
 
 import("./modules/assignment.mjs")
-.then(
-  () => console.log(global.leak)
-)
+  .then(() => console.log(global.leak))
 ```
 
 ```
@@ -105,11 +118,11 @@ sah dude
 oops
 ```
 
-## 4. Add a function declaration and variable to the module and export using an export list
+## Export Lists
 
 Global code is executed at `import` but variables and function declarations are not. Even though a function or variable might exist in an imported module, it can't be accessed outside of that module.
 
-### Add a variable and function declaration to the module
+### Add a Variable and Function Declaration to the Module
 
 ```javascript
 // modules/assignment.mjs
@@ -121,7 +134,7 @@ function greet(name = fallbackName) {
 }
 ```
 
-### Use `export` list to export `greet` function
+### Use an Export List to Export a Function
 
 We can export anything defined in our module by adding it to the comma separated `export` list.
 
@@ -151,9 +164,7 @@ console.log(greet())
 Hey, there!
 ```
 
-`export` list is commonly at the end of a file to guarantee that everything exported — or referenced — already exists.
-
-### Export and import just the `greet` function using an `export` list
+`export` list is commonly at the end of a file to guarantee that everything exported — or referenced — already exists. Now with an `export` list, export and import just the `greet` function.
 
 ```javascript
 // modules/assignment.mjs
@@ -167,6 +178,8 @@ function greet(name = fallbackName) {
 export { greet }
 ```
 
+`greet` still has access to `fallbackName`, even though `fallbackName` isn't exported.
+
 ```javascript
 // index.js
 
@@ -179,9 +192,7 @@ console.log(greet())
 Sah, dude
 ```
 
-`greet` still has access to `fallbackName`, even though `fallbackName` isn't exported.
-
-### 5. Use `as` to alias (or rename) imports and exports
+## Alias or Rename Imports and Exports
 
 Modules might not share object syntax with modules but they still allow for aliasing (or renaming) of variables and functions using the `as` keyword.
 
@@ -191,7 +202,7 @@ Modules might not share object syntax with modules but they still allow for alia
 export { aGoodLocalName as aBetterExportedName }
 ```
 
-It works identically on both `import` and `export` side.
+It works identically on both the `import` and `export` sides.
 
 ```javascript
 // index.js
@@ -201,7 +212,7 @@ import {
 } from "./modules/assignment"
 ```
 
-### Rename the `greet` function at `export`
+### Rename a Function while Exporting
 
 At import, use the new function name you've exported and then rename it back to `greet` at `import`.
 
