@@ -8,13 +8,34 @@ image: "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/p9pzb06139y6uwz
 layout: "@/layouts/BlogPost"
 ---
 
+## Outline
+
+- [Introduction](#introduction)
+- [Setup Environment](#setup-environment)
+  - [Install the Azure Functions Core Tools](#install-the-azure-functions-core-tools)
+  - [Initialize a Local Functions Project](#initialize-a-local-functions-project)
+  - [Host Metadata](#host-metadata)
+  - [Local Settings](#local-settings)
+- [Create HTTP Trigger Function](#create-http-trigger-function)
+  - [JavaScript Index File](#javascript-index-file)
+  - [Function Bindings](#function-bindings)
+  - [Test Function Locally](#test-function-locally)
+- [Create an Azure Subscription](#create-an-azure-subscription)
+  - [Install the Azure CLI](#install-the-azure-cli)
+  - [Authenticate with the Azure CLI](#authenticate-with-the-azure-cli)
+  - [Configure Subscription](#configure-subscription)
+- [Create a Function App](#create-a-function-app)
+  - [Create a Resource Group](#create-a-resource-group)
+  - [Create a Storage Account](#create-a-storage-account)
+  - [Publish Function App](#publish-function-app)
+
 > ___All of this project's code can be found in the [First Look monorepo](https://github.com/ajcwebdev/a-first-look/tree/main/deployment/azure-functions/) on my GitHub.___
 
 ## Introduction
 
 [Azure Functions](https://azure.microsoft.com/en-us/services/functions/) is an event-driven serverless compute platform that manages deploying and maintaining servers. It provides all up-to-date resources and orchestration needed to keep your applications running. Developer tools for debugging are included along with triggers and bindings for integrating services.
 
-## 1. Setup environment
+## Setup Environment
 
 ### Install the Azure Functions Core Tools
 
@@ -25,7 +46,7 @@ brew tap azure/functions
 brew install azure-functions-core-tools@3
 ```
 
-### Create a local Functions project with `func init`
+### Initialize a Local Functions Project
 
 A Functions project directory contains [`host.json`](https://docs.microsoft.com/en-us/azure/azure-functions/functions-host-json), [`local.settings.json`](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=macos%2Ccsharp%2Cbash#local-settings-file), and subfolders with the code for individual functions.
 
@@ -50,7 +71,7 @@ Navigate into the newly created project.
 cd ajcwebdev-azure
 ```
 
-### `host.json`
+### Host Metadata
 
 The `host.json` metadata file contains global configuration options that affect all functions for a function app.
 
@@ -72,7 +93,7 @@ The `host.json` metadata file contains global configuration options that affect 
 }
 ```
 
-### `local.settings.json`
+### Local Settings
 
 The `local.settings.json` file stores app settings, connection strings, and settings used by local development tools.
 
@@ -86,7 +107,7 @@ The `local.settings.json` file stores app settings, connection strings, and sett
 }
 ```
 
-## 2. Create an HTTP trigger function with `func new`
+## Create HTTP Trigger Function
 
 [HTTP triggers](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook-trigger) let you invoke a function with an HTTP request. You can use an HTTP trigger to build serverless APIs and respond to webhooks. To create an HTTP trigger function, run [`func new`](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local) with the following arguments.
 
@@ -102,19 +123,15 @@ Output:
 Select a number for template: Http Trigger
 Function name: [HttpTrigger]
 
-Writing
-/Users/ajcwebdev/ajcwebdev-azure/HttpTrigger/index.js
+Writing /Users/ajcwebdev/ajcwebdev-azure/HttpTrigger/index.js
+Writing /Users/ajcwebdev/ajcwebdev-azure/HttpTrigger/function.json
 
-Writing
-/Users/ajcwebdev/ajcwebdev-azure/HttpTrigger/function.json
-
-The function "HttpTrigger" was created successfully
-from the "Http Trigger" template.
+The function "HttpTrigger" was created successfully from the "Http Trigger" template.
 ```
 
 Alternatively, you can run `func new` to see the list of available templates and enter `10` to select `HTTP trigger`.
 
-### `index.js`
+### JavaScript Index File
 
 ```javascript
 // index.js
@@ -134,7 +151,7 @@ module.exports = async function (context, req) {
 }
 ```
 
-### `function.json`
+### Function Bindings
 
 In `function.json` we set `req` and `res` to the `direction` `in` and `out`. Requests can be `get` or `post`.
 
@@ -160,7 +177,7 @@ In `function.json` we set `req` and `res` to the `direction` `in` and `out`. Req
 }
 ```
 
-### Test function locally with `func start`
+### Test Function Locally
 
 To run a Functions project, run the [Functions host](https://github.com/Azure/azure-functions-host). The host enables triggers for all functions in the project.
 
@@ -218,7 +235,7 @@ curl --request POST http://localhost:7071/api/HttpTrigger \
   --data '{"name":"ajcwebdev"}'
 ```
 
-## 3. Create an Azure subscription
+## Create an Azure Subscription
 
 To publish a function you must create a function app with an Azure subscription. A subscription is a container used to provision resources in Azure. It holds the details of all your resources such as VMs and databases.
 
@@ -244,7 +261,7 @@ There are numerous ways to [install the Azure CLI](https://docs.microsoft.com/en
 brew install azure-cli
 ```
 
-### Check version number with `az version`
+Check Azure CLI version number with `az version`.
 
 ```bash
 az version
@@ -261,7 +278,7 @@ Output:
 }
 ```
 
-### Log in with `az login`
+### Authenticate with the Azure CLI
 
 Log in to Azure with [`az login`](https://docs.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest#az_login).
 
@@ -271,14 +288,14 @@ az login
 
 If you have Multi-Factor Authentication setup then you will need to use `az login --tenant TENANT_ID` to explicitly login to a tenant. You can find your tenant ID on the [Azure Active Directory](https://azure.microsoft.com/en-us/services/active-directory/) portal.
 
-### Configure subscription with `az account set`
+### Configure Subscription
 
 ```bash
 az account set \
   --subscription ajcwebdev-subscription
 ```
 
-## 4. Create a function app
+## Create a Function App
 
 A function app maps to your local function project and lets you group functions as a logical unit for easier management, deployment, and sharing of resources. Before you can deploy your function code to Azure, you need to create three resources:
 
@@ -286,7 +303,7 @@ A function app maps to your local function project and lets you group functions 
 * [Storage account](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create) - maintains state and other information about the functions
 * [Function app](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-function-app-portal#create-a-function-app) - environment for executing function code
 
-### Create a resource group with `az group create`
+### Create a Resource Group
 
 The [`az group create command`](https://docs.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest#az_group_create) creates a resource group. Create a resource group named `ajcwebdev-rg` in the `westus` region.
 
@@ -312,7 +329,7 @@ Output:
 }
 ```
 
-### Create a storage account with `az storage account create`
+### Create a Storage Account
 
 The [`az storage account create`](https://docs.microsoft.com/en-us/cli/azure/storage/account#az_storage_account_create) command creates the storage account.
 
@@ -326,7 +343,7 @@ az storage account create \
 
 `Standard_LRS` creates a general-purpose storage account in your resource group and region.
 
-### Create a function app with `az functionapp create`
+### Publish Function App
 
 The [`az functionapp create`](https://docs.microsoft.com/en-us/cli/azure/functionapp#az_functionapp_create) command creates the function app in Azure.
 
@@ -341,11 +358,7 @@ az functionapp create \
   --storage-account ajcwebdevstorage
 ```
 
-We specify `ajcwebdev-rg` for the resource group, `ajcwebdevstorage` for the storage account, and `ajcwebdev-function-app` for the name of the function app.
-
-### Publish app with `func azure functionapp publish`
-
-The `func azure functionapp publish` command deploys your local functions project to Azure.
+We specify `ajcwebdev-rg` for the resource group, `ajcwebdevstorage` for the storage account, and `ajcwebdev-function-app` for the name of the function app. The `func azure functionapp publish` command deploys your local functions project to Azure.
 
 ```bash
 func azure functionapp publish ajcwebdev-function-app
