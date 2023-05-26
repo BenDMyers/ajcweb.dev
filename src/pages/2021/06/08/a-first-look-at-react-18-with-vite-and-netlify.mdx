@@ -8,6 +8,16 @@ image: "https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dkjpx2q7x1065dx
 layout: "@/layouts/BlogPost"
 ---
 
+## Outline
+
+- [Introduction](#introduction)
+  - [React 18 Working Group](#react-18-working-group)
+- [Create React App with Vite React Template](#create-react-app-with-vite-react-template)
+  - [Install Dependencies and Start Development Server](#install-dependencies-and-start-development-server)
+  - [Root Component](#root-component)
+  - [App Component](#app-component)
+- [Deploy to Netlify](#deploy-to-netlify)
+
 > ___All of this project's code can be found in the [First Look monorepo](https://github.com/ajcwebdev/a-first-look/tree/main/frontend/react18/) on my GitHub.___
 
 ## Introduction
@@ -19,7 +29,7 @@ When it's released, [React 18](https://github.com/reactwg/react-18/discussions/4
 
 The React team has also taken a new step by creating the [React 18 Working Group](https://github.com/reactwg/react-18) to provide feedback, ask questions, and collaborate on the release. The Working Group is hosted on [GitHub Discussions](https://github.com/reactwg/react-18/discussions) and is available for the public to read.
 
-## React 18 Working Group
+### React 18 Working Group
 
 Members of the working group can leave feedback, ask questions, and share ideas. The core team will also use the discussions repo to share their research findings. As the stable release gets closer, any important information will also be posted on the [React blog](https://reactjs.org/blog/all.html/).
 
@@ -34,53 +44,44 @@ No specific release date is scheduled, but the team expects it will take several
 
 More details about the projected release timeline are [available in the Working Group](https://github.com/reactwg/react-18/discussions/9).
 
-## Create React App with Vite's React Template
+## Create React App with Vite React Template
 
 ```bash
-yarn create @vitejs/app ajcwebdev-react18 --template react
+yarn create vite ajcwebdev-react18 --template react
 ```
 
-### Install dependencies
+### Install Dependencies and Start Development Server
 
 ```bash
 cd ajcwebdev-react18
 yarn
-```
-
-### Start development server
-
-```bash
 yarn dev
 ```
 
 ![01-create-vite-app](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fdvsb936oo4qlhq2fw12.png)
 
-## Install `react@beta` and `react-dom@beta`
-
-### package.json
-
-If we look in our `package.json` we'll see the following dependencies included from the Vite template.
+If we look in our `package.json` we'll see React 18 is already included in the Vite template.
 
 ```json
-"dependencies": {
-  "react": "^17.0.0",
-  "react-dom": "^17.0.0"
-},
-```
-
-Install `beta` versions.
-
-```bash
-yarn add react@beta react-dom@beta
-```
-
-Check your `dependencies` for the new versions.
-
-```json
-"dependencies": {
-  "react": "^18.0.0-beta-96ca8d915-20211115",
-  "react-dom": "^18.0.0-beta-96ca8d915-20211115"
-},
+{
+  "name": "ajcwebdev-react18",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^4.0.0",
+    "vite": "^4.3.2"
+  }
+}
 ```
 
 Use `esbuild.jsxInject` to automatically inject JSX helper imports for every file transformed by ESBuild:
@@ -99,7 +100,7 @@ export default defineConfig({
 })
 ```
 
-### main.jsx
+### Root Component
 
 ```jsx
 // src/main.jsx
@@ -115,7 +116,7 @@ const root = ReactDOM.createRoot(
 root.render(<App />)
 ```
 
-### App.jsx
+### App Component
 
 ```jsx
 // src/App.jsx
@@ -127,15 +128,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img
-          src={logo}
-          className="App-logo"
-          alt="logo"
-        />
-
-        <p>
-          React 18 Deployed on Netlify with Vite
-        </p>
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>React 18 Deployed on Netlify with Vite</p>
       </header>
     </div>
   )
@@ -147,23 +141,29 @@ export default App
 ## Deploy to Netlify
 
 ```bash
-touch netlify.toml
+echo > netlify.toml
 ```
 
 ```toml
+# netlify.toml
+
 [build]
   publish = "dist"
   command = "yarn build"
 ```
 
-Create a blank GitHub repository at [github.new](https://github.com/new/).
+Initialize a Git repository and push to GitHub.
 
 ```bash
 git init
-git add README.md
-git commit -m "first commit"
-git remote add origin https://github.com/ajcwebdev/ajcwebdev-react18.git
-git push -u origin main
+git add .
+git commit -m "init"
+gh repo create ajcwebdev-react18 \
+  --public \
+  --push \
+  --source=. \
+  --description="An example React 18 application deployed to Netlify with Vite" \
+  --remote=upstream
 ```
 
 Connect your GitHub repository to Netlify.
@@ -173,29 +173,6 @@ Connect your GitHub repository to Netlify.
 The build commands are included from your `netlify.toml`.
 
 ![03-build-commands-auto-imported](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pfdbymv7infchvybsjgh.png)
-
-```
-$ yarn build
-yarn run v1.22.4
-warning package.json: No license field
-
-$ vite build
-vite v2.3.7 building for production...
-transforming...
-✓ 26 modules transformed.
-rendering chunks...
-
-dist/assets/favicon.17e50649.svg   1.49kb
-dist/assets/logo.ecc203fb.svg      2.61kb
-dist/index.html                    0.51kb
-dist/assets/index.7cb030a3.js      0.39kb / brotli: 0.20kb
-dist/assets/index.0673ce28.css     0.76kb / brotli: 0.40kb
-dist/assets/vendor.9aeda92c.js     134.00kb / brotli: 37.26kb
-
-Done in 4.86s.
-​
-(build.command completed in 5.1s)
-```
 
 Set a custom domain.
 
