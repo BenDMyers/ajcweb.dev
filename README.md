@@ -142,7 +142,7 @@ type SiteMeta = {
 const siteMeta = {
   title: "ajcwebdev",
   description: "Web developer, writer, speaker, and advocate",
-  canonicalURL: "https://ajcwebdev.com",
+  canonicalURL: "https://ajcwebdev.com/",
   githubUrl: "https://github.com/ajcwebdev/ajcweb.dev",
   publishDate: "2022-11-14",
   image: "https://github.com/ajcwebdev/social-cards/blob/main/background-html.png?raw=true",

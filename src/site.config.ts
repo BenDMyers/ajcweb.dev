@@ -17,7 +17,7 @@ interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  canonicalURL: "https://ajcwebdev.com",
+  canonicalURL: "https://ajcwebdev.com/",
 	author: "Anthony Campolo",
 	title: "ajcwebdev",
 	description: "Web developer, writer, speaker, and advocate. Developer Advocate at Edgio and Redwood. Host of JavaScript Jam and the FSJam Podcast.",
