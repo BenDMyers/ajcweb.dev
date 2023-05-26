@@ -8,13 +8,40 @@ image: "https://cdn.hashnode.com/res/hashnode/image/upload/v1651730209223/w6yqEJ
 layout: "@/layouts/BlogPost"
 ---
 
+## Outline
+
+- [Introduction](#introduction)
+  - [Create Node Project](#create-node-project)
+  - [Initialize Project and Install Dependencies](#initialize-project-and-install-dependencies)
+  - [Create Server](#create-server)
+  - [Run Server](#run-server)
+- [Create and Build Container Image](#create-and-build-container-image)
+  - [Create Dockerfile and dockerignore files](#create-dockerfile-and-dockerignore-files)
+  - [Build Project](#build-project)
+  - [List Images](#list-images)
+- [Run the Image](#run-the-image)
+  - [Run Docker Container](#run-docker-container)
+  - [List Containers](#list-containers)
+  - [Print Output of App](#print-output-of-app)
+  - [Call App using curl](#call-app-using-curl)
+- [Create Docker Compose File](#create-docker-compose-file)
+  - [Create and Start Containers](#create-and-start-containers)
+- [Push Project to a GitHub Repository](#push-project-to-a-github-repository)
+  - [Initialize Git](#initialize-git)
+  - [Create a New Repository](#create-a-new-repository)
+- [Publish to GitHub Container Registry](#publish-to-github-container-registry)
+  - [Login to ghcr](#login-to-ghcr)
+  - [Tag Image](#tag-image)
+  - [Push to Registry](#push-to-registry)
+  - [Pull Image from Registry](#pull-image-from-registry)
+
 ## Introduction
 
 [Docker](https://www.docker.com/) is a set of tools that use OS-level virtualization to deliver software in isolated packages called containers. Containers bundle their own software, libraries and configuration files. They communicate with each other through well-defined channels and use fewer resources than virtual machines.
 
 The code for this article is available [on my GitHub](https://github.com/ajcwebdev/a-first-look/tree/main/deployment/docker/) and the container image can be found on the [GitHub Container Registry](https://github.com/ajcwebdev/ajcwebdev-docker/pkgs/container/ajcwebdev-docker) and [Docker Hub](https://hub.docker.com/r/ajcwebdev/ajcwebdev-docker).
 
-## Create Node Project
+### Create Node Project
 
 We will create a simple Node application with Express that returns an HTML fragment.
 
@@ -277,7 +304,7 @@ Attaching to web_1
 web_1  | Running on http://0.0.0.0:8080
 ```
 
-## Push your Project to a GitHub Repository
+## Push Project to a GitHub Repository
 
 We can publish this image to the GitHub Container Registry with GitHub Packages. This will require pushing our project to a GitHub repository. Before initializing Git, create a `.gitignore` file for `node_modules` and our environment variables.
 
